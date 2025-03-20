@@ -1,0 +1,41 @@
+{
+  "pins" : [
+    {
+      "identity" : "countrypickerview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kizitonwose/CountryPickerView",
+      "state" : {
+        "revision" : "6ecf22145d577411fb97c8c964df0fb5886f035f",
+        "version" : "3.3.0"
+      }
+    },
+    {
+      "identity" : "phonenumberkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/marmelroy/PhoneNumberKit.git",
+      "state" : {
+        "revision" : "288b99e9e99926bc8be41220802df83c059fac9b",
+        "version" : "4.0.2"
+      }
+    },
+    {
+      "identity" : "swift-algorithms",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-algorithms.git",
+      "state" : {
+        "revision" : "87e50f483c54e6efd60e885f7f5aa946cee68023",
+        "version" : "1.2.1"
+      }
+    },
+    {
+      "identity" : "swift-numerics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-numerics.git",
+      "state" : {
+        "revision" : "e0ec0f5f3af6f3e4d5e7a19d2af26b481acb6ba8",
+        "version" : "1.0.3"
+      }
+    }
+  ],
+  "version" : 2
+}
