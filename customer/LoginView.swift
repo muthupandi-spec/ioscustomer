@@ -5,6 +5,7 @@ struct LoginView: View {
     @State private var selectedCountryCode: String = "+91"
     @State private var phoneNumber: String = "9787485161"
     @State private var showDialog = false
+    @State private var navigateToHome = true // State variable for navigation
 
     var body: some View {
         ZStack {
@@ -52,8 +53,7 @@ struct LoginView: View {
 
                     // Login Button
                     Button(action: {
-                        print("Sign In Pressed")
-                        showDialog = true // Show OTP dialog when Sign In is pressed
+//                        showDialog = true // Show OTP dialog when Sign In is pressed
                     }) {
                         Text("Sign In")
                             .font(.headline)
