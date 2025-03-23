@@ -1,8 +1,15 @@
 import SwiftUI
 
-struct OfferView: View {
-    let imageNames = ["ban", "ban1", "ban2","ban2","ban", "ban1"]
-
+struct Searchview: View {
+    let varieties = [
+        ("ic_biryani", "Biryani"),
+        ("ic_biryani", "Pizza"),
+        ("ic_biryani", "Burger"),
+        ("ic_biryani", "Noodles"),
+        ("ic_biryani", "Dosa"),
+        ("ic_biryani", "Pasta"),
+        ("ic_biryani", "Mutton"),
+    ]
     var body: some View {
         NavigationStack{
             ScrollView(.vertical, showsIndicators: false){
@@ -23,19 +30,7 @@ struct OfferView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 10)
                     .padding(.horizontal)
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        VStack(spacing: 10) {
-                            ForEach(imageNames, id: \.self) { imageName in
-                                Image(imageName)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: UIScreen.main.bounds.width - 20, height: 160)
-                                    .clipped()
-                                    .cornerRadius(10)
-                            }
-                        }
-                        .padding(.horizontal,10)
-                    }
+                    
 
                     
                 }
@@ -43,9 +38,9 @@ struct OfferView: View {
 
         }
     }
-        struct Offer_view: PreviewProvider {
+        struct Search_view: PreviewProvider {
             static var previews: some View {
-                OfferView()
+                Searchview()
             }
         }
 }

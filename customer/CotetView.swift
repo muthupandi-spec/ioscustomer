@@ -62,7 +62,7 @@ struct ContentView: View {
             Bottomview()
             // This is a custom option,
             // be sure to check out the code block below this section to learn more
-                .presentationDetents([.fraction(0.5)]) // Adjust to 50% of screen height
+                .presentationDetents([.height(100), .medium, .large])
         })
     }
 }

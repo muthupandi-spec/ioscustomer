@@ -1,7 +1,12 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var selectedChip: String? = nil // Track selected chip
+    @State private var selectedChip: String? = nil // Track selected
+    @State private var naviagte_offer = false
+    @State private var naviagte_cart = false
+    @State private var naviagte_favourite = false
+    @State private var naviagte_notification = false
+    @State private var naviagte_recomend = false
 
     let imageNames = ["ban", "ban1", "ban2"]
     let chiplist = ["Biryani", "Pizza", "Burger","Noodles","Dosa","Mutton"]
@@ -47,6 +52,7 @@ struct HomeView: View {
                         Button(action: {
                             // Add your action here, e.g., navigate or show an alert
                             print("Bell icon clicked!")
+                            naviagte_notification=true
                         }) {
                             Image("bell")
                                 .resizable()
@@ -54,17 +60,31 @@ struct HomeView: View {
                                 .padding()
                                 .background(Color.white)
             
+                        } .navigationDestination(isPresented: $naviagte_notification) {
+                            NotificationView()
                         }
-                        Image("heart")
-                            .resizable()
-                            .frame(width: 25, height: 25)
-                            .padding()
-                            .background(Color.white)
-                        Image("cart")
-                            .resizable()
-                            .frame(width: 25, height: 25)
-                            .padding()
-                            .background(Color.white)
+                        Button(action: {
+                          naviagte_favourite=true
+                        }) {
+                            Image("heart")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .padding()
+                                .background(Color.white)
+                        }.navigationDestination(isPresented: $naviagte_favourite) {
+                            FavouriteView()
+                        }
+                        Button(action: {
+                           naviagte_cart=true
+                        }) {
+                            Image("cart")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .padding()
+                                .background(Color.white)
+                        }.navigationDestination(isPresented: $naviagte_cart) {
+                            CartView()
+                        }
                         
                     }
                     .frame(maxWidth: .infinity)
@@ -86,15 +106,24 @@ struct HomeView: View {
                     .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.2)))
                     .padding(.horizontal, 10) // Add extra 5 points of space outside
                     HStack {
-                        Text("Special Offers")
-                            .bold()
-                            .foregroundColor(.black)
+                      
+                            Text("Special Offers")
+                                .bold()
+                                .foregroundColor(.black)
+                        
+                    
                         
                         Spacer() // Pushes "See All" to the right
-                        
-                        Text("See All")
-                            .bold()
-                            .foregroundColor(Color("colorPrimary"))
+                        Button(action:{
+                        naviagte_offer=true
+                        }){
+                            Text("See All")
+                                .bold()
+                                .foregroundColor(Color("colorPrimary"))
+                        } .navigationDestination(isPresented: $naviagte_offer) {
+                                OfferView()
+                            }
+                            
                     }
                     .padding()
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -139,15 +168,21 @@ struct HomeView: View {
                     }
                     .padding(.horizontal,10)
                     HStack {
-                        Text("Recommended For You")
-                            .bold()
-                            .foregroundColor(.black)
+                      
+                            Text("Recommended For You")
+                                .bold()
+                                .foregroundColor(.black)
                         
                         Spacer() // Pushes "See All" to the right
-                        
+                    Button(action: {
+                        naviagte_recomend=true
+                    }){
                         Text("See All")
                             .bold()
                             .foregroundColor(Color("colorPrimary"))
+                    } .navigationDestination(isPresented: $naviagte_recomend) {
+                        RecommendforyoyView()
+                    }
                     }
                     .padding()
                     ScrollView(.horizontal, showsIndicators: false) {

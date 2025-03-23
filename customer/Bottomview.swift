@@ -7,12 +7,13 @@ struct Bottomview: View {
         NavigationStack {
             ZStack {
                 Color.blue.ignoresSafeArea(edges: .all)
-
-                ScrollView {
-                    Text("Hello from the modal view!")
-                        .bold()
-                        .foregroundStyle(.white)
-                }
+              
+                    ScrollView {
+                        ForEach(0..<100, id: \.self) { _ in
+                        Text("Hello from the modal view!")
+                            .bold()
+                            .foregroundStyle(.white)
+                    }}
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
