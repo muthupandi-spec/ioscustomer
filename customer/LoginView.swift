@@ -5,127 +5,144 @@ struct LoginView: View {
     @State private var selectedCountryCode: String = "+91"
     @State private var phoneNumber: String = "9787485161"
     @State private var showDialog = false
-    @State private var navigateToHome = true // State variable for navigation
+    @State private var navigateToHome = false // State variable for navigation
+    @State private var navigateregister = false // State variable for navigation
 
     var body: some View {
-        ZStack {
-            Color("colorPrimary") // Background color
-                .ignoresSafeArea()
+        NavigationStack{
+            ZStack {
+                Color("colorPrimary") // Background color
+                    .ignoresSafeArea()
 
-            VStack {
-                // Logo and Title
-                Text("Login to Your Account")
-                    .font(.title)
-                    .bold()
-                    .foregroundColor(.white)
-                    .padding(.top, 10)
-
-                Image("burger")
-                    .resizable()
-                    .frame(width: 150, height: 150)
-                    .padding(.top, 20)
-
-                Spacer()
-
-                // White Curved Background
-                VStack(spacing: 20) {
-                    Image("ic_logo")
-                        .resizable()
-                        .frame(width: 60, height: 60)
-                        .padding(.top, 30)
-
-                    HStack {
-                        CountryCodePicker(selectedCode: $selectedCountryCode)
-                            .frame(width: 80, height: 50)
-                            .background(Color.gray.opacity(0.2))
-                            .cornerRadius(5)
-
-                        // Mobile Number Input
-                        TextField("Enter Mobile Number", text: .constant(""))
-                            .padding()
-                            .keyboardType(.numberPad)
-                            .background(Color.gray.opacity(0.2))
-                            .cornerRadius(5)
-                    }
-                    .padding(.horizontal, 10)
-
-                    Divider()
-
-                    // Login Button
-                    Button(action: {
-//                        showDialog = true // Show OTP dialog when Sign In is pressed
-                    }) {
-                        Text("Sign In")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity, minHeight: 40)
-                            .background(Color("colorPrimary"))
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                    .padding(.horizontal, 10)
-
-                    HStack {
-                        Rectangle()
-                            .frame(height: 2)
-                            .foregroundColor(.gray)
-
-                        Text("or continue with")
-                            .font(.footnote)
-                            .foregroundColor(.gray)
-
-                        Rectangle()
-                            .frame(height: 2)
-                            .foregroundColor(.gray)
-                    }
-                    .padding(.horizontal, 20)
-
-                    HStack(spacing: 30) {
-                        Image("fb_logo")
-                            .resizable()
-                            .frame(width: 25, height: 25)
-                            .padding()
-                            .background(Color.white)
-                            .cornerRadius(10)
-                            .shadow(radius: 2)
-
-                        Image("google")
-                            .resizable()
-                            .frame(width: 25, height: 25)
-                            .padding()
-                            .background(Color.white)
-                            .cornerRadius(10)
-                            .shadow(radius: 2)
-                    }
-                    .padding(.top, 10)
-
-                    Text("Sign Up")
-                        .font(.footnote)
-                        .foregroundColor(.gray)
+                VStack {
+                    // Logo and Title
+                    Text("Login to Your Account")
+                        .font(.title)
+                        .bold()
+                        .foregroundColor(.white)
                         .padding(.top, 10)
 
+                    Image("burger")
+                        .resizable()
+                        .frame(width: 150, height: 150)
+                        .padding(.top, 20)
+
                     Spacer()
+
+                    // White Curved Background
+                    VStack(spacing: 20) {
+                        Image("ic_logo")
+                            .resizable()
+                            .frame(width: 60, height: 60)
+                            .padding(.top, 30)
+
+                        HStack {
+                            CountryCodePicker(selectedCode: $selectedCountryCode)
+                                .frame(width: 80, height: 50)
+                                .background(Color.gray.opacity(0.2))
+                                .cornerRadius(5)
+
+                            // Mobile Number Input
+                            TextField("Enter Mobile Number", text: .constant(""))
+                                .padding()
+                                .keyboardType(.numberPad)
+                                .background(Color.gray.opacity(0.2))
+                                .cornerRadius(5)
+                        }
+                        .padding(.horizontal, 10)
+
+                        Divider()
+
+                        NavigationLink("", value: navigateToHome)
+                            .hidden()
+
+                        Button(action: {
+                            navigateToHome = true
+                        }) {
+                            Text("Sign In")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity, minHeight: 40)
+                                .background(Color("colorPrimary"))
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                        .padding(.horizontal, 10)
+                        .navigationDestination(isPresented: $navigateToHome) {
+                            HomeView()
+                        }
+
+                        HStack {
+                            Rectangle()
+                                .frame(height: 2)
+                                .foregroundColor(.gray)
+
+                            Text("or continue with")
+                                .font(.footnote)
+                                .foregroundColor(.gray)
+
+                            Rectangle()
+                                .frame(height: 2)
+                                .foregroundColor(.gray)
+                        }
+                        .padding(.horizontal, 20)
+
+                        HStack(spacing: 30) {
+                            Image("fb_logo")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .padding()
+                                .background(Color.white)
+                                .cornerRadius(10)
+                                .shadow(radius: 2)
+
+                            Image("google")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .padding()
+                                .background(Color.white)
+                                .cornerRadius(10)
+                                .shadow(radius: 2)
+                        }
+                        .padding(.top, 10)
+
+                        Button(action: {
+                            navigateregister = true
+                        }) {
+                            Text("Sign Up")
+                                .font(.footnote)
+                                .foregroundColor(.gray)
+                                .padding(.top, 10)
+                        }
+                        .navigationDestination(isPresented:
+                        $navigateregister) {
+                            RegisterView()
+                        }
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        RoundedRectangle(cornerRadius: 30)
+                            .fill(Color.white)
+                            .edgesIgnoringSafeArea(.bottom)
+                    )
                 }
-                .frame(maxWidth: .infinity)
-                .background(
-                    RoundedRectangle(cornerRadius: 30)
-                        .fill(Color.white)
-                        .edgesIgnoringSafeArea(.bottom)
-                )
+
+                // OTP Dialog Overlay - Moves OUTSIDE the button to cover the full screen
+                if showDialog {
+                    OTPDialogView(isPresented: $showDialog, phoneNumber: phoneNumber) { otp in
+                        if phoneNumber == "9787485161" {
+                            print("Verify OTP: \(otp)")
+                            // Navigate to Home screen
+                        } else {
+                            print("Navigate to Register screen")
+                        }
+                    }
+                    .transition(.opacity)
+                }
             }
 
-            // OTP Dialog Overlay - Moves OUTSIDE the button to cover the full screen
-            if showDialog {
-                OTPDialogView(isPresented: $showDialog, phoneNumber: phoneNumber) { otp in
-                    if phoneNumber == "9787485161" {
-                        print("Verify OTP: \(otp)")
-                        // Navigate to Home screen
-                    } else {
-                        print("Navigate to Register screen")
-                    }
-                }
-                .transition(.opacity)
-            }
-        }
+        }.navigationTitle("login")
+        
     }
 
     struct CountryCodePicker: UIViewRepresentable {
@@ -221,4 +238,10 @@ struct LoginView: View {
             }
         }
     }
+    struct login_Previews: PreviewProvider {
+        static var previews: some View {
+            LoginView()
+        }
+    }
+
 }
