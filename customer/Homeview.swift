@@ -7,6 +7,9 @@ struct HomeView: View {
     @State private var naviagte_favourite = false
     @State private var naviagte_notification = false
     @State private var naviagte_recomend = false
+    @State private var naviagte_search = false
+    @State private var navigate_detail = false  // State variable for navigation
+
 
     let imageNames = ["ban", "ban1", "ban2"]
     let chiplist = ["Biryani", "Pizza", "Burger","Noodles","Dosa","Mutton"]
@@ -88,30 +91,34 @@ struct HomeView: View {
                         
                     }
                     .frame(maxWidth: .infinity)
-                    HStack {
-                        Image("search")
-                            .renderingMode(.template) // Allows color modification
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 16, height: 16)
-                            .foregroundColor(.gray) // Set image color
+                    Button(action: {
+                       naviagte_search=true
+                    }) {
+                        HStack {
+                            Image("search")
+                                .renderingMode(.template) // Allows color modification
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 16, height: 16)
+                                .foregroundColor(.gray) // Set image color
+                            
+                            Text("What are you craving?")
+                                .foregroundColor(.gray) // Match the text color
+                            
+                            Spacer() // Push content to the left
+                        }
                         
-                        Text("What are you craving?")
-                            .foregroundColor(.gray) // Match the text color
-                        
-                        Spacer() // Push content to the left
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.2)))
+                        .padding(.horizontal, 10)
+                    }.navigationDestination(isPresented: $naviagte_search) {
+                        Searchview()
                     }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.2)))
-                    .padding(.horizontal, 10) // Add extra 5 points of space outside
                     HStack {
-                      
                             Text("Special Offers")
                                 .bold()
                                 .foregroundColor(.black)
-                        
-                    
                         
                         Spacer() // Pushes "See All" to the right
                         Button(action:{
@@ -137,7 +144,7 @@ struct HomeView: View {
                                     .cornerRadius(10)
                             }
                         }
-                        .padding(.horizontal, 10) // Add padding for a nice look
+                        .padding(.horizontal, 10)
                     }
                     HStack {
                         Text("Top Category !")
@@ -209,85 +216,92 @@ struct HomeView: View {
             
                            }
                  
-                    ScrollView {
-                        VStack(spacing: 10) { // Adds spacing between each item
-                            ForEach(0..<5, id: \.self) { _ in
-                                HStack {
-                                    ZStack(alignment: .bottomLeading) {
-                                        Image("ic_biryani")
-                                            .resizable()
-                                            .frame(width: 142, height: 172)
-                                            .scaledToFill()
-                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    NavigationStack {
+                               ScrollView {
+                                   ForEach(0..<5, id: \.self) { index in
+                                       HStack {
+                                           ZStack(alignment: .bottomLeading) {
+                                               Image("ic_biryani")
+                                                   .resizable()
+                                                   .frame(width: 142, height: 172)
+                                                   .scaledToFill()
+                                                   .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                                        VStack(alignment: .leading, spacing: 4) {
-                                            Text("UPTO 23%")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                                .padding(6)
-                                                .background(Color.black.opacity(0.5))
-                                                .clipShape(Capsule())
-                                            
-                                            Text("Offer")
-                                                .font(.footnote)
-                                                .bold()
-                                                .foregroundColor(.black)
-                                        }
-                                        .padding(8)
-                                    }
-                                    .background(Color.white)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                                    .overlay(
-                                        Image("heart") // Favorite Icon
-                                            .resizable()
-                                            .frame(width: 20, height: 20)
-                                            .padding(8),
-                                        alignment: .topTrailing
-                                    )
+                                               VStack(alignment: .leading, spacing: 4) {
+                                                   Text("UPTO 23%")
+                                                       .font(.caption)
+                                                       .bold()
+                                                       .foregroundColor(.white)
+                                                       .padding(6)
+                                                       .background(Color.black.opacity(0.5))
+                                                       .clipShape(Capsule())
 
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text("Biryani")
-                                            .font(.headline)
-                                            .bold()
-                                            .foregroundColor(.black)
+                                                   Text("Offer")
+                                                       .font(.footnote)
+                                                       .bold()
+                                                       .foregroundColor(.black)
+                                               }
+                                               .padding(8)
+                                           }
+                                           .background(Color.white)
+                                           .clipShape(RoundedRectangle(cornerRadius: 12))
+                                           .overlay(
+                                               Image("heart") // Favorite Icon
+                                                   .resizable()
+                                                   .frame(width: 20, height: 20)
+                                                   .padding(8),
+                                               alignment: .topTrailing
+                                           )
 
-                                        Text("Delicious Biryani")
-                                            .font(.subheadline)
-                                            .foregroundColor(.gray)
+                                           VStack(alignment: .leading, spacing: 4) {
+                                               Text("Biryani")
+                                                   .font(.headline)
+                                                   .bold()
+                                                   .foregroundColor(.black)
 
-                                        HStack {
-                                            Image("star") // Rating Star Image
-                                                .resizable()
-                                                .frame(width: 18, height: 18)
+                                               Text("Delicious Biryani")
+                                                   .font(.subheadline)
+                                                   .foregroundColor(.gray)
 
-                                            Text("4.5 | 5.0 reviews")
-                                                .font(.caption)
-                                                .foregroundColor(.black)
-                                        }
+                                               HStack {
+                                                   Image("star") // Rating Star Image
+                                                       .resizable()
+                                                       .frame(width: 18, height: 18)
 
-                                        Text("Branch:")
-                                            .font(.caption)
-                                            .bold()
-                                            .foregroundColor(.black)
+                                                   Text("4.5 | 5.0 reviews")
+                                                       .font(.caption)
+                                                       .foregroundColor(.black)
+                                               }
 
-                                        Text("Al Karma And Dubai Silicon Oasis")
-                                            .font(.caption)
-                                            .foregroundColor(.black)
-                                            .lineLimit(1)
-                                            .truncationMode(.tail)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-                                    }
-                                    .padding(.vertical, 6)
-                                }
-                                .background(Color.white)
-                                .cornerRadius(10)
-                                .shadow(radius: 1)
-                                .padding(10) // Adds padding on all sides
-                            }
-                        }
-                    }
+                                               Text("Branch:")
+                                                   .font(.caption)
+                                                   .bold()
+                                                   .foregroundColor(.black)
 
+                                               Text("Al Karma And Dubai Silicon Oasis")
+                                                   .font(.caption)
+                                                   .foregroundColor(.black)
+                                                   .lineLimit(1)
+                                                   .truncationMode(.tail)
+                                                   .frame(maxWidth: .infinity, alignment: .leading)
+                                           }
+                                           .padding(.vertical, 6)
+                                       }
+                                       .background(Color.white)
+                                       .cornerRadius(10)
+                                       .shadow(radius: 1)
+                                       .padding(10) // Adds padding on all sides
+                                       .onTapGesture {
+                                           if index == 0 { // Navigate only for the first item
+                                          navigate_detail=true
+                                           }
+                                       }
+                                   }
+                               }
+                               .navigationDestination(isPresented: $navigate_detail) {
+                                   ShopDetailView() // Destination view
+                               }
+                           }
 
                     
                 }
