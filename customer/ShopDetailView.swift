@@ -94,7 +94,8 @@ struct ShopDetailView: View {
                     .shadow(radius: 2)
                     .padding(.horizontal)
                     
-                }
+                }                      .edgesIgnoringSafeArea(.top)
+
                 
                 
                 VStack(spacing: 12) {
