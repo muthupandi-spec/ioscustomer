@@ -15,6 +15,10 @@
 		FA35EE2E2D8FD5D6000D09CA /* Bottomview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA35EE2D2D8FD5D6000D09CA /* Bottomview.swift */; };
 		FA35EE302D8FD780000D09CA /* CotetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA35EE2F2D8FD780000D09CA /* CotetView.swift */; };
 		FA505A8B2D939334003CF1DD /* PaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA505A8A2D939334003CF1DD /* PaymentView.swift */; };
+		FA505A8D2D93A61B003CF1DD /* ActiveOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA505A8C2D93A61B003CF1DD /* ActiveOrderView.swift */; };
+		FA505A8F2D93A80F003CF1DD /* CacelOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA505A8E2D93A80F003CF1DD /* CacelOrderView.swift */; };
+		FA505A912D93A8BC003CF1DD /* CompletedOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA505A902D93A8BC003CF1DD /* CompletedOrderView.swift */; };
+		FA505A932D93A9EE003CF1DD /* Ordeerview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA505A922D93A9EE003CF1DD /* Ordeerview.swift */; };
 		FA55925D2D897BE100790E02 /* customerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA55925C2D897BE100790E02 /* customerApp.swift */; };
 		FA55925F2D897BE100790E02 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA55925E2D897BE100790E02 /* LoginView.swift */; };
 		FA5592612D897BE300790E02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA5592602D897BE300790E02 /* Assets.xcassets */; };
@@ -57,6 +61,10 @@
 		FA35EE2D2D8FD5D6000D09CA /* Bottomview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bottomview.swift; sourceTree = "<group>"; };
 		FA35EE2F2D8FD780000D09CA /* CotetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CotetView.swift; sourceTree = "<group>"; };
 		FA505A8A2D939334003CF1DD /* PaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentView.swift; sourceTree = "<group>"; };
+		FA505A8C2D93A61B003CF1DD /* ActiveOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveOrderView.swift; sourceTree = "<group>"; };
+		FA505A8E2D93A80F003CF1DD /* CacelOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacelOrderView.swift; sourceTree = "<group>"; };
+		FA505A902D93A8BC003CF1DD /* CompletedOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedOrderView.swift; sourceTree = "<group>"; };
+		FA505A922D93A9EE003CF1DD /* Ordeerview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ordeerview.swift; sourceTree = "<group>"; };
 		FA5592592D897BE000790E02 /* customer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = customer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA55925C2D897BE100790E02 /* customerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customerApp.swift; sourceTree = "<group>"; };
 		FA55925E2D897BE100790E02 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -124,6 +132,10 @@
 		FA55925B2D897BE000790E02 /* customer */ = {
 			isa = PBXGroup;
 			children = (
+				FA505A922D93A9EE003CF1DD /* Ordeerview.swift */,
+				FA505A902D93A8BC003CF1DD /* CompletedOrderView.swift */,
+				FA505A8E2D93A80F003CF1DD /* CacelOrderView.swift */,
+				FA505A8C2D93A61B003CF1DD /* ActiveOrderView.swift */,
 				FA505A8A2D939334003CF1DD /* PaymentView.swift */,
 				FA5A52A72D9274F600A07ED9 /* OrderDetailView.swift */,
 				FA593FDC2D91263C00768A2A /* ShopDetailView.swift */,
@@ -309,9 +321,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA505A8F2D93A80F003CF1DD /* CacelOrderView.swift in Sources */,
 				FA254F022D8E899B00406220 /* CartView.swift in Sources */,
 				FA9243062D8BE50400B3B546 /* RegisterView.swift in Sources */,
+				FA505A912D93A8BC003CF1DD /* CompletedOrderView.swift in Sources */,
 				FA254F002D8E88A100406220 /* FavouriteView.swift in Sources */,
+				FA505A8D2D93A61B003CF1DD /* ActiveOrderView.swift in Sources */,
 				FA254EFC2D8E831700406220 /* OfferView.swift in Sources */,
 				FA8324E62D9008FE004EB45B /* SearchView.swift in Sources */,
 				FA254EFE2D8E847600406220 /* NotificationView.swift in Sources */,
@@ -324,6 +339,7 @@
 				FA5A52A82D9274F600A07ED9 /* OrderDetailView.swift in Sources */,
 				FA505A8B2D939334003CF1DD /* PaymentView.swift in Sources */,
 				FA35EE302D8FD780000D09CA /* CotetView.swift in Sources */,
+				FA505A932D93A9EE003CF1DD /* Ordeerview.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
