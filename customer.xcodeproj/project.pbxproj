@@ -14,6 +14,7 @@
 		FA254F022D8E899B00406220 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA254F012D8E899B00406220 /* CartView.swift */; };
 		FA35EE2E2D8FD5D6000D09CA /* Bottomview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA35EE2D2D8FD5D6000D09CA /* Bottomview.swift */; };
 		FA35EE302D8FD780000D09CA /* CotetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA35EE2F2D8FD780000D09CA /* CotetView.swift */; };
+		FA3854C52D940B3E00FB4E6D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3854C42D940B3E00FB4E6D /* ProfileView.swift */; };
 		FA505A8B2D939334003CF1DD /* PaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA505A8A2D939334003CF1DD /* PaymentView.swift */; };
 		FA505A8D2D93A61B003CF1DD /* ActiveOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA505A8C2D93A61B003CF1DD /* ActiveOrderView.swift */; };
 		FA505A8F2D93A80F003CF1DD /* CacelOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA505A8E2D93A80F003CF1DD /* CacelOrderView.swift */; };
@@ -64,6 +65,7 @@
 		FA254F012D8E899B00406220 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
 		FA35EE2D2D8FD5D6000D09CA /* Bottomview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bottomview.swift; sourceTree = "<group>"; };
 		FA35EE2F2D8FD780000D09CA /* CotetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CotetView.swift; sourceTree = "<group>"; };
+		FA3854C42D940B3E00FB4E6D /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		FA505A8A2D939334003CF1DD /* PaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentView.swift; sourceTree = "<group>"; };
 		FA505A8C2D93A61B003CF1DD /* ActiveOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveOrderView.swift; sourceTree = "<group>"; };
 		FA505A8E2D93A80F003CF1DD /* CacelOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacelOrderView.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 		FA55925B2D897BE000790E02 /* customer */ = {
 			isa = PBXGroup;
 			children = (
+				FA3854C42D940B3E00FB4E6D /* ProfileView.swift */,
 				FA65B5312D93CA4C0039617F /* TransactioHistoryView.swift */,
 				FA65B52F2D93C4580039617F /* WalletView.swift */,
 				FA65B52D2D93BD090039617F /* OrderDetailpageView.swift */,
@@ -349,6 +352,7 @@
 				FA65B52A2D93B2F60039617F /* OrderViewpagerView.swift in Sources */,
 				FA65B5302D93C4580039617F /* WalletView.swift in Sources */,
 				FA8B16602D8D264A00C4699C /* Homeview.swift in Sources */,
+				FA3854C52D940B3E00FB4E6D /* ProfileView.swift in Sources */,
 				FA35EE2E2D8FD5D6000D09CA /* Bottomview.swift in Sources */,
 				FA65B52E2D93BD090039617F /* OrderDetailpageView.swift in Sources */,
 				FA55925F2D897BE100790E02 /* LoginView.swift in Sources */,
