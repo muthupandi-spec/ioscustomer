@@ -4,6 +4,7 @@ struct ShopDetailView: View {
     @State private var isVeg = false
     @State private var isNonVeg = false
     let imageNames = ["ban", "ban1", "ban2"]
+    @State private var naviagte_orderdetail = false
     @State private var foodCount: Int = 0
     let menuData = [
         ("Biryani", ["Chicken Biryani", "Mutton Biryani", "Veg Biryani"]),
@@ -94,7 +95,7 @@ struct ShopDetailView: View {
                     .shadow(radius: 2)
                     .padding(.horizontal)
                     
-                }                      .edgesIgnoringSafeArea(.top)
+                }   .edgesIgnoringSafeArea(.top)
 
                 
                 
@@ -272,6 +273,61 @@ struct ShopDetailView: View {
                     }
                     .background(Color.white)
                 }
+                
+                Button(action: {
+                    naviagte_orderdetail=true
+                }){
+                    VStack {
+                                   HStack {
+                                       Text("Items: 2")
+                                           .font(.system(size: 11, weight: .bold))
+                                           .foregroundColor(.white)
+                                       
+                                       // Vertical Divider
+                                       Rectangle()
+                                           .frame(width: 2, height: 10)
+                                           .foregroundColor(.white)
+                                       
+                                       // Overall Price
+                                       Text("23$")
+                                           .font(.system(size: 11, weight: .bold))
+                                           .foregroundColor(.white)
+                                       
+                                       Spacer()
+                                       
+                                       // View Cart Button
+                                       HStack {
+                                           Text("View Cart")
+                                               .font(.system(size: 11, weight: .bold))
+                                               .foregroundColor(.white)
+                                           
+                                           Image(systemName: "chevron.right")
+                                               .foregroundColor(.white)
+                                                                          }
+                                   }
+                                   .padding(.top, 10)
+                                   .padding(.horizontal, 10)
+                                   
+                                   // Extra Charge
+                                   HStack {
+                                       Text("2$")
+                                           .font(.system(size: 11))
+                                           .foregroundColor(.white)
+                                       Spacer()
+                                   }
+                                   .padding(.horizontal, 10)
+                                   .padding(.bottom, 8)
+                               }
+                               .background(Color("colorPrimary"))
+                               .cornerRadius(14)
+                               .padding(.horizontal, 10)
+                               .padding(.bottom, 14)
+                               .shadow(radius: 4)
+                }.navigationDestination(isPresented: $naviagte_orderdetail) {
+                    OrderDetailView()
+                }
+                
+            
             }
             .padding(.top, 12)
             .edgesIgnoringSafeArea(.top)

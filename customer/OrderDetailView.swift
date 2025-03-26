@@ -7,16 +7,21 @@ struct OrderDetailView: View {
     var shipTo: String = "Oasis, Dubai"
     @State private var foodCount: Int = 0
     @State private var walletAmount: String = ""
+    @State private var showApplyCouponDialog = false
+    @State private var naviagte_payment = false
+    @Environment(\.presentationMode) var presentationMode // Access presentation mode
+    @State private var showPopup = false
+
 
     var body: some View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 0) {
-                
+                    
                     // **Toolbar**
                     HStack {
                         Button(action: {
-                            // Handle back button action
+                            presentationMode.wrappedValue.dismiss() // Dismiss the current view
                         }) {
                             Image("ic_back") // Replace with a valid asset name
                                 .resizable()
@@ -98,7 +103,7 @@ struct OrderDetailView: View {
                         .foregroundColor(.gray.opacity(0.6))
                         .frame(height: 5)
                         .padding(.top, 14)
-
+                    
                     // **Food List**
                     ForEach(0..<3, id: \.self) { _ in
                         VStack(alignment: .leading, spacing: 10) {
@@ -153,13 +158,13 @@ struct OrderDetailView: View {
                         }
                         .padding()
                     }
-
+                    
                     // **Section Divider**
                     Rectangle()
                         .foregroundColor(.gray.opacity(0.6))
                         .frame(height: 5)
                         .padding(.top, 14)
-
+                    
                     // **Offer & Benefits Section**
                     VStack(alignment: .leading, spacing: 14) {
                         Text("Offer & Benefits")
@@ -167,36 +172,46 @@ struct OrderDetailView: View {
                             .foregroundColor(.black)
                             .padding(.top, 14)
                             .padding(.leading, 14)
-
+                        
                         Divider()
                             .frame(height: 2)
                             .padding(.horizontal, 12)
-
-                        HStack {
-                            Text("Apply Coupon")
-                                .font(.system(size: 13))
-                                .foregroundColor(.black)
-                                .padding(.leading, 14)
-
-                            Spacer()
-
-                            Text("Remove")
-                                .font(.system(size: 13))
-                                .foregroundColor(.black)
-                                .padding(.vertical, 2)
-                                .padding(.horizontal, 12)
-                                .background(Color("colorPrimary"))
-                                .cornerRadius(10)
+                        
+                        VStack {
+                            HStack {
+                                Text("Apply Coupon")
+                                    .font(.system(size: 13))
+                                    .foregroundColor(.black)
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    showApplyCouponDialog.toggle() // Show the dialog
+                                }) {
+                                    Text("Apply")
+                                        .font(.system(size: 13))
+                                        .foregroundColor(.white)
+                                        .padding(.vertical, 6)
+                                        .padding(.horizontal, 12)
+                                        .background(Color("colorPrimary")) // Replace with Color("colorPrimary") if needed
+                                        .cornerRadius(5)
+                                }
+                            }
+                            .padding(.horizontal,10)
                         }
-                        .padding(.vertical, 8)
+                        .sheet(isPresented: $showApplyCouponDialog) {
+                            ApplyCouponView()
+                                .presentationDetents([.medium, .large]) // Half-screen by default
+                                .presentationDragIndicator(.visible) // Show the drag indicator
+                        }
                     }
-
+                    
                     // **Section Divider**
                     Rectangle()
                         .foregroundColor(.gray.opacity(0.6))
                         .frame(height: 5)
                         .padding(.top, 14)
-
+                    
                     // **E-Wallet Section**
                     VStack(alignment: .leading, spacing: 10) {
                         Text("E-Wallet")
@@ -204,25 +219,25 @@ struct OrderDetailView: View {
                             .foregroundColor(.black)
                             .padding(.top, 14)
                             .padding(.leading, 14)
-
+                        
                         HStack {
                             Text("Available Wallet Amount")
                                 .font(.system(size: 13))
                                 .foregroundColor(.black)
-
+                            
                             Text("$100")
                                 .font(.system(size: 13, weight: .bold))
                                 .foregroundColor(.black)
                         }
                         .padding(.leading, 14)
-
+                        
                         HStack {
                             TextField("Enter Wallet Amount", text: $walletAmount)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(height: 30)
                                 .font(.system(size: 11))
                                 .padding(.leading, 12)
-
+                            
                             Button(action: {}) {
                                 Text("Apply")
                                     .font(.system(size: 11))
@@ -242,85 +257,108 @@ struct OrderDetailView: View {
                         .frame(height: 5)
                         .padding(.top, 14)
                     VStack(alignment: .leading, spacing: 14) {
-                               Text("Bill Details")
-                                   .font(.system(size: 13, weight: .bold))
-                                   .foregroundColor(.black)
-                                   .padding(.leading, 14)
-
-                               DottedDivider()
+                        Text("Bill Details")
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundColor(.black)
+                            .padding(.leading, 14)
+                        
+                        DottedDivider()
                         BillRow(title: "GST & Restaurant Charges", value: "0.5$")
                         BillRow(title: "Delivery Fee", value: "2.0$")
                         BillRow(title: "Wallet", value: "-5.0$")
                         BillRow(title: "To Pay", value: "10.3$", isTotal: true)
-                           }
-                           .padding(.vertical, 14)
-                                    }
+                    }
+                    .padding(.vertical, 14)
+                }
                 // **Section Divider**
                 Rectangle()
                     .foregroundColor(.gray.opacity(0.6))
                     .frame(height: 5)
                     .padding(.top, 14)
                 VStack(spacing: 12) {
+                    
+                    // Payment Method Section
+                    HStack(spacing: 10) {
+                        
+                        // Payment Card
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 7)
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                                .frame(width: 56, height: 56)
                             
-                            // Payment Method Section
-                            HStack(spacing: 10) {
-                                
-                                // Payment Card
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 7)
-                                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                                        .frame(width: 56, height: 56)
-                                    
-                                    Image("wallet") // Replace with your asset
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 40, height: 40)
-                                }
-                                
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text("Pay Using")
-                                        .font(.system(size: 11))
-                                        .foregroundColor(.black)
-                                    
-                                    Text("Cash on Delivery")
-                                        .font(.system(size: 12, weight: .bold))
-                                        .foregroundColor(.black)
-                                }
-                                
-                                Spacer()
-                                
-                                // Change Payment Option
-                                HStack {
-                                    Text("Change")
-                                        .font(.system(size: 12))
-                                        .foregroundColor(Color("colorPrimary"))
-                                    
-                                    Image("right-arrow") // Replace with your asset
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 16, height: 16)
-                                        .foregroundColor(Color("colorPrimary"))
-                                }
-                            }
-                            .padding(.horizontal, 12)
-                            
-                            // Slide to Checkout Button
-                            SlideButton(text: "Checkout", action: {
-                                print("Order placed!")
-                            })
-                            .frame(height: 45)
-                            .padding(.horizontal, 12)
-                            
+                            Image("wallet") // Replace with your asset
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40)
                         }
-                        .padding(.vertical, 12)
-                        .background(Color.white)
-                        .cornerRadius(14)
-                        .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
-
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Pay Using")
+                                .font(.system(size: 11))
+                                .foregroundColor(.black)
+                            
+                            Text("Cash on Delivery")
+                                .font(.system(size: 12, weight: .bold))
+                                .foregroundColor(.black)
+                        }
+                        
+                        Spacer()
+                        
+                        // Change Payment Option
+                        Button(action: {
+                            naviagte_payment=true
+                        }){
+                            HStack {
+                                Text("Change")
+                                    .font(.system(size: 12))
+                                    .foregroundColor(Color("colorPrimary"))
+                                
+                                Image("right-arrow") // Replace with your asset
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 16, height: 16)
+                                    .foregroundColor(Color("colorPrimary"))
+                            }
+                        }.navigationDestination(isPresented: $naviagte_payment) {
+                            PaymentView()
+                        }
+                        
+                        
+                    }
+                    .padding(.horizontal, 12)
+                    
+                    Button(action: {
+                        showPopup = true
+                    }) {
+                        Text("Checkout")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity, minHeight: 40)
+                            .background(Color("colorPrimary"))
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                     
+                    }
+                    .padding(.horizontal, 10)
+                    .frame(height: 45)
+                    .padding(.horizontal, 12)
+                    
+                }
+                
+                .padding(.vertical, 12)
+                .background(Color.white)
+                .cornerRadius(14)
+                .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
+                
             }
+          
+                if showPopup {
+                                CancelOrderView(showPopup: $showPopup)
+                            }
+                     
+                  
         }
-    }
-}
+        
+        .navigationBarBackButtonHidden(true)   }}
 
 struct OrderDetailView_Previews: PreviewProvider {
     static var previews: some View {
@@ -388,3 +426,111 @@ struct SlideButton: View {
         }
     }
 }
+struct ApplyCouponView: View {
+    @Environment(\.presentationMode) var presentationMode
+    @State private var couponCode = ""
+
+    var body: some View {
+        VStack(spacing: 16) {
+            Text("Enter Coupon Code")
+                .font(.headline)
+                .padding(.top, 20)
+
+            TextField("Coupon Code", text: $couponCode)
+                .padding()
+                .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 1))
+                .padding(.horizontal, 16)
+
+            Button(action: {
+                print("Coupon Applied: \(couponCode)")
+                presentationMode.wrappedValue.dismiss() // Close the sheet
+            }) {
+                Text("Apply")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue) // Replace with Color("colorPrimary") if needed
+                    .cornerRadius(8)
+            }
+            .padding(.horizontal, 16)
+
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
+        .background(Color.white)
+        .cornerRadius(20)
+    }
+}
+
+
+
+struct CancelOrderView: View {
+    @Binding var showPopup: Bool
+    @State private var timerValue: Int = 30
+    @State private var timer: Timer?
+
+    var body: some View {
+        ZStack {
+            // Background overlay
+            Color.black.opacity(0.1)
+                .onTapGesture {
+                    showPopup = false
+                }
+
+            VStack(spacing: 12) {
+                Image("ic_logo")
+                    .resizable()
+                    .frame(width: 100, height: 75)
+                    .padding(.top, 12)
+                
+                Text("\(timerValue)")
+                    .font(.system(size: 18, weight: .bold))
+                
+                Text("Seconds Remaining")
+                    .font(.system(size: 13))
+                    .foregroundColor(.gray)
+                
+                Text("Cancel Order Now")
+                    .font(.system(size: 14, weight: .bold))
+                    .padding(.top, 10)
+                    .frame(maxWidth: .infinity)
+                    .multilineTextAlignment(.center)
+
+                Button(action: {
+                    showPopup = false
+                }) {
+                    Text("Cancel Order")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.red)
+                        .cornerRadius(10)
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 12)
+            }
+            .padding()
+            .background(Color.white)
+            .cornerRadius(16)
+            .frame(width: 300)
+            .shadow(radius: 10)
+        }
+        .onAppear {
+            startTimer()
+        }
+    }
+    
+    private func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            if timerValue > 0 {
+                timerValue -= 1
+            } else {
+                showPopup = false
+                timer?.invalidate()
+            }
+        }
+    }
+}
+
