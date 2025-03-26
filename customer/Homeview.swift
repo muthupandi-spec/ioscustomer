@@ -51,7 +51,7 @@ struct HomeView: View {
                         
                         Spacer()
                         
-    
+                        
                         Button(action: {
                             // Add your action here, e.g., navigate or show an alert
                             print("Bell icon clicked!")
@@ -62,12 +62,12 @@ struct HomeView: View {
                                 .frame(width: 25, height: 25)
                                 .padding()
                                 .background(Color.white)
-            
+                            
                         } .navigationDestination(isPresented: $naviagte_notification) {
                             NotificationView()
                         }
                         Button(action: {
-                          naviagte_favourite=true
+                            naviagte_favourite=true
                         }) {
                             Image("heart")
                                 .resizable()
@@ -78,7 +78,7 @@ struct HomeView: View {
                             FavouriteView()
                         }
                         Button(action: {
-                           naviagte_cart=true
+                            naviagte_cart=true
                         }) {
                             Image("cart")
                                 .resizable()
@@ -92,7 +92,7 @@ struct HomeView: View {
                     }
                     .frame(maxWidth: .infinity)
                     Button(action: {
-                       naviagte_search=true
+                        naviagte_search=true
                     }) {
                         HStack {
                             Image("search")
@@ -116,21 +116,21 @@ struct HomeView: View {
                         Searchview()
                     }
                     HStack {
-                            Text("Special Offers")
-                                .bold()
-                                .foregroundColor(.black)
+                        Text("Special Offers")
+                            .bold()
+                            .foregroundColor(.black)
                         
                         Spacer() // Pushes "See All" to the right
                         Button(action:{
-                        naviagte_offer=true
+                            naviagte_offer=true
                         }){
                             Text("See All")
                                 .bold()
                                 .foregroundColor(Color("colorPrimary"))
                         } .navigationDestination(isPresented: $naviagte_offer) {
-                                OfferView()
-                            }
-                            
+                            OfferView()
+                        }
+                        
                     }
                     .padding()
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -174,6 +174,58 @@ struct HomeView: View {
                         }
                     }
                     .padding(.horizontal,10)
+                   
+                      
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 10) { // Ensures items are aligned in a row
+                            ForEach(0..<3, id: \.self) { _ in
+                                VStack(spacing: 10) {
+                                    ZStack {
+                                        RoundedRectangle(cornerRadius: 15)
+                                            .fill(Color(UIColor.systemGray5))
+                                            .frame(width: 150, height: 150)
+                                        
+                                        Image("ic_bir") // Replace with actual image asset
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 140, height: 140)
+                                            .clipShape(RoundedRectangle(cornerRadius: 11))
+                                    }
+                                    .overlay(
+                                        HStack {
+                                            Spacer()
+                                            Image(systemName: "heart.fill")
+                                                .foregroundColor(.red)
+                                                .padding(8)
+                                                .background(Circle().fill(Color.white))
+                                                .opacity(0) // Initially hidden
+                                                .offset(x: -10, y: 10)
+                                        }
+                                    )
+                                    
+                                    Text("Basha Bhai Restaurant")
+                                        .font(.headline)
+                                        .foregroundColor(.black)
+                                        .multilineTextAlignment(.center)
+                                        .frame(width: 150)
+                                    
+                                    HStack {
+                                        Text("Branch:")
+                                            .font(.subheadline)
+                                            .bold()
+                                        Text("Al Karama")
+                                            .font(.subheadline)
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                                .padding()
+                                .background(RoundedRectangle(cornerRadius: 15).fill(Color.white))
+                                .shadow(radius: 2)
+                                .padding(.vertical)
+                            }
+                        }
+                        .padding(.horizontal) // Ensures smooth horizontal
+                    }
                     HStack {
                       
                             Text("Recommended For You")
@@ -216,7 +268,6 @@ struct HomeView: View {
             
                            }
                  
-                    NavigationStack {
                                ScrollView {
                                    ForEach(0..<5, id: \.self) { index in
                                        HStack {
@@ -301,7 +352,7 @@ struct HomeView: View {
                                .navigationDestination(isPresented: $navigate_detail) {
                                    ShopDetailView() // Destination view
                                }
-                           }
+                           
 
                     
                 }

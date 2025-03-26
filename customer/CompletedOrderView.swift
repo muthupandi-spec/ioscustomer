@@ -2,7 +2,8 @@ import SwiftUI
 
 struct CompletedOrderView: View {
     var orderId: String // Dynamic Order ID
-    
+    @State private var showOrderDetails = false // Controls sheet visibility
+
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .top, spacing: 12) {
@@ -92,7 +93,9 @@ struct CompletedOrderView: View {
 
             // Buttons
             VStack(spacing: 10) {
-                Button(action: {}) {
+                Button(action: {
+                    showOrderDetails.toggle() // Open sheet on button tap
+                }) {
                     Text("Completed")
                         .font(.system(size: 12, weight: .bold))
                         .foregroundColor(.black)
@@ -101,7 +104,9 @@ struct CompletedOrderView: View {
                         .background(Color.gray.opacity(0.2))
                         .cornerRadius(8)
                 }
-
+                .sheet(isPresented: $showOrderDetails) {
+                    OrderDetailpageView() // Pass orderId to sheet
+                }
             }
             .padding(.horizontal)
             .padding(.bottom, 10)

@@ -23,7 +23,7 @@ struct OfferView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 10)
                     .padding(.horizontal)
-                    ScrollView(.horizontal, showsIndicators: false) {
+                    ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 10) {
                             ForEach(imageNames, id: \.self) { imageName in
                                 Image(imageName)

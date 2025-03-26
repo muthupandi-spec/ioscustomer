@@ -2,7 +2,8 @@ import SwiftUI
 
 struct CacelOrderView: View {
     var orderId: String // Dynamic Order ID
-    
+    @State private var showOrderDetails = false // Controls sheet visibility
+
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .top, spacing: 12) {
@@ -92,7 +93,9 @@ struct CacelOrderView: View {
 
             // Buttons
             VStack(spacing: 10) {
-                Button(action: {}) {
+                Button(action: {
+                    showOrderDetails.toggle() // Open sheet on button tap
+                }) {
                     Text("Cacelled")
                         .font(.system(size: 12, weight: .bold))
                         .foregroundColor(.black)
@@ -100,6 +103,9 @@ struct CacelOrderView: View {
                         .padding()
                         .background(Color.gray.opacity(0.2))
                         .cornerRadius(8)
+                }
+                .sheet(isPresented: $showOrderDetails) {
+                    OrderDetailpageView() // Pass orderId to sheet
                 }
 
             }

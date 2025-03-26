@@ -2,7 +2,8 @@ import SwiftUI
 
 struct ActiveOrderView: View {
     var orderId: String // Dynamic Order ID
-    
+    @State private var showOrderDetails = false // Controls sheet visibility
+
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .top, spacing: 12) {
@@ -54,7 +55,6 @@ struct ActiveOrderView: View {
 
             Divider()
                 .padding(.horizontal)
-
             // Ratings Section
             HStack {
                 VStack {
@@ -86,13 +86,11 @@ struct ActiveOrderView: View {
                 }
             }
             .padding()
-
-            Divider()
-                .padding(.horizontal)
-
             // Buttons
             VStack(spacing: 10) {
-                Button(action: {}) {
+                Button(action: {
+                    showOrderDetails.toggle() // Open sheet on button tap
+                }) {
                     Text("Order Details")
                         .font(.system(size: 12, weight: .bold))
                         .foregroundColor(.black)
@@ -100,6 +98,9 @@ struct ActiveOrderView: View {
                         .padding()
                         .background(Color.gray.opacity(0.2))
                         .cornerRadius(8)
+                }
+                .sheet(isPresented: $showOrderDetails) {
+                    OrderDetailpageView() // Pass orderId to sheet
                 }
 
                 Button(action: {}) {
@@ -122,6 +123,8 @@ struct ActiveOrderView: View {
     }
 }
 
+// **New Order Detail Sheet**
+// **Main View with List of Orders**
 struct ActiveOrder_View: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
