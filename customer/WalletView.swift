@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct WalletView: View {
-    @State private var navigate_wallet = false  // State variable for navigation
+    @State private var navigate_wallet = false
+    @State private var navigate_Topup = false
 
     var body: some View {
         NavigationStack{
@@ -67,20 +68,27 @@ struct WalletView: View {
                             Spacer()
                             
                             // Top Up Button
-                            HStack {
-                                Image(systemName: "arrow.down.circle.fill") // Replace with appropriate image asset
-                                    .resizable()
-                                    .frame(width: 16, height: 16)
-                                
-                                Text("Top Up")
-                                    .font(.system(size: 12))
-                                    .foregroundColor(Color.black.opacity(0.8))
+                            Button(action:{
+                                navigate_Topup=true
+                            }){
+                                HStack {
+                                    Image(systemName: "arrow.down.circle.fill") // Replace with appropriate image asset
+                                        .resizable()
+                                        .frame(width: 16, height: 16)
+                                    
+                                    Text("Top Up")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(Color.black.opacity(0.8))
+                                }
+                                .padding(.horizontal, 15)
+                                .padding(.vertical, 5)
+                                .background(Color.white)
+                                .cornerRadius(8)
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                            }.navigationDestination(isPresented: $navigate_Topup) {
+                                TopUpView()
                             }
-                            .padding(.horizontal, 15)
-                            .padding(.vertical, 5)
-                            .background(Color.white)
-                            .cornerRadius(8)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        
                         }
                         .padding()
                     }
