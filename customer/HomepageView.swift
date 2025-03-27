@@ -21,6 +21,11 @@ struct HomePageView: View {
                     Image(systemName: "wallet.pass.fill")
                     Text("Wallet")
                 }
+            ProfileView()
+                .tabItem {
+                    Image(systemName: "person.fill")
+                    Text("Profikle")
+                }
         }
     }
 }
