@@ -2,7 +2,8 @@ import SwiftUI
 
 struct ActiveOrderView: View {
     var orderId: String // Dynamic Order ID
-    @State private var showOrderDetails = false // Controls sheet visibility
+    @State private var showOrderDetails = false
+    @State private var trackOrderDetails = false
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -103,7 +104,10 @@ struct ActiveOrderView: View {
                     OrderDetailpageView() // Pass orderId to sheet
                 }
 
-                Button(action: {}) {
+                Button(action: {
+                    trackOrderDetails.toggle() // Open sheet on button tap
+
+                }) {
                     Text("Track Order")
                         .font(.system(size: 12, weight: .bold))
                         .foregroundColor(.white)
@@ -115,6 +119,9 @@ struct ActiveOrderView: View {
             }
             .padding(.horizontal)
             .padding(.bottom, 10)
+            .sheet(isPresented: $trackOrderDetails) {
+                TrackOrderView() // Pass orderId to sheet
+            }
         }
         .background(Color.white)
         .cornerRadius(15)

@@ -408,7 +408,7 @@ struct MenuItemView: View {
                             Spacer()
                             
                             VStack {
-                                Image("ic_bir4")
+                                Image("ic_bir")
                                     .resizable()
                                     .frame(width: 120, height: 120)
                                     .cornerRadius(14)
