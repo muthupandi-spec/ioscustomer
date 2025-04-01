@@ -38,6 +38,11 @@
 		FA65B52E2D93BD090039617F /* OrderDetailpageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA65B52D2D93BD090039617F /* OrderDetailpageView.swift */; };
 		FA65B5302D93C4580039617F /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA65B52F2D93C4580039617F /* WalletView.swift */; };
 		FA65B5322D93CA4C0039617F /* TransactioHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA65B5312D93CA4C0039617F /* TransactioHistoryView.swift */; };
+		FA7079FA2D9BC25300DE6C96 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7079F92D9BC25300DE6C96 /* UserModel.swift */; };
+		FA7079FC2D9BC27200DE6C96 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7079FB2D9BC27200DE6C96 /* ApiService.swift */; };
+		FA7079FE2D9BC29600DE6C96 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7079FD2D9BC29600DE6C96 /* UserViewModel.swift */; };
+		FA707A002D9BC2B800DE6C96 /* UserUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7079FF2D9BC2B800DE6C96 /* UserUI.swift */; };
+		FA707A032D9BC3E000DE6C96 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA707A022D9BC3E000DE6C96 /* LoginViewModel.swift */; };
 		FA8324E62D9008FE004EB45B /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8324E52D9008FE004EB45B /* SearchView.swift */; };
 		FA8B16602D8D264A00C4699C /* Homeview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B165F2D8D264A00C4699C /* Homeview.swift */; };
 		FA9242FE2D8BDBB600B3B546 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = FA9242FD2D8BDBB600B3B546 /* Algorithms */; };
@@ -98,6 +103,11 @@
 		FA65B52D2D93BD090039617F /* OrderDetailpageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailpageView.swift; sourceTree = "<group>"; };
 		FA65B52F2D93C4580039617F /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
 		FA65B5312D93CA4C0039617F /* TransactioHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactioHistoryView.swift; sourceTree = "<group>"; };
+		FA7079F92D9BC25300DE6C96 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		FA7079FB2D9BC27200DE6C96 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
+		FA7079FD2D9BC29600DE6C96 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
+		FA7079FF2D9BC2B800DE6C96 /* UserUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUI.swift; sourceTree = "<group>"; };
+		FA707A022D9BC3E000DE6C96 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		FA8324E52D9008FE004EB45B /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		FA8B165F2D8D264A00C4699C /* Homeview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Homeview.swift; sourceTree = "<group>"; };
 		FA9243052D8BE50400B3B546 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
@@ -154,38 +164,14 @@
 		FA55925B2D897BE000790E02 /* customer */ = {
 			isa = PBXGroup;
 			children = (
-				FA42AE1F2D9510C700F724EE /* TopUpView.swift */,
-				FA42AE1B2D95099B00F724EE /* AddnewAddressView.swift */,
-				FA42AE192D9508CC00F724EE /* AddressView.swift */,
-				FA42AE172D95040E00F724EE /* AccountsettingView.swift */,
-				FAB92A662D941227007A5B0A /* EditProfileView.swift */,
-				FA3854C42D940B3E00FB4E6D /* ProfileView.swift */,
-				FA65B5312D93CA4C0039617F /* TransactioHistoryView.swift */,
-				FA65B52F2D93C4580039617F /* WalletView.swift */,
-				FA65B52D2D93BD090039617F /* OrderDetailpageView.swift */,
-				FA65B52B2D93B6CC0039617F /* HomepageView.swift */,
-				FA65B5292D93B2F60039617F /* OrderViewpagerView.swift */,
-				FA505A902D93A8BC003CF1DD /* CompletedOrderView.swift */,
-				FA505A8E2D93A80F003CF1DD /* CacelOrderView.swift */,
-				FA505A8C2D93A61B003CF1DD /* ActiveOrderView.swift */,
-				FA505A8A2D939334003CF1DD /* PaymentView.swift */,
-				FA5A52A72D9274F600A07ED9 /* OrderDetailView.swift */,
-				FA593FDC2D91263C00768A2A /* ShopDetailView.swift */,
-				FA8324E52D9008FE004EB45B /* SearchView.swift */,
-				FA254F012D8E899B00406220 /* CartView.swift */,
-				FA254EFF2D8E88A100406220 /* FavouriteView.swift */,
-				FA254EFD2D8E847600406220 /* NotificationView.swift */,
-				FA254EFB2D8E831700406220 /* OfferView.swift */,
-				FA254EF92D8E80E700406220 /* RecommendforyuyView.swift */,
-				FA8B165F2D8D264A00C4699C /* Homeview.swift */,
-				FA9243052D8BE50400B3B546 /* RegisterView.swift */,
-				FA55925C2D897BE100790E02 /* customerApp.swift */,
-				FA55925E2D897BE100790E02 /* LoginView.swift */,
+				FA707A012D9BC38500DE6C96 /* View */,
+				FA7079F82D9BC23100DE6C96 /* ApiService */,
+				FA7079F62D9BC21800DE6C96 /* Model */,
+				FA7079F72D9BC22400DE6C96 /* ViewModel */,
 				FA5592602D897BE300790E02 /* Assets.xcassets */,
 				FA5592622D897BE300790E02 /* Preview Content */,
 				FA35EE2D2D8FD5D6000D09CA /* Bottomview.swift */,
 				FA35EE2F2D8FD780000D09CA /* CotetView.swift */,
-				FA42AE212D95157D00F724EE /* TrackOrderView.swift */,
 			);
 			path = customer;
 			sourceTree = "<group>";
@@ -213,6 +199,67 @@
 				FA5592792D897BE300790E02 /* customerUITestsLaunchTests.swift */,
 			);
 			path = customerUITests;
+			sourceTree = "<group>";
+		};
+		FA7079F62D9BC21800DE6C96 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				FA7079F92D9BC25300DE6C96 /* UserModel.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		FA7079F72D9BC22400DE6C96 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FA7079FD2D9BC29600DE6C96 /* UserViewModel.swift */,
+				FA707A022D9BC3E000DE6C96 /* LoginViewModel.swift */,
+			);
+			name = ViewModel;
+			sourceTree = "<group>";
+		};
+		FA7079F82D9BC23100DE6C96 /* ApiService */ = {
+			isa = PBXGroup;
+			children = (
+				FA7079FB2D9BC27200DE6C96 /* ApiService.swift */,
+			);
+			path = ApiService;
+			sourceTree = "<group>";
+		};
+		FA707A012D9BC38500DE6C96 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FA42AE1F2D9510C700F724EE /* TopUpView.swift */,
+				FA7079FF2D9BC2B800DE6C96 /* UserUI.swift */,
+				FA42AE212D95157D00F724EE /* TrackOrderView.swift */,
+				FA42AE1B2D95099B00F724EE /* AddnewAddressView.swift */,
+				FA42AE192D9508CC00F724EE /* AddressView.swift */,
+				FA42AE172D95040E00F724EE /* AccountsettingView.swift */,
+				FAB92A662D941227007A5B0A /* EditProfileView.swift */,
+				FA3854C42D940B3E00FB4E6D /* ProfileView.swift */,
+				FA65B5312D93CA4C0039617F /* TransactioHistoryView.swift */,
+				FA65B52F2D93C4580039617F /* WalletView.swift */,
+				FA65B52D2D93BD090039617F /* OrderDetailpageView.swift */,
+				FA65B52B2D93B6CC0039617F /* HomepageView.swift */,
+				FA65B5292D93B2F60039617F /* OrderViewpagerView.swift */,
+				FA505A902D93A8BC003CF1DD /* CompletedOrderView.swift */,
+				FA505A8E2D93A80F003CF1DD /* CacelOrderView.swift */,
+				FA505A8C2D93A61B003CF1DD /* ActiveOrderView.swift */,
+				FA505A8A2D939334003CF1DD /* PaymentView.swift */,
+				FA5A52A72D9274F600A07ED9 /* OrderDetailView.swift */,
+				FA593FDC2D91263C00768A2A /* ShopDetailView.swift */,
+				FA8324E52D9008FE004EB45B /* SearchView.swift */,
+				FA254F012D8E899B00406220 /* CartView.swift */,
+				FA254EFF2D8E88A100406220 /* FavouriteView.swift */,
+				FA254EFD2D8E847600406220 /* NotificationView.swift */,
+				FA254EFB2D8E831700406220 /* OfferView.swift */,
+				FA254EF92D8E80E700406220 /* RecommendforyuyView.swift */,
+				FA8B165F2D8D264A00C4699C /* Homeview.swift */,
+				FA9243052D8BE50400B3B546 /* RegisterView.swift */,
+				FA55925C2D897BE100790E02 /* customerApp.swift */,
+				FA55925E2D897BE100790E02 /* LoginView.swift */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -355,6 +402,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA505A8F2D93A80F003CF1DD /* CacelOrderView.swift in Sources */,
+				FA7079FE2D9BC29600DE6C96 /* UserViewModel.swift in Sources */,
 				FA65B5322D93CA4C0039617F /* TransactioHistoryView.swift in Sources */,
 				FA254F022D8E899B00406220 /* CartView.swift in Sources */,
 				FA65B52C2D93B6CC0039617F /* HomepageView.swift in Sources */,
@@ -366,6 +414,7 @@
 				FA8324E62D9008FE004EB45B /* SearchView.swift in Sources */,
 				FA254EFE2D8E847600406220 /* NotificationView.swift in Sources */,
 				FA593FDD2D91263C00768A2A /* ShopDetailView.swift in Sources */,
+				FA707A032D9BC3E000DE6C96 /* LoginViewModel.swift in Sources */,
 				FA254EFA2D8E80E700406220 /* RecommendforyuyView.swift in Sources */,
 				FA42AE222D95157D00F724EE /* TrackOrderView.swift in Sources */,
 				FA65B52A2D93B2F60039617F /* OrderViewpagerView.swift in Sources */,
@@ -374,7 +423,9 @@
 				FAB92A672D941227007A5B0A /* EditProfileView.swift in Sources */,
 				FA8B16602D8D264A00C4699C /* Homeview.swift in Sources */,
 				FA3854C52D940B3E00FB4E6D /* ProfileView.swift in Sources */,
+				FA7079FA2D9BC25300DE6C96 /* UserModel.swift in Sources */,
 				FA35EE2E2D8FD5D6000D09CA /* Bottomview.swift in Sources */,
+				FA7079FC2D9BC27200DE6C96 /* ApiService.swift in Sources */,
 				FA42AE202D9510C700F724EE /* TopUpView.swift in Sources */,
 				FA42AE182D95040E00F724EE /* AccountsettingView.swift in Sources */,
 				FA65B52E2D93BD090039617F /* OrderDetailpageView.swift in Sources */,
@@ -383,6 +434,7 @@
 				FA42AE1A2D9508CC00F724EE /* AddressView.swift in Sources */,
 				FA5A52A82D9274F600A07ED9 /* OrderDetailView.swift in Sources */,
 				FA505A8B2D939334003CF1DD /* PaymentView.swift in Sources */,
+				FA707A002D9BC2B800DE6C96 /* UserUI.swift in Sources */,
 				FA35EE302D8FD780000D09CA /* CotetView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

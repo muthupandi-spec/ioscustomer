@@ -6,7 +6,7 @@ import SwiftUI
 struct customerApp: App {
     var body: some Scene {
         WindowGroup {
-            HomePageView()
+            UserUI()
         }
     }
 }
