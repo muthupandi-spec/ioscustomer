@@ -58,6 +58,7 @@ struct LoginView: View {
 
                         Button(action: {
                             navigateToHome = true
+                            print("ghfhgfh")
                         }) {
                             Text("Sign In")
                                 .font(.headline)
@@ -67,9 +68,9 @@ struct LoginView: View {
                                 .cornerRadius(10)
                         }
                         .padding(.horizontal, 10)
-                        .navigationDestination(isPresented: $navigateToHome) {
-                            HomeView()
-                        }
+//                        .navigationDestination(isPresented: $navigateToHome) {
+//                            HomeView()
+//                        }
 
                         HStack {
                             Rectangle()

@@ -196,7 +196,7 @@ struct HomeView: View {
             Spacer()
             Button(action: action) {
                 Text("See All").bold().foregroundColor(Color("colorPrimary"))
-                    .opacity(0)
+                    .opacity(1)
             }
         }
         .padding()
