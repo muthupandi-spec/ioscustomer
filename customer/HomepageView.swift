@@ -5,14 +5,14 @@ struct HomePageView: View {
         TabView {
             HomeView()
                 .tabItem {
-                    Image(systemName: "house.fill") // System Home Icon
+                    Image(systemName: "house.fill")
                          Text("Home")
                      
                 }
             
             OrderViewpager()
                 .tabItem {
-                    Image(systemName: "doc.text.fill") // Icon
+                    Image(systemName: "doc.text.fill")
                     Text("Order")
                 }
             

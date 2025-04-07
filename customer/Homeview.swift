@@ -10,6 +10,8 @@ struct HomeView: View {
     @State private var navigateSearch = false
     @State private var navigateDetail = false
     
+    @StateObject private var viewModel = HomeviewModel()
+    
     let imageNames = ["ban", "ban1", "ban2"]
     let chiplist = ["Biryani", "Pizza", "Burger", "Noodles", "Dosa", "Mutton"]
     let varieties = [
@@ -25,20 +27,52 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(alignment: .leading) {
-                    headerView
-                    searchBar
-                    specialOffersSection
-                    specialofferlist
-                    categorySection
-                    branchesSection
-                    bracheslistsection
-                    recommendedSection
-                    chipSelectionView
-                    foodListView
+            
+            VStack {
+                
+                if viewModel.isLoading {
+                    ProgressView("Loading...")
+                } else if let errorMessage = viewModel.errorMessage {
+//                    Text("Error: \(errorMessage)")
+//                        .foregroundColor(.red)
+                    ScrollView(.vertical, showsIndicators: false) {
+                        
+                        VStack(alignment: .leading) {
+                            headerView
+                            searchBar
+                            specialOffersSection
+                            specialofferlist
+                            categorySection
+                            branchesSection
+                            bracheslistsection
+                            recommendedSection
+                            chipSelectionView
+                            foodListView
+                        }}
+                } else {
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack(alignment: .leading) {
+                            headerView
+                            searchBar
+                            specialOffersSection
+                            specialofferlist
+                            categorySection
+                            branchesSection
+                            bracheslistsection
+                            recommendedSection
+                            chipSelectionView
+                            foodListView
+                        }
+                    }
                 }
             }
+            
+            
+        }.onAppear {
+            viewModel.getfood()
+            viewModel.getbrach()
+            viewModel.getcategory()
+
         }
     }
     
@@ -212,7 +246,9 @@ struct HomeView: View {
                         .padding(.vertical, 5)
                         .background(Capsule().fill(selectedChip == chipname ? Color("colorPrimary") : Color.clear))
                         .overlay(Capsule().stroke(Color("colorPrimary"), lineWidth: 1))
-                        .onTapGesture { selectedChip = chipname }
+                        .onTapGesture { selectedChip = chipname
+                            viewModel.getCategoryid(categoryId: "765786" )
+                        }
                 }
             }
             .padding(.horizontal, 10)

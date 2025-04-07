@@ -7,6 +7,8 @@ struct LoginView: View {
     @State private var showDialog = false
     @State private var navigateToHome = false // State variable for navigation
     @State private var navigateregister = false // State variable for navigation
+    @State private var mobileNumber: String = ""
+
 
     var body: some View {
         NavigationStack{
@@ -43,11 +45,11 @@ struct LoginView: View {
                                 .cornerRadius(5)
 
                             // Mobile Number Input
-                            TextField("Enter Mobile Number", text: .constant(""))
-                                .padding()
-                                .keyboardType(.numberPad)
-                                .background(Color.gray.opacity(0.2))
-                                .cornerRadius(5)
+                            TextField("Enter Mobile Number", text: $mobileNumber)
+                                       .padding()
+                                       .keyboardType(.numberPad)
+                                       .background(Color.gray.opacity(0.2))
+                                       .cornerRadius(5)
                         }
                         .padding(.horizontal, 10)
 

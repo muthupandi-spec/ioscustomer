@@ -5,7 +5,13 @@ struct EditProfileView: View {
     @State private var selectedCountryCode: String = "+91"
     @State private var phoneNumber: String = ""
     @State private var selectedGender = "Male" // Default selection
-    
+    @State private var firstname: String = ""
+    @State private var lastname: String = ""
+    @State private var city: String = ""
+    @State private var adddress: String = ""
+    @State private var date: String = ""
+    @State private var email: String = ""
+    @State private var passsword: String = ""
     let genders = ["Male", "Female", "Others"]
     
     var body: some View {
@@ -28,13 +34,13 @@ struct EditProfileView: View {
                 
                 // User Input Fields
                 Group {
-                    TextField("Enter Your First Name", text: .constant(""))
-                    TextField("Enter Your Last Name", text: .constant(""))
-                    TextField("Enter Your City", text: .constant(""))
-                    TextField("Enter Your Address", text: .constant(""))
-                    TextField("Enter Your Date of Birth", text: .constant(""))
-                    TextField("Enter Your Email", text: .constant(""))
-                    TextField("Enter Your Password", text: .constant(""))
+                    TextField("Enter Your First Name", text:$firstname)
+                    TextField("Enter Your Last Name", text:$lastname)
+                    TextField("Enter Your City", text:$city)
+                    TextField("Enter Your Address", text:$adddress)
+                    TextField("Enter Your Date of Birth", text:$date)
+                    TextField("Enter Your Email", text:$email)
+                    TextField("Enter Your Password", text:$passsword)
                 }
                 .padding()
                 .font(.system(size: 14))
