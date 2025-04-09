@@ -1,6 +1,7 @@
 import Foundation
 
 class HomeviewModel: ObservableObject {
+    @Published var categoriew: [CategoriesResponseModelItem] = []
     @Published var food: [FoodModel] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?

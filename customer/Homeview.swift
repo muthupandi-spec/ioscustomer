@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var selectedChip: String? = nil // Track selected
+    @State private var selectedChip: CategoriesResponseModelItem? = nil
     @State private var navigateOffer = false
     @State private var navigateCart = false
     @State private var navigateFavourite = false
@@ -239,22 +239,29 @@ struct HomeView: View {
     private var chipSelectionView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
-                ForEach(chiplist, id: \ .self) { chipname in
-                    Text(chipname)
-                        .foregroundColor(selectedChip == chipname ? .white : Color("colorPrimary"))
+                ForEach(viewModel.categoriew) { chip in
+                    Text(chip.category)
+                        .foregroundColor(selectedChip?.categoryId == chip.categoryId ? .white : Color("colorPrimary"))
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
-                        .background(Capsule().fill(selectedChip == chipname ? Color("colorPrimary") : Color.clear))
-                        .overlay(Capsule().stroke(Color("colorPrimary"), lineWidth: 1))
-                        .onTapGesture { selectedChip = chipname
-                            viewModel.getCategoryid(categoryId: "765786" )
+                        .background(
+                            Capsule()
+                                .fill(selectedChip?.categoryId == chip.categoryId ? Color("colorPrimary") : Color.clear)
+                        )
+                        .overlay(
+                            Capsule()
+                                .stroke(Color("colorPrimary"), lineWidth: 1)
+                        )
+                        .onTapGesture {
+                            selectedChip = chip
+                            viewModel.getCategoryid(categoryId: String(chip.categoryId))
                         }
                 }
             }
             .padding(.horizontal, 10)
         }
     }
-    
+
     
     private var specialofferlist:some View{
         ScrollView(.horizontal, showsIndicators: false) {
