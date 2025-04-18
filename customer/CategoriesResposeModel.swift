@@ -1,9 +1,4 @@
-// MARK: - CategoriesResponseModel
-typealias CategoriesResponseModel = [CategoriesResponseModelItem]
-
-// MARK: - CategoriesResponseModelItem
 struct CategoriesResponseModelItem: Codable, Identifiable, Hashable {
-    // Make it Identifiable by returning a unique ID
     var id: Int { categoryId }
 
     let category: String

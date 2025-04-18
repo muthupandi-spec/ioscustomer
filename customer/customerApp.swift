@@ -12,7 +12,7 @@ struct customerApp: App {
                 if showSplash {
                     SplashScreenView()
                 } else {
-                    HomePageView()
+                    LoginView()
                 }
             }
             .onAppear {

@@ -5,10 +5,13 @@ struct LoginView: View {
     @State private var selectedCountryCode: String = "+91"
     @State private var phoneNumber: String = "9787485161"
     @State private var showDialog = false
+    @State private var goToHome = false
+    @State private var goToRegister = false
     @State private var navigateToHome = false // State variable for navigation
     @State private var navigateregister = false // State variable for navigation
     @State private var mobileNumber: String = ""
 
+    @StateObject private var viewModel = LoginViewModel()
 
     var body: some View {
         NavigationStack{
@@ -45,7 +48,7 @@ struct LoginView: View {
                                 .cornerRadius(5)
 
                             // Mobile Number Input
-                            TextField("Enter Mobile Number", text: $mobileNumber)
+                            TextField("Enter Mobile Number", text: $viewModel.email)
                                        .padding()
                                        .keyboardType(.numberPad)
                                        .background(Color.gray.opacity(0.2))
@@ -59,8 +62,10 @@ struct LoginView: View {
                             .hidden()
 
                         Button(action: {
-                            navigateToHome = true
+//                            navigateToHome = true
+                            showDialog=true
                             print("ghfhgfh")
+                            viewModel.login()
                         }) {
                             Text("Sign In")
                                 .font(.headline)
@@ -70,9 +75,9 @@ struct LoginView: View {
                                 .cornerRadius(10)
                         }
                         .padding(.horizontal, 10)
-//                        .navigationDestination(isPresented: $navigateToHome) {
-//                            HomeView()
-//                        }
+                        .navigationDestination(isPresented: $navigateToHome) {
+                            HomeView()
+                        }
 
                         HStack {
                             Rectangle()
@@ -134,6 +139,8 @@ struct LoginView: View {
                 if showDialog {
                     OTPDialogView(isPresented: $showDialog, phoneNumber: phoneNumber) { otp in
                         if phoneNumber == "9787485161" {
+                            goToHome = true
+
                             print("Verify OTP: \(otp)")
                             // Navigate to Home screen
                         } else {
@@ -142,6 +149,11 @@ struct LoginView: View {
                     }
                     .transition(.opacity)
                 }
+            }.navigationDestination(isPresented: $goToHome) {
+                HomeView()
+            }
+            .navigationDestination(isPresented: $goToRegister) {
+                RegisterView()
             }
 
         }.navigationTitle("login")

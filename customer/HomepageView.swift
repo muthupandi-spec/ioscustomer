@@ -24,7 +24,7 @@ struct HomePageView: View {
             ProfileView()
                 .tabItem {
                     Image(systemName: "person.fill")
-                    Text("Profikle")
+                    Text("Profile")
                 }
         }
     }

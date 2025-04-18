@@ -5,6 +5,7 @@ class HomeviewModel: ObservableObject {
     @Published var food: [FoodModel] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
+    var selectedChip: CategoriesResponseModelItem?
 
     private let apiService = APIService()
 
@@ -27,15 +28,16 @@ class HomeviewModel: ObservableObject {
     func getcategory() {
         isLoading = true
         errorMessage = nil
-
+        
         apiService.getcategorylist { [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
                 switch result {
-                case .success(let food):
-                    self?.food = food
+                case .success(let items):
+                    self?.categoriew = items
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
+                    print("🛑 API Error: \(error.localizedDescription)")
                 }
             }
         }
