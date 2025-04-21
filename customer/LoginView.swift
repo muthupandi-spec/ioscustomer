@@ -150,7 +150,7 @@ struct LoginView: View {
                     .transition(.opacity)
                 }
             }.navigationDestination(isPresented: $goToHome) {
-                HomeView()
+                RegisterView()
             }
             .navigationDestination(isPresented: $goToRegister) {
                 RegisterView()

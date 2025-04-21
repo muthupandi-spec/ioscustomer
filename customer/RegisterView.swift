@@ -15,7 +15,7 @@ struct RegisterView: View {
     @State private var passsword: String = ""
     @State private var selectedDate = Date()
     @State private var showDatePicker = false
-    
+    @StateObject private var viewModel = LoginViewModel()
     let genders = ["Male", "Female", "Others"]
     
     var body: some View {
@@ -39,10 +39,10 @@ struct RegisterView: View {
                     
                     // User Input Fields
                     Group {
-                        TextField("Enter Your First Name", text:$firstname)
-                        TextField("Enter Your Last Name", text:$lastname)
-                        TextField("Enter Your City", text:$city)
-                        TextField("Enter Your Address", text:$adddress)
+                        TextField("Enter Your First Name", text:$viewModel.firstname)
+                        TextField("Enter Your Last Name", text:$viewModel.lastname)
+                        TextField("Enter Your City", text:$viewModel.city)
+                        TextField("Enter Your Address", text:$viewModel.address)
                         
                         Button(action: {
                             showDatePicker.toggle()
@@ -56,8 +56,8 @@ struct RegisterView: View {
                           
                         }
 
-                        TextField("Enter Your Email", text:$email)
-                        TextField("Enter Your Password", text:$passsword)
+                        TextField("Enter Your Email", text:$viewModel.email)
+                        TextField("Enter Your Password", text:$viewModel.regiaterpassword)
                     }
                     .padding()
                     .font(.system(size: 14))
@@ -71,7 +71,7 @@ struct RegisterView: View {
                             .background(Color.gray.opacity(0.2))
                             .cornerRadius(5)
                         
-                        TextField("Enter Mobile Number", text: $phoneNumber)
+                        TextField("Enter Mobile Number", text: $viewModel.mobileno)
                             .padding()
                             .keyboardType(.numberPad)
                             .font(.system(size: 14))
@@ -93,6 +93,7 @@ struct RegisterView: View {
                         ForEach(genders, id: \.self) { gender in
                             Button(action: {
                                 selectedGender = gender
+                                viewModel.gender=gender
                             }) {
                                 HStack {
                                     Image(systemName: selectedGender == gender ? "largecircle.fill.circle" : "circle")
@@ -111,6 +112,7 @@ struct RegisterView: View {
                     // Sign Up Button
                     Button(action: {
                         print("Sign Up Pressed")
+                        viewModel.register()
                     }) {
                         Text("Sign Up")
                             .font(.headline)
@@ -135,6 +137,7 @@ struct RegisterView: View {
                         let formatter = DateFormatter()
                         formatter.dateFormat = "dd/MM/yyyy"
                         date = formatter.string(from: selectedDate)
+                        viewModel.date=date
                         showDatePicker = false
                     }
                     .padding()
