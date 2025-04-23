@@ -58,6 +58,56 @@ class HomeviewModel: ObservableObject {
             }
         }
     }
+    func getforyou() {
+        isLoading = true
+        errorMessage = nil
+
+        apiService.foryou { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let food):
+                    self?.food = food
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+
+    func getbannner() {
+        isLoading = true
+        errorMessage = nil
+
+        apiService.getbanner { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let food):
+                    self?.food = food
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+
+    func getshopfooditem() {
+        isLoading = true
+        errorMessage = nil
+
+        apiService.shopfoodlist { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let food):
+                    self?.food = food
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
     func getCategoryid(categoryId: String) { // Accept categoryId as a parameter
           isLoading = true
           errorMessage = nil
@@ -74,11 +124,77 @@ class HomeviewModel: ObservableObject {
               }
           }
       }
+    func getorderdetail(orderid: String) {
+          isLoading = true
+          errorMessage = nil
+
+          apiService.getorderdetail(orderId: orderid) { [weak self] result in
+              DispatchQueue.main.async {
+                  self?.isLoading = false
+                  switch result {
+                  case .success(let food):
+                      self?.food = food
+                  case .failure(let error):
+                      self?.errorMessage = error.localizedDescription
+                  }
+              }
+          }
+      }
+    func productchannge(type: String) {
+          isLoading = true
+          errorMessage = nil
+
+          apiService.changecategory(type: type) { [weak self] result in
+              DispatchQueue.main.async {
+                  self?.isLoading = false
+                  switch result {
+                  case .success(let food):
+                      self?.food = food
+                  case .failure(let error):
+                      self?.errorMessage = error.localizedDescription
+                  }
+              }
+          }
+      }
+
+    func getfooddetail(foodid: String) { // Accept categoryId as a parameter
+          isLoading = true
+          errorMessage = nil
+
+          apiService.getfooddetail(foodid: foodid) { [weak self] result in
+              DispatchQueue.main.async {
+                  self?.isLoading = false
+                  switch result {
+                  case .success(let food):
+                      self?.food = food
+                  case .failure(let error):
+                      self?.errorMessage = error.localizedDescription
+                  }
+              }
+          }
+      }
     func getcartitem() {
         isLoading = true
         errorMessage = nil
 
         apiService.getcart { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let food):
+                    self?.food = food
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+
+    func getrestaurantfood() {
+        isLoading = true
+        errorMessage = nil
+
+        apiService.getrestaurentfooditem { [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
                 switch result {

@@ -11,7 +11,8 @@ struct ShopDetailView: View {
         ("Pizza", ["Cheese Pizza", "Pepperoni Pizza"]),
         ("Drinks", ["Coke", "Pepsi", "Lemonade"])
     ]
-    
+    @StateObject private var viewModel = HomeviewModel()
+
     var body: some View {
         NavigationStack{
             ScrollView {
@@ -135,25 +136,30 @@ struct ShopDetailView: View {
                         .padding(.horizontal, 10)
                     }
                     
-                    // Filters (Veg & Non-Veg)
                     HStack {
                         Text("Veg")
                             .font(.system(size: 13))
-                        
+
                         Toggle("", isOn: $isVeg)
                             .labelsHidden()
                             .toggleStyle(SwitchToggleStyle(tint: Color.green))
-                        
+                            .onChange(of: isVeg) { _ in
+                                viewModel.productchannge(type: "veg")                            }
+
                         Spacer().frame(width: 24)
-                        
+
                         Text("Non-Veg")
                             .font(.system(size: 13))
-                        
+
                         Toggle("", isOn: $isNonVeg)
                             .labelsHidden()
                             .toggleStyle(SwitchToggleStyle(tint: Color.red))
+                            .onChange(of: isNonVeg) { _ in
+                                viewModel.productchannge(type: "nonveg")
+                            }
                     }
                     .padding(.horizontal, 18)
+
                     
                     Divider().background(Color.gray)
                     
@@ -331,6 +337,11 @@ struct ShopDetailView: View {
             }
             .padding(.top, 12)
             .edgesIgnoringSafeArea(.top)
+        }.onAppear{
+            viewModel.getorderdetail(orderid: "7678")
+            viewModel.getshopfooditem()
+//            viewModel.getbannner()
+//            viewModel.getforyou()
         }
     
     }

@@ -11,8 +11,9 @@ struct OrderDetailView: View {
     @State private var naviagte_payment = false
     @Environment(\.presentationMode) var presentationMode // Access presentation mode
     @State private var showPopup = false
-
-
+    
+    @StateObject private var viewModel = HomeviewModel()
+    
     var body: some View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
@@ -336,7 +337,7 @@ struct OrderDetailView: View {
                             .background(Color("colorPrimary"))
                             .foregroundColor(.white)
                             .cornerRadius(10)
-                     
+                        
                     }
                     .padding(.horizontal, 10)
                     .frame(height: 45)
@@ -350,15 +351,20 @@ struct OrderDetailView: View {
                 .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
                 
             }
-          
-                if showPopup {
-                                CancelOrderView(showPopup: $showPopup)
-                            }
-                     
-                  
+            
+            
+            if showPopup {
+                CancelOrderView(showPopup: $showPopup)
+            }
+            
+            
+        }
+        .onAppear{
+            viewModel.getfooddetail(foodid: "5275")
+            viewModel.getrestaurantfood()
         }
         
-        .navigationBarBackButtonHidden(true)   }}
+    }}
 
 struct OrderDetailView_Previews: PreviewProvider {
     static var previews: some View {

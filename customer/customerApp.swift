@@ -12,7 +12,7 @@ struct customerApp: App {
                 if showSplash {
                     SplashScreenView()
                 } else {
-                    LoginView()
+                    HomeView()
                 }
             }
             .onAppear {
@@ -21,6 +21,8 @@ struct customerApp: App {
                     withAnimation {
                         showSplash = false
                     }
+                    
+                    
                 }        }
         }
     }
