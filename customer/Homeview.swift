@@ -114,7 +114,7 @@ struct HomeView: View {
                 .padding()
                 .background(Color.white)
         }
-        .navigationDestination(isPresented: isActive) { destination }
+        .fullScreenCover(isPresented: isActive) { destination }
     }
     
     private var searchBar: some View {
@@ -133,13 +133,15 @@ struct HomeView: View {
             .frame(maxWidth: .infinity)
             .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.2)))
             .padding(.horizontal, 10)
+        }.fullScreenCover(isPresented: $navigateSearch) {
+            Searchview()
         }
-        .navigationDestination(isPresented: $navigateSearch) { Searchview() }
+      
     }
     
     private var specialOffersSection: some View {
         sectionHeader(title: "Special Offers", action: { navigateOffer = true })
-            .navigationDestination(isPresented: $navigateOffer) { OfferView() }
+            .fullScreenCover(isPresented: $navigateOffer) { OfferView() }
     }
     
     private var categorySection: some View {
@@ -221,7 +223,7 @@ struct HomeView: View {
     
     private var recommendedSection: some View {
         sectionHeader(title: "Recommended For You", action: { navigateRecommend = true })
-            .navigationDestination(isPresented: $navigateRecommend) { RecommendforyoyView() }
+            .fullScreenCover(isPresented: $navigateRecommend) { RecommendforyoyView() }
     }
     
     private func sectionHeader(title: String, action: @escaping () -> Void) -> some View {
@@ -361,7 +363,7 @@ struct HomeView: View {
                 }
             }
         }
-        .navigationDestination(isPresented:$navigateDetail ) {
+        .fullScreenCover(isPresented:$navigateDetail ) {
             ShopDetailView() // Destination view
         }
     }

@@ -3,35 +3,38 @@ import SwiftUI
 struct HomePageView: View {
     var body: some View {
         TabView {
-            HomeView()
-                .tabItem {
-                    Image(systemName: "house.fill")
-                         Text("Home")
-                     
-                }
-            
-            OrderViewpager()
-                .tabItem {
-                    Image(systemName: "doc.text.fill")
-                    Text("Order")
-                }
-            
-            WalletView()
-                .tabItem {
-                    Image(systemName: "wallet.pass.fill")
-                    Text("Wallet")
-                }
-            ProfileView()
-                .tabItem {
-                    Image(systemName: "person.fill")
-                    Text("Profile")
-                }
+            NavigationView {
+                HomeView()
+            }
+            .tabItem {
+                Label("Home", systemImage: "house.fill")
+            }
+
+            NavigationView {
+                OrderViewpager()
+            }
+            .tabItem {
+                Label("Order", systemImage: "doc.text.fill")
+            }
+
+            NavigationView {
+                WalletView()
+            }
+            .tabItem {
+                Label("Wallet", systemImage: "wallet.pass.fill")
+            }
+
+            NavigationView {
+                ProfileView()
+            }
+            .tabItem {
+                Label("Profile", systemImage: "person.fill")
+            }
         }
     }
 }
-struct Homepage_view: PreviewProvider {
+struct HomePageView_Previews: PreviewProvider {
     static var previews: some View {
         HomePageView()
     }
 }
-
