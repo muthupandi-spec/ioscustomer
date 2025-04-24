@@ -411,6 +411,201 @@ class APIService {
 
         task.resume()
     }
+    func applycoupon(coupon: String, completion: @escaping (Result<[FoodModel], Error>) -> Void) {
+        let urlString = baseurl + "/applycoupon" // Replace with actual API URL
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+        // ✅ URL-Encoded Parameters
+        let postString = "coupon=\(coupon)"
+        request.httpBody = postString.data(using: .utf8)
+
+        print("🔗 Request URL: \(url.absoluteString)")
+        print("📨 Request Body: \(postString)")
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("❌ Error: \(error.localizedDescription)")
+                completion(.failure(error))
+                return
+            }
+
+            if let httpResponse = response as? HTTPURLResponse {
+                print("📡 Response Status Code: \(httpResponse.statusCode)")
+            }
+
+            guard let data = data else {
+                print("⚠️ No data received")
+                completion(.failure(NSError(domain: "No Data", code: 0, userInfo: nil)))
+                return
+            }
+
+            print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8 Data")")
+
+            do {
+                let categories = try JSONDecoder().decode([FoodModel].self, from: data)
+                completion(.success(categories))
+            } catch {
+                print("💥 JSON Decoding Error: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+
+        task.resume()
+    }
+    func cancelorder(orderid: String, completion: @escaping (Result<[FoodModel], Error>) -> Void) {
+        let urlString = baseurl + "/cancelorder" // Replace with actual API URL
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+        // ✅ URL-Encoded Parameters
+        let postString = "orderid=\(orderid)"
+        request.httpBody = postString.data(using: .utf8)
+
+        print("🔗 Request URL: \(url.absoluteString)")
+        print("📨 Request Body: \(postString)")
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("❌ Error: \(error.localizedDescription)")
+                completion(.failure(error))
+                return
+            }
+
+            if let httpResponse = response as? HTTPURLResponse {
+                print("📡 Response Status Code: \(httpResponse.statusCode)")
+            }
+
+            guard let data = data else {
+                print("⚠️ No data received")
+                completion(.failure(NSError(domain: "No Data", code: 0, userInfo: nil)))
+                return
+            }
+
+            print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8 Data")")
+
+            do {
+                let categories = try JSONDecoder().decode([FoodModel].self, from: data)
+                completion(.success(categories))
+            } catch {
+                print("💥 JSON Decoding Error: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+
+        task.resume()
+    }
+    func checkoutapi(orderid: String, completion: @escaping (Result<[FoodModel], Error>) -> Void) {
+        let urlString = baseurl + "/checkout" // Replace with actual API URL
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+        // ✅ URL-Encoded Parameters
+        let postString = "orderid=\(orderid)"
+        request.httpBody = postString.data(using: .utf8)
+
+        print("🔗 Request URL: \(url.absoluteString)")
+        print("📨 Request Body: \(postString)")
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("❌ Error: \(error.localizedDescription)")
+                completion(.failure(error))
+                return
+            }
+
+            if let httpResponse = response as? HTTPURLResponse {
+                print("📡 Response Status Code: \(httpResponse.statusCode)")
+            }
+
+            guard let data = data else {
+                print("⚠️ No data received")
+                completion(.failure(NSError(domain: "No Data", code: 0, userInfo: nil)))
+                return
+            }
+
+            print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8 Data")")
+
+            do {
+                let categories = try JSONDecoder().decode([FoodModel].self, from: data)
+                completion(.success(categories))
+            } catch {
+                print("💥 JSON Decoding Error: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+
+        task.resume()
+    }
+    func viewcart(orderid: String, completion: @escaping (Result<[FoodModel], Error>) -> Void) {
+        let urlString = baseurl + "/viewcart" // Replace with actual API URL
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+        // ✅ URL-Encoded Parameters
+        let postString = "orderid=\(orderid)"
+        request.httpBody = postString.data(using: .utf8)
+
+        print("🔗 Request URL: \(url.absoluteString)")
+        print("📨 Request Body: \(postString)")
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("❌ Error: \(error.localizedDescription)")
+                completion(.failure(error))
+                return
+            }
+
+            if let httpResponse = response as? HTTPURLResponse {
+                print("📡 Response Status Code: \(httpResponse.statusCode)")
+            }
+
+            guard let data = data else {
+                print("⚠️ No data received")
+                completion(.failure(NSError(domain: "No Data", code: 0, userInfo: nil)))
+                return
+            }
+
+            print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8 Data")")
+
+            do {
+                let categories = try JSONDecoder().decode([FoodModel].self, from: data)
+                completion(.success(categories))
+            } catch {
+                print("💥 JSON Decoding Error: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+
+        task.resume()
+    }
+
+
+
     func getfooddetail(foodid: String, completion: @escaping (Result<[FoodModel], Error>) -> Void) {
         let urlString = baseurl + "/getfoodtem" // Replace with actual API URL
         guard let url = URL(string: urlString) else {

@@ -282,6 +282,7 @@ struct ShopDetailView: View {
                 
                 Button(action: {
                     naviagte_orderdetail=true
+                    viewModel.viewcart(orderid: "456")
                 }){
                     VStack {
                                    HStack {
@@ -301,7 +302,7 @@ struct ShopDetailView: View {
                                        
                                        Spacer()
                                        
-                                       // View Cart Button
+                                     
                                        HStack {
                                            Text("View Cart")
                                                .font(.system(size: 11, weight: .bold))
@@ -340,8 +341,8 @@ struct ShopDetailView: View {
         }.onAppear{
             viewModel.getorderdetail(orderid: "7678")
             viewModel.getshopfooditem()
-//            viewModel.getbannner()
-//            viewModel.getforyou()
+            viewModel.getbannner()
+            viewModel.getforyou()
         }
     
     }

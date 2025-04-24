@@ -124,6 +124,73 @@ class HomeviewModel: ObservableObject {
               }
           }
       }
+    func viewcart(orderid: String) { // Accept categoryId as a parameter
+          isLoading = true
+          errorMessage = nil
+
+          apiService.viewcart(orderid: orderid) { [weak self] result in
+              DispatchQueue.main.async {
+                  self?.isLoading = false
+                  switch result {
+                  case .success(let food):
+                      self?.food = food
+                  case .failure(let error):
+                      self?.errorMessage = error.localizedDescription
+                  }
+              }
+          }
+      }
+
+    func applycoupon(coupon: String) { // Accept categoryId as a parameter
+          isLoading = true
+          errorMessage = nil
+
+          apiService.applycoupon(coupon: coupon) { [weak self] result in
+              DispatchQueue.main.async {
+                  self?.isLoading = false
+                  switch result {
+                  case .success(let food):
+                      self?.food = food
+                  case .failure(let error):
+                      self?.errorMessage = error.localizedDescription
+                  }
+              }
+          }
+      }
+    func cancelorder(orderid: String) { // Accept categoryId as a parameter
+          isLoading = true
+          errorMessage = nil
+
+          apiService.cancelorder(orderid: orderid) { [weak self] result in
+              DispatchQueue.main.async {
+                  self?.isLoading = false
+                  switch result {
+                  case .success(let food):
+                      self?.food = food
+                  case .failure(let error):
+                      self?.errorMessage = error.localizedDescription
+                  }
+              }
+          }
+      }
+    func checkout(orderid: String) { // Accept categoryId as a parameter
+          isLoading = true
+          errorMessage = nil
+
+          apiService.checkoutapi(orderid: orderid) { [weak self] result in
+              DispatchQueue.main.async {
+                  self?.isLoading = false
+                  switch result {
+                  case .success(let food):
+                      self?.food = food
+                  case .failure(let error):
+                      self?.errorMessage = error.localizedDescription
+                  }
+              }
+          }
+      }
+
+    
     func getorderdetail(orderid: String) {
           isLoading = true
           errorMessage = nil

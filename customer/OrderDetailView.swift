@@ -330,6 +330,7 @@ struct OrderDetailView: View {
                     
                     Button(action: {
                         showPopup = true
+                        viewModel.checkout(orderid:"456")
                     }) {
                         Text("Checkout")
                             .font(.headline)
@@ -433,6 +434,7 @@ struct SlideButton: View {
     }
 }
 struct ApplyCouponView: View {
+    @StateObject private var viewModel = HomeviewModel()
     @Environment(\.presentationMode) var presentationMode
     @State private var couponCode = ""
 
@@ -449,6 +451,7 @@ struct ApplyCouponView: View {
 
             Button(action: {
                 print("Coupon Applied: \(couponCode)")
+                viewModel.checkout(orderid: "456")
                 presentationMode.wrappedValue.dismiss() // Close the sheet
             }) {
                 Text("Apply")
@@ -472,6 +475,7 @@ struct ApplyCouponView: View {
 
 
 struct CancelOrderView: View {
+    @StateObject private var viewModel = HomeviewModel()
     @Binding var showPopup: Bool
     @State private var timerValue: Int = 30
     @State private var timer: Timer?
@@ -505,6 +509,7 @@ struct CancelOrderView: View {
 
                 Button(action: {
                     showPopup = false
+                    viewModel.cancelorder(orderid: "456")
                 }) {
                     Text("Cancel Order")
                         .font(.system(size: 13, weight: .bold))
