@@ -3,6 +3,7 @@ import SwiftUI
 struct CompletedOrderView: View {
     var orderId: String // Dynamic Order ID
     @State private var showOrderDetails = false // Controls sheet visibility
+    @StateObject private var viewModel = HomeviewModel()
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -115,6 +116,9 @@ struct CompletedOrderView: View {
         .cornerRadius(15)
         .shadow(radius: 2)
         .padding()
+        .onAppear{
+            viewModel.completedorders()
+        }
     }
 }
 

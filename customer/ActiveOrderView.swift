@@ -4,6 +4,7 @@ struct ActiveOrderView: View {
     var orderId: String // Dynamic Order ID
     @State private var showOrderDetails = false
     @State private var trackOrderDetails = false
+    @StateObject private var viewModel = HomeviewModel()
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -127,6 +128,9 @@ struct ActiveOrderView: View {
         .cornerRadius(15)
         .shadow(radius: 2)
         .padding()
+        .onAppear{
+            viewModel.activeorder()
+        }
     }
 }
 

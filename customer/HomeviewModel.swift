@@ -256,6 +256,55 @@ class HomeviewModel: ObservableObject {
             }
         }
     }
+    func activeorder() {
+        isLoading = true
+        errorMessage = nil
+
+        apiService.activeorders { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let food):
+                    self?.food = food
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+
+    func cancelorders() {
+        isLoading = true
+        errorMessage = nil
+
+        apiService.cancelorders { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let food):
+                    self?.food = food
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+    func completedorders() {
+        isLoading = true
+        errorMessage = nil
+
+        apiService.completedorders { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let food):
+                    self?.food = food
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
 
     func getrestaurantfood() {
         isLoading = true

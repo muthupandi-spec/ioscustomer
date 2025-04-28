@@ -451,7 +451,7 @@ struct ApplyCouponView: View {
 
             Button(action: {
                 print("Coupon Applied: \(couponCode)")
-                viewModel.checkout(orderid: "456")
+                viewModel.applycoupon(coupon:couponCode )
                 presentationMode.wrappedValue.dismiss() // Close the sheet
             }) {
                 Text("Apply")

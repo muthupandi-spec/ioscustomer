@@ -2,6 +2,7 @@ import SwiftUI
 
 struct OrderDetailpageView: View {
     let imageNames = ["ban", "ban1", "ban2","ban2","ban", "ban1"]
+    @StateObject private var viewModel = HomeviewModel()
 
     var body: some View {
         NavigationStack{
@@ -83,6 +84,7 @@ struct OrderDetailpageView: View {
 
                               Button(action: {
                                   print("Help Button Clicked")
+                                 callNumber(phoneNumber: "98767998")
                               }) {
                                   Text("Help")
                                       .frame(maxWidth: .infinity)
@@ -176,11 +178,22 @@ struct OrderDetailpageView: View {
             }
 
         }
+        .onAppear{
+            viewModel.getorderdetail(orderid: "768")
+        }
     }
         struct OrderDetailpage_view: PreviewProvider {
             static var previews: some View {
                 OrderDetailpageView()
             }
         }
+    func callNumber(phoneNumber: String) {
+           if let phoneURL = URL(string: "tel://\(phoneNumber)"),
+              UIApplication.shared.canOpenURL(phoneURL) {
+               UIApplication.shared.open(phoneURL)
+           } else {
+               print("Can't make a call on this device")
+           }
+       }
 }
 
