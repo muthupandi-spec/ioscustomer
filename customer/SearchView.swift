@@ -3,6 +3,7 @@ import SwiftUI
 struct Searchview: View {
     @State private var searchText: String = ""
     @StateObject private var viewModel = HomeviewModel()
+    @Environment(\.dismiss) var dismiss
 
     let varieties = [
         ("ic_biryani", "Biryani"),
@@ -47,10 +48,13 @@ struct Searchview: View {
     
     private var header:some View{
         HStack {
-            Image("ic_back")
-                .resizable()
-                .frame(width: 23, height: 23)
-            
+            Button(action: {
+                dismiss() // 👈 Dismiss the current view
+            }) {
+                Image("ic_back")
+                    .resizable()
+                    .frame(width: 23, height: 23)
+            }
             Text("Search Food")
                 .font(.system(size: 18))
                 .bold()

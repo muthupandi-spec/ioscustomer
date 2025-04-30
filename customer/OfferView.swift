@@ -3,6 +3,7 @@ import SwiftUI
 struct OfferView: View {
     let imageNames = ["ban", "ban1", "ban2", "ban2", "ban", "ban1"]
     @StateObject private var viewModel = HomeviewModel()
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationStack {
@@ -30,9 +31,14 @@ struct OfferView: View {
 
     private var headerview: some View {
         HStack {
-            Image("ic_back")
-                .resizable()
-                .frame(width: 23, height: 23)
+            Button(action: {
+                dismiss() // Go back
+            }) {
+                Image("ic_back")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+            }
+            
 
             Text("Special Offers")
                 .font(.system(size: 18))

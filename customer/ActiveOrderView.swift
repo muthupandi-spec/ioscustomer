@@ -5,6 +5,7 @@ struct ActiveOrderView: View {
     @State private var showOrderDetails = false
     @State private var trackOrderDetails = false
     @StateObject private var viewModel = HomeviewModel()
+    @State private var hasAppeared = false
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -129,7 +130,10 @@ struct ActiveOrderView: View {
         .shadow(radius: 2)
         .padding()
         .onAppear{
-            viewModel.activeorder()
+            if !hasAppeared {
+                       viewModel.activeorder()
+                       hasAppeared = true
+                   }
         }
     }
 }

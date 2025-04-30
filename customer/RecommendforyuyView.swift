@@ -3,6 +3,7 @@ import SwiftUI
 struct RecommendforyoyView: View {
     @State private var selectedChip: String? = nil
     @StateObject private var viewModel = HomeviewModel()
+    @Environment(\.dismiss) var dismiss
 
     let chiplist = ["Biryani", "Pizza", "Burger","Noodles","Dosa","Mutton"]
     let varieties = [
@@ -56,10 +57,13 @@ struct RecommendforyoyView: View {
     
     private var headerView: some View {
         HStack {
-            Image("ic_back")
-                .resizable()
-                .frame(width: 23, height: 23)
-            
+            Button(action: {
+                dismiss() // Go back
+            }) {
+                Image("ic_back")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+            }
             Text("Recommend For You")
                 .font(.system(size: 18))
                 .bold()

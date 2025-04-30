@@ -2,6 +2,8 @@ import SwiftUI
 
 struct TransactionHistoryView: View {
     let imageNames = ["ban", "ban1", "ban2","ban2","ban", "ban1"]
+    @StateObject private var viewModel = HomeviewModel()
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationStack{
@@ -10,10 +12,13 @@ struct TransactionHistoryView: View {
                 VStack(alignment: .leading) {
                   
                     HStack {
-                        Image("ic_back")
-                            .resizable()
-                            .frame(width: 23, height: 23)
-                        
+                        Button(action: {
+                            dismiss() // Go back
+                        }) {
+                            Image("ic_back")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                        }
                         Text("Transaction History")
                             .font(.system(size: 18))
                             .bold()
@@ -88,7 +93,9 @@ struct TransactionHistoryView: View {
                     
                 }
             }
-
+            .navigationBarBackButtonHidden(true)
+        }.onAppear{
+            viewModel.transactionhistory()
         }
     }
         struct TransactionHistory_view: PreviewProvider {

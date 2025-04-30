@@ -3,6 +3,7 @@ import SwiftUI
 struct WalletView: View {
     @State private var navigate_wallet = false
     @State private var navigate_Topup = false
+    @StateObject private var viewModel = HomeviewModel()
 
     var body: some View {
         NavigationStack{
@@ -85,7 +86,7 @@ struct WalletView: View {
                                 .background(Color.white)
                                 .cornerRadius(8)
                                 .frame(maxWidth: .infinity, alignment: .trailing)
-                            }.navigationDestination(isPresented: $navigate_Topup) {
+                            }.fullScreenCover(isPresented: $navigate_Topup) {
                                 TopUpView()
                             }
                         
@@ -97,7 +98,7 @@ struct WalletView: View {
                     .shadow(radius: 5)
                     .padding(.horizontal, 20)
                     HStack {
-                        Text("Transactio History")
+                        Text("Transaction History")
                             .bold()
                             .foregroundColor(.black)
                         
@@ -108,7 +109,7 @@ struct WalletView: View {
                             Text("See All")
                                 .bold()
                                 .foregroundColor(Color("colorPrimary"))
-                        }.navigationDestination(isPresented: $navigate_wallet) {
+                        }.fullScreenCover(isPresented:$navigate_wallet){
                             TransactionHistoryView()
                         }
                         
@@ -180,6 +181,8 @@ struct WalletView: View {
                 }
             }
             
+        }.onAppear{
+            viewModel.transactionhistory()
         }
     }
     struct Wallet_view: PreviewProvider {

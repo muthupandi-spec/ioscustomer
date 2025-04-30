@@ -42,6 +42,7 @@ struct OrderViewpager: View {
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never)) // Hide default dots
             .frame(maxWidth: .infinity, maxHeight: .infinity) // Make sure it fills the screen
+            
         }
     }
 }

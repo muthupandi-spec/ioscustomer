@@ -3,6 +3,7 @@ import SwiftUI
 struct AddressView: View {
     @State private var navigate_addaddress = false
     @State private var addresses: [String] = ["Home", "Office"] // Dummy data
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationStack{
@@ -11,7 +12,8 @@ struct AddressView: View {
                     // Header Section
                     HStack {
                         Button(action: {
-                            // Handle back button action
+                            dismiss()
+                            
                         }) {
                             Image("ic_back") // Replace with your back arrow asset
                                 .resizable()

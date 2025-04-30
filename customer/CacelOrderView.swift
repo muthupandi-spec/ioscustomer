@@ -4,6 +4,7 @@ struct CacelOrderView: View {
     var orderId: String // Dynamic Order ID
     @State private var showOrderDetails = false // Controls sheet visibility
     @StateObject private var viewModel = HomeviewModel()
+    @State private var hasAppeared = false
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -118,7 +119,11 @@ struct CacelOrderView: View {
         .shadow(radius: 2)
         .padding()
         .onAppear{
-            viewModel.cancelorders()
+            if !hasAppeared {
+                       viewModel.cancelorders()
+                       hasAppeared = true
+                   }
+            
         }
     }
 }

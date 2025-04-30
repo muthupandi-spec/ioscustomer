@@ -17,17 +17,21 @@ struct RegisterView: View {
     @State private var showDatePicker = false
     @StateObject private var viewModel = LoginViewModel()
     let genders = ["Male", "Female", "Others"]
-    
+    @Environment(\.dismiss) var dismiss
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack {
                     // Title & Back Button
                     HStack {
-                        Image("ic_back")
-                            .resizable()
-                            .frame(width: 23, height: 23)
-                        
+                        Button(action: {
+                            dismiss() // Go back
+                        }) {
+                            Image("ic_back")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                        }
                         Text("Fill Your Profile")
                             .font(.system(size: 18))
                             .bold()
@@ -126,6 +130,8 @@ struct RegisterView: View {
                 .padding()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .navigationBarBackButtonHidden(true)
+
             .sheet(isPresented: $showDatePicker) {
                 VStack {
                     DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
