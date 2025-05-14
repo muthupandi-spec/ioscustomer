@@ -8,6 +8,8 @@ struct MapAddressView: View {
     @State private var category: String = ""
     @State private var selectedCategory = "Home"
     let categories = ["Home", "Work", "Others"]
+    @Environment(\.dismiss) var dismiss
+
     
     var body: some View {
         NavigationStack{
@@ -16,7 +18,7 @@ struct MapAddressView: View {
                     // Header Section
                     HStack {
                         Button(action: {
-                            // Handle back button action
+                            dismiss()
                         }) {
                             Image("ic_back") // Replace with your back arrow asset
                                 .resizable()
@@ -109,6 +111,8 @@ struct MapAddressView: View {
                     .padding(.top, -20)
                 }
             }
+            .navigationBarBackButtonHidden(true)
+
 
         }
     }

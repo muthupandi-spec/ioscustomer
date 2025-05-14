@@ -82,6 +82,8 @@ struct AddressView: View {
 
         
             }
+            .navigationBarBackButtonHidden(true)
+
         }
     
     }
