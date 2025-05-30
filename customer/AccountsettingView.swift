@@ -9,80 +9,16 @@ struct AccountsettinngView: View {
         NavigationStack {
             VStack(alignment: .leading) {
                 // Back Button & Title
-                HStack {
-                    Button(action: {
-dismiss()                    }) {
-                        Image("ic_back")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                    }
-                    
-                    Text("Account Settings")
-                        .font(.headline)
-                        .foregroundColor(.black)
-                    
-                    Spacer()
-                }
-                .padding(.top, 18)
-                .padding(.leading, 18)
+               header
                 
                 // Logout Button
-                Button(action: {
-                    showLogoutSheet = true // Show popup
-                }) {
-                    HStack {
-                        Image(systemName: "power")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                        
-                        Text("Logout")
-                            .foregroundColor(.black)
-                            .font(.body)
-                        
-                        Spacer()
-                        
-                        Image("right-arrow")
-                            .resizable()
-                            .frame(width: 15, height: 15)
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity, minHeight: 40)
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(10)
-                }.sheet(isPresented: $showLogoutSheet) {
-                    LogoutConfirmationView()
-                }
-                .padding(.horizontal, 18)
-                .padding(.top, 18)
-                
+               logoutview
                 // Remove Account Button
-                Button(action: {
-                   showDeleteSheet=true
-                }) {
-                    HStack {
-                        Image(systemName: "trash")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                        
-                        Text("Remove Account")
-                            .foregroundColor(.black)
-                            .font(.body)
-                        
-                        Spacer()
-                        
-                        Image("right-arrow")
-                            .resizable()
-                            .frame(width: 15, height: 15)
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity, minHeight: 40)
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(10)
-                }.sheet(isPresented: $showDeleteSheet) {
-                    DeleteView()
-                }
-                .padding(.horizontal, 18)
-                .padding(.top, 12)
+              deleteview
+                
+                
+                
+                
                 
                 Spacer() // Pushes everything to the top
             }
@@ -91,6 +27,83 @@ dismiss()                    }) {
 
         }
        
+    }
+    private var logoutview:some View{
+        Button(action: {
+           showDeleteSheet=true
+        }) {
+            HStack {
+                Image(systemName: "trash")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                
+                Text("Logout")
+                    .foregroundColor(.black)
+                    .font(.body)
+                
+                Spacer()
+                
+                Image("right-arrow")
+                    .resizable()
+                    .frame(width: 15, height: 15)
+            }
+            .padding()
+            .frame(maxWidth: .infinity, minHeight: 40)
+            .background(Color.gray.opacity(0.1))
+            .cornerRadius(10)
+        }.sheet(isPresented: $showLogoutSheet) {
+            LogoutConfirmationView()
+        }
+        .padding(.horizontal, 18)
+        .padding(.top, 12)
+        
+    }
+    private var deleteview:some View{
+        Button(action: {
+           showDeleteSheet=true
+        }) {
+            HStack {
+                Image(systemName: "trash")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                
+                Text("Remove Account")
+                    .foregroundColor(.black)
+                    .font(.body)
+                
+                Spacer()
+                
+                Image("right-arrow")
+                    .resizable()
+                    .frame(width: 15, height: 15)
+            }
+            .padding()
+            .frame(maxWidth: .infinity, minHeight: 40)
+            .background(Color.gray.opacity(0.1))
+            .cornerRadius(10)
+        }.sheet(isPresented: $showDeleteSheet) {
+            DeleteView()
+        }
+        .padding(.horizontal, 18)
+        .padding(.top, 12)
+    }
+    private var header:some View{ HStack {
+        Button(action: {
+dismiss()                    }) {
+            Image("ic_back")
+                .resizable()
+                .frame(width: 20, height: 20)
+        }
+        
+        Text("Account Settings")
+            .font(.headline)
+            .foregroundColor(.black)
+        
+        Spacer()
+    }
+    .padding(.top, 18)
+    .padding(.leading, 18)
+        
     }
     struct LogoutConfirmationView: View {
         @Environment(\.dismiss) var dismiss // To close the sheet
