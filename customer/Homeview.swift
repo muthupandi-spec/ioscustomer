@@ -69,9 +69,10 @@ struct HomeView: View {
             
             
         }.onAppear {
-            viewModel.getfood()
+//            viewModel.getfood()
+            viewModel.getoffer()
             viewModel.getbrach()
-            viewModel.getcategory()
+//            viewModel.getcategory()
 
         }
     }
@@ -148,13 +149,13 @@ struct HomeView: View {
         VStack(alignment: .leading) {
             sectionHeader(title: "Top Category !", action: {})
             LazyVGrid(columns: columns, spacing: 20) {
-                ForEach(varieties, id: \ .1) { variety in
+                ForEach(viewModel.categoriew) { chip in
                     VStack {
-                        Image(variety.0)
+                        Image("ic_biryani")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 60, height: 60)
-                        Text(variety.1)
+                        Text(chip.category)
                             .foregroundColor(.black)
                             .font(.caption)
                     }
@@ -168,18 +169,27 @@ struct HomeView: View {
     private  var bracheslistsection:some View{
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) { // Ensures items are aligned in a row
-                ForEach(0..<3, id: \.self) { _ in
+                ForEach(viewModel.restaurantmodel) { branch in
                     VStack(spacing: 10) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 15)
                                 .fill(Color(UIColor.systemGray5))
                                 .frame(width: 150, height: 150)
                             
-                            Image("ic_bir") // Replace with actual image asset
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 140, height: 140)
-                                .clipShape(RoundedRectangle(cornerRadius: 11))
+                            if let imageData = Data(base64Encoded:branch.images[0].imageData),
+                               let uiImage = UIImage(data: imageData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 140, height: 140)
+                                    .clipShape(RoundedRectangle(cornerRadius: 11))
+                            } else {
+                                Color.gray
+                                    .frame(width: 140, height: 140)
+                                    .clipShape(RoundedRectangle(cornerRadius: 11))
+                                    .overlay(Text("Invalid Image").font(.caption).foregroundColor(.white))
+                            }
+
                         }
                         .overlay(
                             HStack {
@@ -193,7 +203,7 @@ struct HomeView: View {
                             }
                         )
                         
-                        Text("Basha Bhai Restaurant")
+                        Text(branch.restaurantName)
                             .font(.headline)
                             .foregroundColor(.black)
                             .multilineTextAlignment(.center)
@@ -232,7 +242,7 @@ struct HomeView: View {
             Spacer()
             Button(action: action) {
                 Text("See All").bold().foregroundColor(Color("colorPrimary"))
-                    .opacity(1)
+                    .opacity(0)
             }
         }
         .padding()
@@ -265,22 +275,36 @@ struct HomeView: View {
     }
 
     
-    private var specialofferlist:some View{
+    private var specialofferlist: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
-                ForEach(imageNames, id: \.self) { imageName in
-                    Image(imageName)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: UIScreen.main.bounds.width - 100, height: 160)
-                        .clipped()
-                        .cornerRadius(10)
+                ForEach(viewModel.offermodel, id: \.id) { imageName in
+                    VStack(alignment: .leading) {
+                        if let imageData = Data(base64Encoded: imageName.image),
+                           let uiImage = UIImage(data: imageData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: UIScreen.main.bounds.width - 100, height: 160)
+                                .clipped()
+                                .cornerRadius(10)
+                        } else {
+                            Color.gray
+                                .frame(width: UIScreen.main.bounds.width - 100, height: 160)
+                                .cornerRadius(10)
+                                .overlay(Text("Invalid Image").foregroundColor(.white))
+                        }
+                    
+                    }
+                    .onAppear {
+                           print("Offer Name: \(imageName.offerName)")
+                       }
                 }
             }
             .padding(.horizontal, 10)
         }
     }
-    
+
     private var foodListView: some View {
         ScrollView {
             ForEach(0..<5, id: \.self) { index in

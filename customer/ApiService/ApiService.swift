@@ -1,7 +1,7 @@
 import Foundation
 
 class APIService {
-    let baseurl="http://65.0.85.4:8090/"
+    let baseurl="https://7824-2409-40f4-124-df2e-b56d-c814-1cbb-6d19.ngrok-free.app/"
     func fetchUsers(completion: @escaping (Result<[UserModel], Error>) -> Void) {
         let urlString = "https://jsonplaceholder.typicode.com/users" // Replace with your actual API URL
         guard let url = URL(string: urlString) else {
@@ -43,6 +43,45 @@ class APIService {
     }
     func foodlist(completion: @escaping (Result<[FoodModel], Error>) -> Void) {
         let urlString = baseurl+"foodlist" // Replace with your actual API URL
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+        
+        print("🔗 Request URL: \(url.absoluteString)")
+
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print("❌ Error: \(error.localizedDescription)")
+                completion(.failure(error))
+                return
+            }
+
+            if let httpResponse = response as? HTTPURLResponse {
+                print("📡 Response Status Code: \(httpResponse.statusCode)")
+            }
+
+            guard let data = data else {
+                print("⚠️ No data received")
+                completion(.failure(NSError(domain: "No Data", code: 0, userInfo: nil)))
+                return
+            }
+
+            print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8 Data")")
+
+            do {
+                let users = try JSONDecoder().decode([FoodModel].self, from: data)
+                completion(.success(users))
+            } catch {
+                print("💥 JSON Decoding Error: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+
+        task.resume()
+    }
+    func getalloffer(completion: @escaping (Result<[FoodModel], Error>) -> Void) {
+        let urlString = baseurl+"restaurant/api/home/getalloffer" // Replace with your actual API URL
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
@@ -320,8 +359,8 @@ class APIService {
         task.resume()
     }
 
-    func getbranch(completion: @escaping (Result<[FoodModel], Error>) -> Void) {
-        let urlString = baseurl+"/getbrach" // Replace with your actual API URL
+    func getbranch(completion: @escaping (Result<[RestaurantResponsModelItem], Error>) -> Void) {
+        let urlString = baseurl+"restaurant/api/restaurant/getallrestaurant" // Replace with your actual API URL
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
@@ -349,7 +388,7 @@ class APIService {
             print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8 Data")")
 
             do {
-                let users = try JSONDecoder().decode([FoodModel].self, from: data)
+                let users = try JSONDecoder().decode([RestaurantResponsModelItem].self, from: data)
                 completion(.success(users))
             } catch {
                 print("💥 JSON Decoding Error: \(error.localizedDescription)")
@@ -486,7 +525,7 @@ class APIService {
     
     
     func getcategorylist(completion: @escaping (Result<[CategoriesResponseModelItem], Error>) -> Void) {
-        let urlString = baseurl+"Hotel/api/catagory/getallcatagory" // Replace with your actual API URL
+        let urlString = baseurl+"restaurant/api/catagory/getallcatagory" // Replace with your actual API URL
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
@@ -1078,8 +1117,8 @@ class APIService {
 
         task.resume()
     }
-    func getoffer(completion: @escaping (Result<[FoodModel], Error>) -> Void) {
-        let urlString = baseurl+"/getoffer" // Replace with your actual API URL
+    func getoffer(completion: @escaping (Result<[OfferModellItem], Error>) -> Void) {
+        let urlString = baseurl+"restaurant/api/home/getalloffer" // Replace with your actual API URL
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
@@ -1107,7 +1146,7 @@ class APIService {
             print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8 Data")")
 
             do {
-                let users = try JSONDecoder().decode([FoodModel].self, from: data)
+                let users = try JSONDecoder().decode([OfferModellItem].self, from: data)
                 completion(.success(users))
             } catch {
                 print("💥 JSON Decoding Error: \(error.localizedDescription)")

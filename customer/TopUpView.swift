@@ -12,23 +12,7 @@ struct TopUpView: View {
         NavigationStack {
             VStack {
                 // Custom Header
-                HStack {
-                    Button(action: {
-                        dismiss() // Go back
-                    }) {
-                        Image("ic_back")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                    }
-
-                    Text("Top Up E-Wallet")
-                        .foregroundColor(.black)
-                        .font(.system(size: 15, weight: .bold))
-
-                    Spacer()
-                }
-                .padding(.horizontal)
-                .padding(.top, 10)
+                header
 
                 Text("Enter the amount of top up")
                     .font(.system(size: 12))
@@ -43,25 +27,8 @@ struct TopUpView: View {
                     .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.2)))
                     .padding(.horizontal)
                     .disabled(true) // Prevent manual input
-
-                LazyVGrid(columns: gridItems, spacing: 10) {
-                    ForEach(topUpAmounts, id: \.self) { value in
-                        Button(action: {
-                            amount = value // Update amount
-                        }) {
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color.gray.opacity(0.3))
-                                .frame(height: 50)
-                                .overlay(
-                                    Text(value)
-                                        .foregroundColor(.black)
-                                        .font(.system(size: 16, weight: .bold))
-                                )
-                        }
-                    }
-                }
-                .padding(.top, 20)
-                .padding(.horizontal)
+                amountllist
+             
 
                 Spacer()
 
@@ -83,7 +50,47 @@ struct TopUpView: View {
             viewModel.topupwallet(topup: amount)
         }
     }
+    private var header:some  View{
+        HStack {
+            Button(action: {
+                dismiss() // Go back
+            }) {
+                Image("ic_back")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+            }
+
+            Text("Top Up E-Wallet")
+                .foregroundColor(.black)
+                .font(.system(size: 15, weight: .bold))
+
+            Spacer()
+        }
+        .padding(.horizontal)
+        .padding(.top, 10)
+    }
+    private var amountllist:some View{
+        LazyVGrid(columns: gridItems, spacing: 10) {
+            ForEach(topUpAmounts, id: \.self) { value in
+                Button(action: {
+                    amount = value // Update amount
+                }) {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(height: 50)
+                        .overlay(
+                            Text(value)
+                                .foregroundColor(.black)
+                                .font(.system(size: 16, weight: .bold))
+                        )
+                }
+            }
+        }
+        .padding(.top, 20)
+        .padding(.horizontal)
+    }
 }
+
 
 struct TopUpView_Previews: PreviewProvider {
     static var previews: some View {

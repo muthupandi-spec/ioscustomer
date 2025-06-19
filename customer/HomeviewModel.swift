@@ -3,6 +3,8 @@ import Foundation
 class HomeviewModel: ObservableObject {
     @Published var categoriew: [CategoriesResponseModelItem] = []
     @Published var food: [FoodModel] = []
+    @Published var offermodel: [OfferModellItem] = []
+    @Published var restaurantmodel: [RestaurantResponsModelItem] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     var selectedChip: CategoriesResponseModelItem?
@@ -18,6 +20,22 @@ class HomeviewModel: ObservableObject {
     @Published var password: String = "hgfhfh"
     @Published var regiaterpassword: String = ""
     private let apiService = APIService()
+    func getoffer() {
+        isLoading = true
+        errorMessage = nil
+
+        apiService.getoffer { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let offer):
+                    self?.offermodel = offer
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
 
     func getfood() {
         isLoading = true
@@ -60,8 +78,8 @@ class HomeviewModel: ObservableObject {
             DispatchQueue.main.async {
                 self?.isLoading = false
                 switch result {
-                case .success(let food):
-                    self?.food = food
+                case .success(let branch):
+                    self?.restaurantmodel = branch
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
                 }
@@ -412,7 +430,7 @@ class HomeviewModel: ObservableObject {
             }
         }
     }
-    func getoffer() {
+    func getofferr() {
         isLoading = true
         errorMessage = nil
 
@@ -420,8 +438,8 @@ class HomeviewModel: ObservableObject {
             DispatchQueue.main.async {
                 self?.isLoading = false
                 switch result {
-                case .success(let food):
-                    self?.food = food
+                case .success(let offer):
+                    self?.offermodel = offer
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
                 }

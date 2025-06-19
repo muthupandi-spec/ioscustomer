@@ -5,7 +5,7 @@ struct CategoriesResponseModelItem: Codable, Identifiable, Hashable {
     let categoryId: Int
     let isActive: Bool
     let isDelete: Bool
-    let time: String
+    let time: String?  // ✅ Optional now
 
     enum CodingKeys: String, CodingKey {
         case category = "catagory"
