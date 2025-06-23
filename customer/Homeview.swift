@@ -72,7 +72,7 @@ struct HomeView: View {
 //            viewModel.getfood()
             viewModel.getoffer()
             viewModel.getbrach()
-//            viewModel.getcategory()
+            viewModel.getcategory()
 
         }
     }
@@ -272,6 +272,13 @@ struct HomeView: View {
             }
             .padding(.horizontal, 10)
         }
+        .onAppear {
+            // Preselect first chip and call API
+            if selectedChip == nil, let firstChip = viewModel.categoriew.first {
+                selectedChip = firstChip
+                viewModel.getCategoryid(categoryId: String(firstChip.categoryId))
+            }
+        }
     }
 
     
@@ -297,7 +304,7 @@ struct HomeView: View {
                     
                     }
                     .onAppear {
-                           print("Offer Name: \(imageName.offerName)")
+                        
                        }
                 }
             }
@@ -305,92 +312,107 @@ struct HomeView: View {
         }
     }
 
+
     private var foodListView: some View {
         ScrollView {
-            ForEach(0..<5, id: \.self) { index in
-                HStack {
-                    ZStack(alignment: .bottomLeading) {
-                        Image("ic_biryani")
-                            .resizable()
-                            .frame(width: 142, height: 172)
-                            .scaledToFill()
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                        
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("UPTO 23%")
-                                .font(.caption)
-                                .bold()
-                                .foregroundColor(.white)
-                                .padding(6)
-                                .background(Color.black.opacity(0.5))
-                                .clipShape(Capsule())
-                            
-                            Text("Offer")
-                                .font(.footnote)
-                                .bold()
-                                .foregroundColor(.black)
-                        }
-                        .padding(8)
-                    }
-                    .background(Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .overlay(
-                        Image("heart") // Favorite Icon
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .padding(8),
-                        alignment: .topTrailing
-                    )
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Biryani")
-                            .font(.headline)
-                            .bold()
-                            .foregroundColor(.black)
-                        
-                        Text("Delicious Biryani")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                        
-                        HStack {
-                            Image("star") // Rating Star Image
-                                .resizable()
-                                .frame(width: 18, height: 18)
-                            
-                            Text("4.5 | 5.0 reviews")
-                                .font(.caption)
-                                .foregroundColor(.black)
-                        }
-                        
-                        Text("Branch:")
-                            .font(.caption)
-                            .bold()
-                            .foregroundColor(.black)
-                        
-                        Text("Al Karma And Dubai Silicon Oasis")
-                            .font(.caption)
-                            .foregroundColor(.black)
-                            .lineLimit(1)
-                            .truncationMode(.tail)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                    .padding(.vertical, 6)
-                }
-                .background(Color.white)
-                .cornerRadius(10)
-                .shadow(radius: 1)
-                .padding(10) // Adds padding on all sides
-                .onTapGesture {
-                    if index == 0 { // Navigate only for the first item
-                        navigateDetail=true
-                    }
-                }
-            }
-        }
-        .fullScreenCover(isPresented:$navigateDetail ) {
-            ShopDetailView() // Destination view
-        }
+                 ForEach(Array(viewModel.fooddetailrespose.enumerated()), id: \.element.foodId) { index, food in
+                     HStack {
+                         ZStack(alignment: .bottomLeading) {
+                             if let imageData = Data(base64Encoded: food.image),
+                                let uiImage = UIImage(data: imageData) {
+                                 Image(uiImage: uiImage)
+                                     .resizable()
+                                     .frame(width: 142, height: 172)
+                                     .scaledToFill()
+                                     .clipShape(RoundedRectangle(cornerRadius: 12))
+                             } else {
+                                 Image("placeholder_image")
+                                     .resizable()
+                                     .frame(width: 142, height: 172)
+                                     .scaledToFill()
+                                     .clipShape(RoundedRectangle(cornerRadius: 12))
+                             }
+
+                             VStack(alignment: .leading, spacing: 4) {
+                                 Text("UPTO 23%")
+                                     .font(.caption)
+                                     .bold()
+                                     .foregroundColor(.white)
+                                     .padding(6)
+                                     .background(Color.black.opacity(0.5))
+                                     .clipShape(Capsule())
+
+                                 Text("Offer")
+                                     .font(.footnote)
+                                     .bold()
+                                     .foregroundColor(.black)
+                             }
+                             .padding(8)
+                         }
+                         .background(Color.white)
+                         .clipShape(RoundedRectangle(cornerRadius: 12))
+                         .overlay(
+                             Image("heart")
+                                 .resizable()
+                                 .frame(width: 20, height: 20)
+                                 .padding(8),
+                             alignment: .topTrailing
+                         )
+
+                         VStack(alignment: .leading, spacing: 4) {
+                             Text(food.foodName)
+                                 .font(.headline)
+                                 .bold()
+                                 .foregroundColor(.black)
+
+                             Text(food.decription)
+                                 .font(.subheadline)
+                                 .foregroundColor(.gray)
+
+                             HStack {
+                                 Image("star")
+                                     .resizable()
+                                     .frame(width: 18, height: 18)
+
+                                 Text("4.5 | 5.0 reviews")
+                                     .font(.caption)
+                                     .foregroundColor(.black)
+                             }
+
+                             Text("Branch:")
+                                 .font(.caption)
+                                 .bold()
+                                 .foregroundColor(.black)
+
+                             Text("Al Karma And Dubai Silicon Oasis")
+                                 .font(.caption)
+                                 .foregroundColor(.black)
+                                 .lineLimit(1)
+                                 .truncationMode(.tail)
+                                 .frame(maxWidth: .infinity, alignment: .leading)
+                         }
+                         .padding(.vertical, 6)
+                     }
+                     .background(Color.white)
+                     .cornerRadius(10)
+                     .shadow(radius: 1)
+                     .padding(10)
+                     .onTapGesture {
+                         // ✅ Save foodId locally using UserDefaults
+                         UserDefaults.standard.set(food.foodId, forKey: "selectedFoodId")
+                         
+                     
+                             navigateDetail = true
+                         
+                     }
+                 }
+             }
+             .fullScreenCover(isPresented: $navigateDetail) {
+                 ShopDetailView()
+             }
+         
     }
+
 }
 
 struct HomeView_View: PreviewProvider {

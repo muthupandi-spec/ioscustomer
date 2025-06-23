@@ -1,7 +1,7 @@
 import Foundation
 
 class APIService {
-    let baseurl="https://7824-2409-40f4-124-df2e-b56d-c814-1cbb-6d19.ngrok-free.app/"
+    let baseurl="https://a822-2409-40f4-127-9cb0-6095-33d8-daba-218a.ngrok-free.app/"
     func fetchUsers(completion: @escaping (Result<[UserModel], Error>) -> Void) {
         let urlString = "https://jsonplaceholder.typicode.com/users" // Replace with your actual API URL
         guard let url = URL(string: urlString) else {
@@ -563,23 +563,17 @@ class APIService {
 
         task.resume()
     }
-    func getCategoryid(categoryId: String, completion: @escaping (Result<[FoodModel], Error>) -> Void) {
-        let urlString = baseurl + "/getcategoryid" // Replace with actual API URL
+    func getCategoryid(categoryId: String, completion: @escaping (Result<[FoodDetailResponseModel], Error>) -> Void) {
+        let urlString = baseurl + "restaurant/api/food/getcatagoryfoodid/\(categoryId)" // GET format with path parameter
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
         }
 
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-
-        // ✅ URL-Encoded Parameters
-        let postString = "categoryId=\(categoryId)"
-        request.httpBody = postString.data(using: .utf8)
-
+        request.httpMethod = "GET"
+        
         print("🔗 Request URL: \(url.absoluteString)")
-        print("📨 Request Body: \(postString)")
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -601,7 +595,7 @@ class APIService {
             print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8 Data")")
 
             do {
-                let categories = try JSONDecoder().decode([FoodModel].self, from: data)
+                let categories = try JSONDecoder().decode([FoodDetailResponseModel].self, from: data)
                 completion(.success(categories))
             } catch {
                 print("💥 JSON Decoding Error: \(error.localizedDescription)")
@@ -611,6 +605,58 @@ class APIService {
 
         task.resume()
     }
+    func getfoodid(foodid: Int, completion: @escaping (Result<FoodItem, Error>) -> Void) {
+           let urlString = baseurl + "restaurant/api/food/getfoodid/\(foodid)"
+           guard let url = URL(string: urlString) else {
+               completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+               return
+           }
+
+           var request = URLRequest(url: url)
+           request.httpMethod = "GET"
+
+           print("🔗 Request URL: \(url.absoluteString)")
+
+           let task = URLSession.shared.dataTask(with: request) { data, response, error in
+               if let error = error {
+                   print("❌ Error: \(error.localizedDescription)")
+                   completion(.failure(error))
+                   return
+               }
+
+               if let httpResponse = response as? HTTPURLResponse {
+                   print("📡 Response Status Code: \(httpResponse.statusCode)")
+               }
+
+               guard let data = data else {
+                   print("⚠️ No data received")
+                   completion(.failure(NSError(domain: "No Data", code: 0, userInfo: nil)))
+                   return
+               }
+
+               print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8 Data")")
+
+               do {
+                   let decodedItem = try JSONDecoder().decode(FoodItem.self, from: data)
+                   completion(.success(decodedItem))
+               } catch let DecodingError.keyNotFound(key, context) {
+                   print("Key '\(key)' not found: \(context.debugDescription)")
+                   completion(.failure(DecodingError.keyNotFound(key, context)))
+               } catch let DecodingError.typeMismatch(type, context) {
+                   print("Type '\(type)' mismatch: \(context.debugDescription)")
+                   completion(.failure(DecodingError.typeMismatch(type, context)))
+               } catch let DecodingError.valueNotFound(value, context) {
+                   print("Value '\(value)' not found: \(context.debugDescription)")
+                   completion(.failure(DecodingError.valueNotFound(value, context)))
+               } catch {
+                   print("Other decoding error: \(error)")
+                   completion(.failure(error))
+               }
+           }
+
+           task.resume()
+       }
+   
     func applycoupon(coupon: String, completion: @escaping (Result<[FoodModel], Error>) -> Void) {
         let urlString = baseurl + "/applycoupon" // Replace with actual API URL
         guard let url = URL(string: urlString) else {

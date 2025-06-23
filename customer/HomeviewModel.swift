@@ -2,6 +2,8 @@ import Foundation
 
 class HomeviewModel: ObservableObject {
     @Published var categoriew: [CategoriesResponseModelItem] = []
+    @Published var fooddetailrespose: [FoodDetailResponseModel] = []
+    @Published var shopresponse: FoodItem?
     @Published var food: [FoodModel] = []
     @Published var offermodel: [OfferModellItem] = []
     @Published var restaurantmodel: [RestaurantResponsModelItem] = []
@@ -145,13 +147,30 @@ class HomeviewModel: ObservableObject {
                   self?.isLoading = false
                   switch result {
                   case .success(let food):
-                      self?.food = food
+                      self?.fooddetailrespose = food
                   case .failure(let error):
                       self?.errorMessage = error.localizedDescription
                   }
               }
           }
       }
+    func getshopid(shopid: Int) {
+           isLoading = true
+           errorMessage = nil
+
+           apiService.getfoodid(foodid: shopid) { [weak self] result in
+               DispatchQueue.main.async {
+                   self?.isLoading = false
+                   switch result {
+                   case .success(let shop):
+                       self?.shopresponse = shop
+                   case .failure(let error):
+                       self?.errorMessage = error.localizedDescription
+                   }
+               }
+           }
+       }
+   
     func logout(userid: String) { // Accept categoryId as a parameter
           isLoading = true
           errorMessage = nil

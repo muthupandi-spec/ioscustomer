@@ -6,12 +6,16 @@ struct ShopDetailView: View {
     let imageNames = ["ban", "ban1", "ban2"]
     @State private var naviagte_orderdetail = false
     @State private var foodCount: Int = 0
+    @StateObject private var viewModel = HomeviewModel()
+    @Environment(\.dismiss) var dismiss
+
     let menuData = [
         ("Biryani", ["Chicken Biryani", "Mutton Biryani", "Veg Biryani"]),
         ("Pizza", ["Cheese Pizza", "Pepperoni Pizza"]),
         ("Drinks", ["Coke", "Pepsi", "Lemonade"])
     ]
-    @StateObject private var viewModel = HomeviewModel()
+    let foodId = UserDefaults.standard.integer(forKey: "selectedFoodId")
+
     
     var body: some View {
         NavigationStack{
@@ -26,10 +30,10 @@ struct ShopDetailView: View {
             .padding(.top, 12)
             .edgesIgnoringSafeArea(.top)
         }.onAppear{
-            viewModel.getorderdetail(orderid: "7678")
-            viewModel.getshopfooditem()
-            viewModel.getbannner()
-            viewModel.getforyou()
+            viewModel.getshopid(shopid: foodId)
+//            viewModel.getshopfooditem()
+//            viewModel.getbannner()
+//            viewModel.getforyou()
         }
         
         
@@ -48,9 +52,13 @@ struct ShopDetailView: View {
             
             Color("AliceBlue")
             HStack{
-                Image("ic_back")
-                    .resizable()
-                    .frame(width: 23, height: 23)
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image("ic_back") // Replace with your back arrow asset
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                }
                 Text("Basha Restaurant")
                     .font(.title)
                     .fontWeight(.bold)
@@ -60,45 +68,60 @@ struct ShopDetailView: View {
             .padding(.horizontal,10)
             .padding(.top, 50)
             
-            
             VStack(alignment: .leading, spacing: 10) {
-                HStack {
-                    Image("ic_biryani")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 100)
-                        .cornerRadius(8)
-                    
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("Biryani")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                        
-                        Text("$12.99")
-                            .font(.subheadline)
-                            .fontWeight(.bold)
-                        
-                        Text("Delicious biryani with rich spices")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        
-                        HStack {
-                            Image(systemName: "star.fill")
-                                .foregroundColor(.yellow)
-                            Text("4.2 | 4.5 reviews")
-                                .font(.caption)
-                                .foregroundColor(.black)
+                if let shop = viewModel.shopresponse {
+                    HStack {
+                        if let imageData = Data(base64Encoded: shop.image),
+                           let uiImage = UIImage(data: imageData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 100)
+                                .cornerRadius(8)
+                        } else {
+                            Image("ic_biryani")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 100)
+                                .cornerRadius(8)
                         }
+
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text(shop.foodName)
+                                .font(.headline)
+                                .fontWeight(.bold)
+
+                            Text("$\(shop.price)")
+                                .font(.subheadline)
+                                .fontWeight(.bold)
+
+                            Text(shop.decription)
+                                .font(.caption)
+                                .foregroundColor(.gray)
+
+                            HStack {
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(.yellow)
+                                Text("4.2 | 4.5 reviews")
+                                    .font(.caption)
+                                    .foregroundColor(.black)
+                            }
+                        }
+
+                        Spacer()
+
+                        Image(systemName: "heart.fill")
+                            .foregroundColor(.red)
                     }
-                    
-                    Spacer()
-                    
-                    Image(systemName: "heart.fill")
+                    .padding()
+                    .background(RoundedRectangle(cornerRadius: 14).fill(Color.white))
+                    .shadow(radius: 2)
+                } else if viewModel.isLoading {
+                    ProgressView("Loading...")
+                } else if let errorMessage = viewModel.errorMessage {
+                    Text("Error: \(errorMessage)")
                         .foregroundColor(.red)
                 }
-                .padding()
-                .background(RoundedRectangle(cornerRadius: 14).fill(Color.white))
-                .shadow(radius: 2)
             }
             .padding(.horizontal)
             
