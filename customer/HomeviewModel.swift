@@ -3,7 +3,9 @@ import Foundation
 class HomeviewModel: ObservableObject {
     @Published var categoriew: [CategoriesResponseModelItem] = []
     @Published var fooddetailrespose: [FoodDetailResponseModel] = []
+    @Published var cartresponse: [CartResponseModel] = []
     @Published var shopresponse: FoodItem?
+    @Published var addcartrespose:Addcartmodel?
     @Published var food: [FoodModel] = []
     @Published var offermodel: [OfferModellItem] = []
     @Published var restaurantmodel: [RestaurantResponsModelItem] = []
@@ -49,6 +51,22 @@ class HomeviewModel: ObservableObject {
                 switch result {
                 case .success(let food):
                     self?.food = food
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+    func getcartitem(customerId: Int) {
+        isLoading = true
+        errorMessage = nil
+
+        apiService.getcart(customerId: customerId) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let food):
+                    self?.cartresponse = food
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
                 }
@@ -148,6 +166,38 @@ class HomeviewModel: ObservableObject {
                   switch result {
                   case .success(let food):
                       self?.fooddetailrespose = food
+                  case .failure(let error):
+                      self?.errorMessage = error.localizedDescription
+                  }
+              }
+          }
+      }
+    func addcart(customerId: Int,foodid:Int,quatity:Int) { // Accept categoryId as a parameter
+          isLoading = true
+          errorMessage = nil
+    
+        apiService.addToCart(customerId: customerId, foodId: foodid, quantity:quatity) { [weak self] result in
+              DispatchQueue.main.async {
+                  self?.isLoading = false
+                  switch result {
+                  case .success(let food):
+                      self?.addcartrespose = food
+                  case .failure(let error):
+                      self?.errorMessage = error.localizedDescription
+                  }
+              }
+          }
+      }
+    func deletecart(customerId: Int,foodid:Int) { // Accept categoryId as a parameter
+          isLoading = true
+          errorMessage = nil
+    
+        apiService.deletecart(customerId: customerId, foodId: foodid) { [weak self] result in
+              DispatchQueue.main.async {
+                  self?.isLoading = false
+                  switch result {
+                  case .success(let food):
+                      self?.addcartrespose = food
                   case .failure(let error):
                       self?.errorMessage = error.localizedDescription
                   }
@@ -335,22 +385,7 @@ class HomeviewModel: ObservableObject {
               }
           }
       }
-    func getcartitem() {
-        isLoading = true
-        errorMessage = nil
-
-        apiService.getcart { [weak self] result in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                switch result {
-                case .success(let food):
-                    self?.food = food
-                case .failure(let error):
-                    self?.errorMessage = error.localizedDescription
-                }
-            }
-        }
-    }
+   
     func transactionhistory() {
         isLoading = true
         errorMessage = nil

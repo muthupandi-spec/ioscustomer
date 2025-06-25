@@ -25,7 +25,7 @@ struct CartView: View {
             }
             .edgesIgnoringSafeArea(.bottom)
         }.onAppear {
-            viewModel.getcartitem()
+            viewModel.getcartitem(customerId: 5 )
             
         }
     }
@@ -52,65 +52,81 @@ struct CartView: View {
     private var productview:some View{
         ScrollView {
             VStack(spacing: 10) {
-                ForEach(0..<5, id: \.self) { _ in
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack(spacing: 10) {
-                            // Product Image with CardView
-                            ZStack {
+                ForEach(viewModel.cartresponse) { cart in
+                    ForEach(cart.cartItems.indices, id: \.self) { index in
+                        let item = cart.cartItems[index]
+                        
+                        ZStack(alignment: .topTrailing) {
+                            HStack(spacing: 10) {
+                                // Image
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 15)
+                                        .fill(Color.white)
+                                        .frame(width: 75, height: 75)
+                                        .shadow(radius: 1)
+
+                                    if let imageData = Data(base64Encoded: item.product.image),
+                                       let uiImage = UIImage(data: imageData) {
+                                        Image(uiImage: uiImage)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 75, height: 75)
+                                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                                    } else {
+                                        Image("placeholder_image")
+                                            .resizable()
+                                            .frame(width: 75, height: 75)
+                                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                                    }
+                                }
+
+                                // Details
+                                VStack(alignment: .leading, spacing: 5) {
+                                    Text(item.product.foodName)
+                                        .font(.system(size: 14, weight: .bold))
+                                        .foregroundColor(.black)
+
+                                    Text("\(item.quantity) item")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(.gray)
+
+                                    Text("₹\(item.subTotal, specifier: "%.2f")")
+                                        .font(.system(size: 14, weight: .bold))
+                                        .foregroundColor(.blue)
+                                }
+
+                                Spacer()
+
+                                Image("heart_selector")
+                                    .resizable()
+                                    .frame(width: 15, height: 15)
+                                    .opacity(0.5)
+                            }
+                            .padding(10)
+                            .background(
                                 RoundedRectangle(cornerRadius: 15)
                                     .fill(Color.white)
-                                    .frame(width: 75, height: 75)
-                                    .shadow(radius: 1)
+                                    .shadow(radius: 2)
+                            )
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+
+                            // 🗑️ Delete Button
+                            Button(action: {
+                                print("🗑️ Delete tapped for foodId: \(item.product.foodId)")
+                                // Call your delete API or local removal logic here
+                                // viewModel.deleteItem(cartId: cart.id, foodId: item.product.foodId)
                                 
-                                Image("frenchfries")
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 75, height: 75)
-                                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                                viewModel.deletecart(customerId: 5, foodid: item.product.foodId)
+                            }) {
+                                Image(systemName: "trash")
+                                    .foregroundColor(.red)
+                                    .padding(18)
                             }
-                            
-                            VStack(alignment: .leading, spacing: 5) {
-                                Text("French Fries")
-                                    .font(.system(size: 14, weight: .bold))
-                                    .foregroundColor(Color.black)
-                                
-                                HStack(spacing: 5) {
-                                    Text("2 item")
-                                        .font(.system(size: 12))
-                                        .foregroundColor(Color.gray)
-                                    
-                                    Rectangle()
-                                        .fill(Color.gray)
-                                        .frame(width: 1, height: 12)
-                                    
-                                    Text("2 km")
-                                        .font(.system(size: 12))
-                                        .foregroundColor(Color.gray)
-                                }
-                                
-                                Text("$15")
-                                    .font(.system(size: 14, weight: .bold))
-                                    .foregroundColor(Color.blue)
-                            }
-                            
-                            Spacer()
-                            
-                            Image("heart_selector") // Favorite icon
-                                .resizable()
-                                .frame(width: 15, height: 15)
-                                .opacity(0) // Hidden initially
                         }
-                        .padding(10)
                     }
-                    .background(
-                        RoundedRectangle(cornerRadius: 15)
-                            .fill(Color.white)
-                            .shadow(radius: 2)
-                    )
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
                 }
-            }
+                        }
             .padding(.bottom, 60) // Ensure button is not overlapped when scrolling
         }.padding(.horizontal,10).padding(.vertical,20)
     }

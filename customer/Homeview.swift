@@ -352,10 +352,15 @@ struct HomeView: View {
                          .background(Color.white)
                          .clipShape(RoundedRectangle(cornerRadius: 12))
                          .overlay(
-                             Image("heart")
-                                 .resizable()
-                                 .frame(width: 20, height: 20)
-                                 .padding(8),
+                             Button(action: {
+                                 print("❤️ Heart tapped for foodId: \(food.foodId)")
+                                 viewModel.addcart(customerId: 5, foodid: food.foodId, quatity: 1)
+                             }) {
+                                 Image("heart")
+                                     .resizable()
+                                     .frame(width: 20, height: 20)
+                                     .padding(8)
+                             },
                              alignment: .topTrailing
                          )
 
