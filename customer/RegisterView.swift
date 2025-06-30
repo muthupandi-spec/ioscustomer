@@ -2,7 +2,8 @@ import SwiftUI
 import CountryPickerView
 
 struct RegisterView: View {
-    
+    @State private var showAlert = false
+    @State private var alertMessage = ""
     @State private var selectedCountryCode: String = "+91"
     @State private var phoneNumber: String = ""
     @State private var selectedGender = "Male"
@@ -35,10 +36,15 @@ struct RegisterView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     genderselection
                     // Sign Up Button
+                   
                     Button(action: {
-                        print("Sign Up Pressed")
-                        viewModel.register()
-                    }) {
+                        if validateFields() {
+                            print("Sign Up Pressed ✅")
+                            viewModel.register()
+                        } else {
+                            showAlert = true
+                        }
+                    }){
                         Text("Sign Up")
                             .font(.headline)
                             .frame(maxWidth: .infinity, minHeight: 40)
@@ -47,6 +53,9 @@ struct RegisterView: View {
                             .cornerRadius(10)
                     }
                     .padding(.horizontal, 10)
+                    .alert(isPresented: $showAlert) {
+                        Alert(title: Text("Validation Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                    }
                 }
                 .padding()
             }
@@ -163,7 +172,48 @@ struct RegisterView: View {
         .padding(.horizontal)
         
     }
-    
+    private func validateFields() -> Bool {
+        if viewModel.firstname.isEmpty {
+            alertMessage = "Please enter your first name"
+            return false
+        }
+        if viewModel.lastname.isEmpty {
+            alertMessage = "Please enter your last name"
+            return false
+        }
+        if viewModel.city.isEmpty {
+            alertMessage = "Please enter your city"
+            return false
+        }
+        if viewModel.address.isEmpty {
+            alertMessage = "Please enter your address"
+            return false
+        }
+        if date.isEmpty {
+            alertMessage = "Please select your date of birth"
+            return false
+        }
+        if viewModel.mobileno.isEmpty || viewModel.mobileno.count < 8 {
+            alertMessage = "Please enter a valid mobile number"
+            return false
+        }
+        if viewModel.email.isEmpty || !isValidEmail(viewModel.email) {
+            alertMessage = "Please enter a valid email address"
+            return false
+        }
+        if viewModel.regiaterpassword.isEmpty || viewModel.regiaterpassword.count < 6 {
+            alertMessage = "Password must be at least 6 characters"
+            return false
+        }
+        return true
+    }
+
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let predicate = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return predicate.evaluate(with: email)
+    }
+
     
 }
 

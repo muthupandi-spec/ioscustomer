@@ -25,7 +25,7 @@ struct CartView: View {
             }
             .edgesIgnoringSafeArea(.bottom)
         }.onAppear {
-            viewModel.getcartitem(customerId: 5 )
+            viewModel.getcartitem(customerId: 4 )
             
         }
     }
@@ -117,7 +117,12 @@ struct CartView: View {
                                 // Call your delete API or local removal logic here
                                 // viewModel.deleteItem(cartId: cart.id, foodId: item.product.foodId)
                                 
-                                viewModel.deletecart(customerId: 5, foodid: item.product.foodId)
+                                viewModel.deletecart(customerId: 4, foodid: item.product.foodId) { success in
+                                    if success {
+                                        viewModel.getcartitem(customerId: 4)
+                                    }
+                                }
+    
                             }) {
                                 Image(systemName: "trash")
                                     .foregroundColor(.red)

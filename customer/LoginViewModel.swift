@@ -67,7 +67,7 @@ class LoginViewModel: ObservableObject {
             self.isLoading = true
             self.errorMessage = nil
       
-        apiService.register(firstname: firstname, lastname: lastname, city: city, address: address, date: date, email: email, password: regiaterpassword,mobileno: mobileno,gender: gender) { [weak self] result in
+        apiService.register(firstName: firstname, lastName: lastname, city: city, address: address, emailId: email, password: regiaterpassword,mobileNumber: mobileno) { [weak self] result in
                 DispatchQueue.main.async {
                     self?.isLoading = false
                     switch result {

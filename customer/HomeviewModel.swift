@@ -6,6 +6,7 @@ class HomeviewModel: ObservableObject {
     @Published var cartresponse: [CartResponseModel] = []
     @Published var shopresponse: FoodItem?
     @Published var addcartrespose:Addcartmodel?
+    @Published var deletecart:DeleteCartModel?
     @Published var food: [FoodModel] = []
     @Published var offermodel: [OfferModellItem] = []
     @Published var restaurantmodel: [RestaurantResponsModelItem] = []
@@ -188,22 +189,25 @@ class HomeviewModel: ObservableObject {
               }
           }
       }
-    func deletecart(customerId: Int,foodid:Int) { // Accept categoryId as a parameter
-          isLoading = true
-          errorMessage = nil
-    
+    func deletecart(customerId: Int, foodid: Int, completion: @escaping (Bool) -> Void) {
+        isLoading = true
+        errorMessage = nil
+
         apiService.deletecart(customerId: customerId, foodId: foodid) { [weak self] result in
-              DispatchQueue.main.async {
-                  self?.isLoading = false
-                  switch result {
-                  case .success(let food):
-                      self?.addcartrespose = food
-                  case .failure(let error):
-                      self?.errorMessage = error.localizedDescription
-                  }
-              }
-          }
-      }
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let response):
+                    self?.deletecart = response
+                    completion(true)
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                    completion(false)
+                }
+            }
+        }
+    }
+
     func getshopid(shopid: Int) {
            isLoading = true
            errorMessage = nil

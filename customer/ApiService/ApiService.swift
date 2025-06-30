@@ -1,7 +1,7 @@
 import Foundation
 
 class APIService {
-    let baseurl="https://95c7-2409-40f4-1117-a81e-cc6b-a38f-9e30-f634.ngrok-free.app/"
+    let baseurl="https://bfde-2409-40f4-3088-afaf-8c32-22a1-8b83-6f79.ngrok-free.app/"
     func fetchUsers(completion: @escaping (Result<[UserModel], Error>) -> Void) {
         let urlString = "https://jsonplaceholder.typicode.com/users" // Replace with your actual API URL
         guard let url = URL(string: urlString) else {
@@ -363,8 +363,8 @@ class APIService {
 
         task.resume()
     }
-    func deletecart(customerId: Int, foodId: Int, completion: @escaping (Result<Addcartmodel, Error>) -> Void) {
-        let urlString = "\(baseurl)restaurant/api/cart/add/\(customerId)/\(foodId)"
+    func deletecart(customerId: Int, foodId: Int, completion: @escaping (Result<DeleteCartModel, Error>) -> Void) {
+        let urlString = "\(baseurl)restaurant/api/cart/deletecart/\(customerId)/\(foodId)"
         
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
@@ -397,7 +397,7 @@ class APIService {
             print("📩 Response: \(String(data: data, encoding: .utf8) ?? "Invalid response")")
 
             do {
-                let decodedData = try JSONDecoder().decode(Addcartmodel.self, from: data)
+                let decodedData = try JSONDecoder().decode(DeleteCartModel.self, from: data)
                 completion(.success(decodedData))
             } catch {
                 print("💥 JSON Decode Error: \(error.localizedDescription)")
@@ -1428,8 +1428,8 @@ class APIService {
 
         task.resume()
     }
-    func register(firstname: String, lastname: String, city: String, address: String,date: String, email: String,password: String,mobileno: String,gender: String,completion: @escaping (Result<FoodModel, Error>) -> Void) {
-        let urlString = baseurl + "/login" // Replace with your actual login endpoint
+    func register(firstName: String, lastName: String, city: String, address: String, emailId: String,password: String,mobileNumber: String,completion: @escaping (Result<FoodModel, Error>) -> Void) {
+        let urlString = baseurl + "api/auth/v1/register" // Replace with your actual login endpoint
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
@@ -1440,7 +1440,7 @@ class APIService {
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 
         // ✅ URL-encoded POST body
-        let postString = "firstname=\(firstname)&lastname=\(lastname)&date=\(date)&city=\(city)&address=\(address)&email=\(email)&password=\(password)&mobileno=\(mobileno)&gender=\(gender)"
+        let postString = "firstName=\(firstName)&lastName=\(lastName)&city=\(city)&address=\(address)&emailId=\(emailId)&password=\(password)&mobileNumber=\(mobileNumber)"
         request.httpBody = postString.data(using: .utf8)
 
         print("🔗 Request URL: \(url.absoluteString)")

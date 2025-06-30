@@ -354,7 +354,7 @@ struct HomeView: View {
                          .overlay(
                              Button(action: {
                                  print("❤️ Heart tapped for foodId: \(food.foodId)")
-                                 viewModel.addcart(customerId: 5, foodid: food.foodId, quatity: 1)
+                                 viewModel.addcart(customerId: 4, foodid: food.foodId, quatity: 1)
                              }) {
                                  Image("heart")
                                      .resizable()

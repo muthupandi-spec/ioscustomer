@@ -96,7 +96,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "656"
             endingLineNumber = "656"
-            landmarkName = "getCategoryid(categoryId:completion:)"
+            landmarkName = "getcategorylist(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
