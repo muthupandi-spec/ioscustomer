@@ -2,7 +2,10 @@ import Foundation
 
 class HomeviewModel: ObservableObject {
     @Published var categoriew: [CategoriesResponseModelItem] = []
+    @Published var restauratcategory: [RestaurantCategoriesResponseModelItemm] = []
+    @Published var restauratfood: [RestaurantFoodItem] = []
     @Published var fooddetailrespose: [FoodDetailResponseModel] = []
+    @Published var resfooddetailrespose: [FoodDetailResponseModel] = []
     @Published var cartresponse: [CartResponseModel] = []
     @Published var shopresponse: FoodItem?
     @Published var addcartrespose:Addcartmodel?
@@ -91,6 +94,24 @@ class HomeviewModel: ObservableObject {
             }
         }
     }
+    func getrestauerantcategory() {
+        isLoading = true
+        errorMessage = nil
+        
+        apiService.getrestaurantcategorylist { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let items):
+                    self?.restauratcategory = items
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                    print("🛑 API Error: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
     func getbrach() {
         isLoading = true
         errorMessage = nil
@@ -167,6 +188,22 @@ class HomeviewModel: ObservableObject {
                   switch result {
                   case .success(let food):
                       self?.fooddetailrespose = food
+                  case .failure(let error):
+                      self?.errorMessage = error.localizedDescription
+                  }
+              }
+          }
+      }
+    func getrestCategoryid(categoryId: String) { // Accept categoryId as a parameter
+          isLoading = true
+          errorMessage = nil
+
+          apiService.getrestCategoryid(categoryId: categoryId) { [weak self] result in
+              DispatchQueue.main.async {
+                  self?.isLoading = false
+                  switch result {
+                  case .success(let food):
+                      self?.restauratfood = food
                   case .failure(let error):
                       self?.errorMessage = error.localizedDescription
                   }
@@ -356,16 +393,16 @@ class HomeviewModel: ObservableObject {
               }
           }
       }
-    func productchannge(type: String) {
+    func productchannge(resid:Int,type: String) {
           isLoading = true
           errorMessage = nil
 
-          apiService.changecategory(type: type) { [weak self] result in
+        apiService.changecategory(resid:resid,type: type) { [weak self] result in
               DispatchQueue.main.async {
                   self?.isLoading = false
                   switch result {
                   case .success(let food):
-                      self?.food = food
+                      self?.restauratfood = food
                   case .failure(let error):
                       self?.errorMessage = error.localizedDescription
                   }

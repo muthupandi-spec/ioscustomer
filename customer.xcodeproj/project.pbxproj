@@ -22,6 +22,8 @@
 		FA42AE1C2D95099B00F724EE /* AddnewAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42AE1B2D95099B00F724EE /* AddnewAddressView.swift */; };
 		FA42AE202D9510C700F724EE /* TopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42AE1F2D9510C700F724EE /* TopUpView.swift */; };
 		FA42AE222D95157D00F724EE /* TrackOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42AE212D95157D00F724EE /* TrackOrderView.swift */; };
+		FA49AF362E1514E9008C76F7 /* Restaurantcategorymodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA49AF352E1514E9008C76F7 /* Restaurantcategorymodel.swift */; };
+		FA49AF382E151D0E008C76F7 /* Restaurantooditem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA49AF372E151D0E008C76F7 /* Restaurantooditem.swift */; };
 		FA505A8B2D939334003CF1DD /* PaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA505A8A2D939334003CF1DD /* PaymentView.swift */; };
 		FA505A8D2D93A61B003CF1DD /* ActiveOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA505A8C2D93A61B003CF1DD /* ActiveOrderView.swift */; };
 		FA505A8F2D93A80F003CF1DD /* CacelOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA505A8E2D93A80F003CF1DD /* CacelOrderView.swift */; };
@@ -96,6 +98,8 @@
 		FA42AE1B2D95099B00F724EE /* AddnewAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddnewAddressView.swift; sourceTree = "<group>"; };
 		FA42AE1F2D9510C700F724EE /* TopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopUpView.swift; sourceTree = "<group>"; };
 		FA42AE212D95157D00F724EE /* TrackOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackOrderView.swift; sourceTree = "<group>"; };
+		FA49AF352E1514E9008C76F7 /* Restaurantcategorymodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurantcategorymodel.swift; sourceTree = "<group>"; };
+		FA49AF372E151D0E008C76F7 /* Restaurantooditem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurantooditem.swift; sourceTree = "<group>"; };
 		FA505A8A2D939334003CF1DD /* PaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentView.swift; sourceTree = "<group>"; };
 		FA505A8C2D93A61B003CF1DD /* ActiveOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveOrderView.swift; sourceTree = "<group>"; };
 		FA505A8E2D93A80F003CF1DD /* CacelOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacelOrderView.swift; sourceTree = "<group>"; };
@@ -238,6 +242,8 @@
 				FACA01282E0C5C900045E87D /* AddcartResposemodel.swift */,
 				FACA012A2E0C652D0045E87D /* Cartresposemodel.swift */,
 				FABBD1252E0E6586007139F7 /* DeleteCartModel.swift */,
+				FA49AF352E1514E9008C76F7 /* Restaurantcategorymodel.swift */,
+				FA49AF372E151D0E008C76F7 /* Restaurantooditem.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -453,6 +459,7 @@
 				FA254EFC2D8E831700406220 /* OfferView.swift in Sources */,
 				FA9A53302E12654500FCCD24 /* ResturantView.swift in Sources */,
 				FA8324E62D9008FE004EB45B /* SearchView.swift in Sources */,
+				FA49AF362E1514E9008C76F7 /* Restaurantcategorymodel.swift in Sources */,
 				FA254EFE2D8E847600406220 /* NotificationView.swift in Sources */,
 				FA593FDD2D91263C00768A2A /* ShopDetailView.swift in Sources */,
 				FA707A032D9BC3E000DE6C96 /* LoginViewModel.swift in Sources */,
@@ -469,6 +476,7 @@
 				FA8B16602D8D264A00C4699C /* Homeview.swift in Sources */,
 				FA3854C52D940B3E00FB4E6D /* ProfileView.swift in Sources */,
 				FA7079FA2D9BC25300DE6C96 /* UserModel.swift in Sources */,
+				FA49AF382E151D0E008C76F7 /* Restaurantooditem.swift in Sources */,
 				FA35EE2E2D8FD5D6000D09CA /* Bottomview.swift in Sources */,
 				FACA5E102E04F56100925C82 /* FoodDetailResponseModel.swift in Sources */,
 				FA7079FC2D9BC27200DE6C96 /* ApiService.swift in Sources */,

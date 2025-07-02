@@ -9,7 +9,8 @@ struct HomeView: View {
     @State private var navigateRecommend = false
     @State private var navigateSearch = false
     @State private var navigateDetail = false
-    
+    @State private var navigateRestaurat = false
+    @AppStorage("selectedRestaurantId") var selectedRestaurantId: Int = 0
     @StateObject private var viewModel = HomeviewModel()
     
     let imageNames = ["ban", "ban1", "ban2"]
@@ -221,10 +222,19 @@ struct HomeView: View {
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 15).fill(Color.white))
                     .shadow(radius: 2)
-                    .padding(.vertical)
+                    .padding(.vertical) .onTapGesture {
+                   
+                        selectedRestaurantId = branch.restaurantId
+                           navigateRestaurat = true
+                        let id=branch.restaurantId
+                            navigateRestaurat = true
+                        
+                    }
                 }
             }
             .padding(.horizontal) // Ensures smooth horizontal
+        }.fullScreenCover(isPresented: $navigateRestaurat) {
+            RestaurantView()
         }
     }
     private var branchesSection: some View {

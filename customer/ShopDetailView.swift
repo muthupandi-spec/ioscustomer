@@ -194,7 +194,8 @@ struct ShopDetailView: View {
                     .labelsHidden()
                     .toggleStyle(SwitchToggleStyle(tint: Color.green))
                     .onChange(of: isVeg) { _ in
-                        viewModel.productchannge(type: "veg")                            }
+                        //                        viewModel.productchannge(type: "veg")
+                    }
                 
                 Spacer().frame(width: 24)
                 
@@ -205,7 +206,7 @@ struct ShopDetailView: View {
                     .labelsHidden()
                     .toggleStyle(SwitchToggleStyle(tint: Color.red))
                     .onChange(of: isNonVeg) { _ in
-                        viewModel.productchannge(type: "nonveg")
+//                        viewModel.productchannge(type: "nonveg")
                     }
             }
             .padding(.horizontal, 18)
