@@ -13,8 +13,10 @@ struct RegisterView: View {
     @State private var adddress: String = ""
     @State private var date: String = ""
     @State private var email: String = ""
+    @State private var showOTPDialog = false
     @State private var passsword: String = ""
     @State private var selectedDate = Date()
+    @State private var navigateToLogin = false
     @State private var showDatePicker = false
     @StateObject private var viewModel = LoginViewModel()
     let genders = ["Male", "Female", "Others"]
@@ -40,11 +42,21 @@ struct RegisterView: View {
                     Button(action: {
                         if validateFields() {
                             print("Sign Up Pressed ✅")
-                            viewModel.register()
+                            viewModel.register { result in
+                                switch result {
+                                case .success(let model):
+                                    print("✅ Registered user ID: \(model.message)")
+                                showOTPDialog=true
+                                case .failure(let error):
+                                    print("❌ Registration failed: \(error.localizedDescription)")
+                                    showAlert = true
+                                }
+                            }
+
                         } else {
                             showAlert = true
                         }
-                    }){
+                    }) {
                         Text("Sign Up")
                             .font(.headline)
                             .frame(maxWidth: .infinity, minHeight: 40)
@@ -54,14 +66,41 @@ struct RegisterView: View {
                     }
                     .padding(.horizontal, 10)
                     .alert(isPresented: $showAlert) {
-                        Alert(title: Text("Validation Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                        Alert(
+                            title: Text("Validation Error"),
+                            message: Text(alertMessage),
+                            dismissButton: .default(Text("OK"))
+                        )
                     }
+
+
                 }
                 .padding()
+                .overlay(
+                        Group {
+                            if showOTPDialog {
+                                OTPDialogView(
+                                               isPresented: $showOTPDialog,
+                                               phoneNumber: phoneNumber
+                                           ) { enteredOtp in
+                                               viewModel.otp = enteredOtp
+                                               viewModel.verifyotp{
+                                                 success in
+                                                                           navigateToLogin = true
+                                                                       
+                                                   
+                                               }
+                                           }
+                            }
+                        }
+                    )
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .navigationBarBackButtonHidden(true)
-            
+            .navigationDestination(isPresented:
+                                    $navigateToLogin) {
+                LoginView()
+            }
             .sheet(isPresented: $showDatePicker) {
                 datepicker
                 
@@ -103,7 +142,9 @@ struct RegisterView: View {
                 .font(.system(size: 14))
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(5)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity).onAppear{
+                    phoneNumber=viewModel.mobileno
+                }
         }
         .frame(maxWidth: .infinity)
     }
@@ -250,6 +291,68 @@ struct CountryCodePicker: UIViewRepresentable {
     }
 }
 
+struct OTPDialogView: View {
+    @Binding var isPresented: Bool
+    @State private var otpText: String = ""
+    var phoneNumber: String
+    var onVerify: (String) -> Void  // ✅ Callback to trigger OTP verification
+
+    var body: some View {
+        ZStack {
+            // Full-screen background with tap-to-dismiss
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    isPresented = false
+                }
+            
+            VStack(spacing: 16) {
+                Text("Enter OTP sent to \(phoneNumber)")
+                    .font(.headline)
+                    .multilineTextAlignment(.center)
+                    .padding()
+                
+                TextField("Enter OTP", text: $otpText)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .keyboardType(.numberPad)
+                    .padding(.horizontal)
+                
+                HStack(spacing: 10) {
+                    Button(action: {
+                        isPresented = false
+                    }) {
+                        Text("Cancel")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, minHeight: 44)
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(8)
+                    }
+                    
+                    Button(action: {
+                        if otpText.isEmpty {
+                            print("Please enter OTP") // Replace with a toast/snackbar
+                        } else {
+                            onVerify(otpText)         // ✅ Call the verify function
+                                                
+                            isPresented = false
+                        }
+                    }) {
+                        Text("Submit")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, minHeight: 44)
+                            .background(Color("colorPrimary"))
+                            .cornerRadius(8)
+                    }
+                }
+                .padding(.horizontal)
+            }
+            .padding()
+            .background(Color.white)
+            .cornerRadius(12)
+            .frame(width: 300)
+        }
+    }
+}
 
 // Preview
 struct Register_View: PreviewProvider {
