@@ -1112,7 +1112,7 @@ class APIService {
         task.resume()
     }
     func checkoutapi(orderid: String, completion: @escaping (Result<[FoodModel], Error>) -> Void) {
-        let urlString = baseurl + "/checkout" // Replace with actual API URL
+        let urlString = baseurl + "restaurant/api/orders/confirmorder/{customerId}/{id}" // Replace with actual API URL
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return

@@ -5,6 +5,7 @@ struct FoodDetailView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject private var viewModel = HomeviewModel()
     let foodId = UserDefaults.standard.integer(forKey: "selectedFoodId")
+    @State private var navigatecheckout = false
 
     var body: some View {
         NavigationStack{
@@ -141,6 +142,7 @@ struct FoodDetailView: View {
                 HStack(spacing: 16) {
                     Button("Add to cart") {
                         // Action here
+                        viewModel.addcart(customerId: UserDefaults.standard.integer(forKey: "customerID"), foodid: UserDefaults.standard.integer(forKey: "selectedFoodId"), quatity: foodCount)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -149,7 +151,8 @@ struct FoodDetailView: View {
                     .cornerRadius(6)
                     
                     Button("View Cart") {
-                        // Action here
+navigatecheckout=true
+            
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -165,7 +168,8 @@ struct FoodDetailView: View {
         }
         .onAppear{
             viewModel.getshopid(shopid: foodId)
-            
+        }.fullScreenCover(isPresented: $navigatecheckout) {
+            OrderDetailView()
         }
     }
 }

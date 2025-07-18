@@ -22,7 +22,7 @@ struct OrderDetailView: View {
                     // **Toolbar**
                toolbar
                     // **Food Card**
-                    foodcart
+//                    foodcart
             
                     // **Section Divider**
                     Rectangle()
@@ -87,8 +87,10 @@ struct OrderDetailView: View {
             
         }
         .onAppear{
-            viewModel.getfooddetail(foodid: "5275")
-            viewModel.getrestaurantfood()
+//            viewModel.getfooddetail(foodid: "5275")
+//            viewModel.getrestaurantfood()
+            viewModel.getcartitem(customerId:UserDefaults.standard.integer(forKey: "customerID") )
+
         }
         
     }
@@ -173,60 +175,76 @@ struct OrderDetailView: View {
         .padding(.horizontal, 18)
         .padding(.top, 20)
         .padding(.bottom, 18)
+        .opacity(0)
     }
     private var foodlist:some View{
-        ForEach(0..<3, id: \.self) { _ in
-            VStack(alignment: .leading, spacing: 10) {
-                HStack {
-                    Text("Biryani")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(.black)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+        ForEach(viewModel.cartresponse) { cart in
+            ForEach(cart.cartItems.indices, id: \.self) { index in
+                let item = cart.cartItems[index]
+                let product = item.product
+                let foodId = product.foodId
+
+                VStack(alignment: .leading, spacing: 10) {
                     
-                    if foodCount > 0 {
-                        HStack(spacing: 10) {
-                            Button(action: { foodCount -= 1 }) {
-                                Image("minimize-sign")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 20, height: 20)
+                    HStack {
+                        
+                        Text(product.foodName)
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundColor(.black)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                        if item.quantity > 0 {
+                            HStack(spacing: 10) {
+                                Button(action: {
+                                 
+                                }) {
+                                    Image("minimize-sign")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 20, height: 20)
+                                }
+
+                                Text("\(item.quantity)")
+                                    .font(.system(size: 13, weight: .bold))
+                                    .foregroundColor(Color("colorPrimary"))
+
+                                Button(action: {
+                            
+                                }) {
+                                    Image("add")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 20, height: 20)
+                                }
                             }
+                            .padding(2)
+                            .background(RoundedRectangle(cornerRadius: 7)
+                                .stroke(Color("colorPrimary"), lineWidth: 1))
+                        } else {
+                            Button(action: {
                             
-                            Text("\(foodCount)")
-                                .font(.system(size: 13, weight: .bold))
-                                .foregroundColor(Color("colorPrimary"))
-                            
-                            Button(action: { foodCount += 1 }) {
-                                Image("add")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 20, height: 20)
+                            }) {
+                                Text("Add")
+                                    .font(.system(size: 13, weight: .bold))
+                                    .foregroundColor(.black)
+                                    .padding(8)
+                                    .background(RoundedRectangle(cornerRadius: 7)
+                                        .stroke(Color("colorPrimary"), lineWidth: 1))
                             }
                         }
-                        .padding(2)
-                        .background(RoundedRectangle(cornerRadius: 7)
-                            .stroke(Color("colorPrimary"), lineWidth: 1))
-                    } else {
-                        Button(action: { foodCount = 1 }) {
-                            Text("Add")
-                                .font(.system(size: 13, weight: .bold))
-                                .foregroundColor(.black)
-                                .padding(8)
-                                .background(RoundedRectangle(cornerRadius: 7)
-                                    .stroke(Color("colorPrimary"), lineWidth: 1))
-                        }
+
+                        Spacer()
+
+                        Text("₹\(item.subTotal, specifier: "%.2f")")
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundColor(.black)
                     }
-                    
-                    Spacer()
-                    
-                    Text("10$")
-                        .font(.system(size: 13, weight: .bold))
-                        .foregroundColor(.black)
+
+                    Divider().background(Color.gray.opacity(0.3))
                 }
-                
-                Divider().background(Color.gray.opacity(0.3))
+                .padding(.top, 14)
+                .padding(.horizontal)
             }
-            .padding()
         }
 
     }
