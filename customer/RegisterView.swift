@@ -45,7 +45,7 @@ struct RegisterView: View {
                             viewModel.register { result in
                                 switch result {
                                 case .success(let model):
-                                    print("✅ Registered user ID: \(model.message)")
+                                    print("✅ Registered user ID: \(model.customerId)")
                                 showOTPDialog=true
                                 case .failure(let error):
                                     print("❌ Registration failed: \(error.localizedDescription)")

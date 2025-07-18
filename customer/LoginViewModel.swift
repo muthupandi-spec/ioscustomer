@@ -8,6 +8,7 @@ class LoginViewModel: ObservableObject {
     @Published var otp: String = ""
     @Published var firstname: String = ""
     @Published var register:RegisterResponseModel?
+    @Published var loginn:LoginResponseModel?
     @Published var otpres:OtpResponseModel?
 
     @Published var lastname: String = ""
@@ -17,7 +18,7 @@ class LoginViewModel: ObservableObject {
     @Published var city: String = ""
     @Published var address: String = ""
     @Published var date: String = ""
-    @Published var password: String = "hgfhfh"
+    @Published var password: String = ""
     @Published var regiaterpassword: String = ""
     @Published var loginSuccess: Bool = false
     private let apiService = APIService()
@@ -38,33 +39,33 @@ class LoginViewModel: ObservableObject {
             }
         }
     }
-    func login() {
-            guard !email.isEmpty, !password.isEmpty else {
-                self.errorMessage = "Please enter both email and password"
-                return
-            }
-            
-            self.isLoading = true
-            self.errorMessage = nil
-            
+    func login(completion: @escaping (Result<LoginResponseModel, Error>) -> Void) {
+        guard !email.isEmpty, !password.isEmpty else {
+            self.errorMessage = "Please enter both email and password"
+            return
+        }
+
+        self.isLoading = true
+        self.errorMessage = nil
+
         apiService.loginUser(email: email, password: password) { [weak self] result in
-                DispatchQueue.main.async {
-                    self?.isLoading = false
-                    switch result {
-                    case .success(let response):
-                        if response.status {
-                            self?.loginSuccess = true
-                            print("✅ Login Success: \(response.message)")
-                            // You can store user data here if needed
-                        } else {
-                            self?.errorMessage = response.message
-                        }
-                    case .failure(let error):
-                        self?.errorMessage = error.localizedDescription
-                    }
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let response):
+                    // Here we assume the API has no wrapper like "status/message", just direct LoginResponseModel
+                    self?.loginn = response
+                    completion(.success(response)) // ✅ return full model
+
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                    completion(.failure(error)) // ✅ return error
                 }
             }
         }
+    }
+
+
     func register(completion: @escaping (Result<RegisterResponseModel, Error>) -> Void) {
         self.isLoading = true
         self.errorMessage = nil

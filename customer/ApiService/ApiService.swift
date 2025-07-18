@@ -1,7 +1,7 @@
 import Foundation
 
 class APIService {
-    let baseurl="https://7ed30a9f4b36.ngrok-free.app/"
+    let baseurl="https://1109001a2c4f.ngrok-free.app/"
     func fetchUsers(completion: @escaping (Result<[UserModel], Error>) -> Void) {
         let urlString = "https://jsonplaceholder.typicode.com/users" // Replace with your actual API URL
         guard let url = URL(string: urlString) else {
@@ -1416,8 +1416,8 @@ class APIService {
         task.resume()
     }
     
-    func loginUser(email: String, password: String, completion: @escaping (Result<FoodModel, Error>) -> Void) {
-        let urlString = baseurl + "/login" // Replace with your actual login endpoint
+    func loginUser(email: String, password: String, completion: @escaping (Result<LoginResponseModel, Error>) -> Void) {
+        let urlString = baseurl + "restaurant/api/auth/login"
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
@@ -1425,39 +1425,35 @@ class APIService {
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        // ✅ URL-encoded POST body
-        let postString = "email=\(email)&password=\(password)"
-        request.httpBody = postString.data(using: .utf8)
+        let body: [String: Any] = [
+            "userName": email,
+            "password": password
+        ]
 
-        print("🔗 Request URL: \(url.absoluteString)")
-        print("📨 Request Body: \(postString)")
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        } catch {
+            completion(.failure(error))
+            return
+        }
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("❌ Error: \(error.localizedDescription)")
                 completion(.failure(error))
                 return
             }
 
-            if let httpResponse = response as? HTTPURLResponse {
-                print("📡 Response Status Code: \(httpResponse.statusCode)")
-            }
-
             guard let data = data else {
-                print("⚠️ No data received")
                 completion(.failure(NSError(domain: "No Data", code: 0, userInfo: nil)))
                 return
             }
 
-            print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8 Data")")
-
             do {
-                let responseData = try JSONDecoder().decode(FoodModel.self, from: data)
+                let responseData = try JSONDecoder().decode(LoginResponseModel.self, from: data)
                 completion(.success(responseData))
             } catch {
-                print("💥 JSON Decoding Error: \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }

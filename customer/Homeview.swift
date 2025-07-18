@@ -282,9 +282,8 @@ struct HomeView: View {
             }
             .padding(.horizontal, 10)
         }
-        .onAppear {
-            // Preselect first chip and call API
-            if selectedChip == nil, let firstChip = viewModel.categoriew.first {
+        .onChange(of: viewModel.categoriew) { newList in
+            if selectedChip == nil, let firstChip = newList.first {
                 selectedChip = firstChip
                 viewModel.getCategoryid(categoryId: String(firstChip.categoryId))
             }
@@ -423,7 +422,7 @@ struct HomeView: View {
                  }
              }
              .fullScreenCover(isPresented: $navigateDetail) {
-                 ShopDetailView()
+                 FoodDetailView()
              }
          
     }

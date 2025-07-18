@@ -1,6 +1,16 @@
 import Foundation
 
 struct RegisterResponseModel: Codable {
-    let message: String
+    let customerId: Int
+      let firstName: String
+      let lastName: String
+      let email: String
+      let mobileNumber: String
+      let password: String
+      let confirmpassword: String
+      let isDelete: Bool
+      let fcmToken: String
+      let otp: String?
+      let isVerified: Bool?
    
 }

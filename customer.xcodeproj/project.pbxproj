@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA0B0BA72E29DACB00D78B90 /* Fooddetailview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0B0BA62E29DACB00D78B90 /* Fooddetailview.swift */; };
 		FA1C6CA82E1D724B00A3F998 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA1C6CA72E1D724B00A3F998 /* GoogleService-Info.plist */; };
 		FA1C6CAB2E1D744600A3F998 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = FA1C6CAA2E1D744600A3F998 /* FirebaseAnalytics */; };
 		FA1C6CAD2E1D744600A3F998 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = FA1C6CAC2E1D744600A3F998 /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -86,6 +87,7 @@
 		FA9242FE2D8BDBB600B3B546 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = FA9242FD2D8BDBB600B3B546 /* Algorithms */; };
 		FA9243042D8BDE5E00B3B546 /* CountryPickerView in Frameworks */ = {isa = PBXBuildFile; productRef = FA9243032D8BDE5E00B3B546 /* CountryPickerView */; };
 		FA9243062D8BE50400B3B546 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9243052D8BE50400B3B546 /* RegisterView.swift */; };
+		FA96F66D2E2A0B4800FD018F /* LoginResponsemodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA96F66C2E2A0B4800FD018F /* LoginResponsemodel.swift */; };
 		FA9A53302E12654500FCCD24 /* ResturantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9A532F2E12654500FCCD24 /* ResturantView.swift */; };
 		FAA430662E1E3F0B001A9805 /* Registermodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA430652E1E3F0B001A9805 /* Registermodel.swift */; };
 		FAA430682E1E4935001A9805 /* OtpResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA430672E1E4935001A9805 /* OtpResponseModel.swift */; };
@@ -115,6 +117,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FA0B0BA62E29DACB00D78B90 /* Fooddetailview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fooddetailview.swift; sourceTree = "<group>"; };
 		FA1C6CA72E1D724B00A3F998 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FA1C6CE02E1D7AF700A3F998 /* Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Firebase.swift; sourceTree = "<group>"; };
 		FA1C6CE22E1D7ED400A3F998 /* Appdelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appdelegate.swift; sourceTree = "<group>"; };
@@ -168,6 +171,7 @@
 		FA8B165F2D8D264A00C4699C /* Homeview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Homeview.swift; sourceTree = "<group>"; };
 		FA8E25D32DA5A927003350E6 /* CategoriesResposeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesResposeModel.swift; sourceTree = "<group>"; };
 		FA9243052D8BE50400B3B546 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		FA96F66C2E2A0B4800FD018F /* LoginResponsemodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponsemodel.swift; sourceTree = "<group>"; };
 		FA9A532F2E12654500FCCD24 /* ResturantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResturantView.swift; sourceTree = "<group>"; };
 		FAA430652E1E3F0B001A9805 /* Registermodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registermodel.swift; sourceTree = "<group>"; };
 		FAA430672E1E4935001A9805 /* OtpResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpResponseModel.swift; sourceTree = "<group>"; };
@@ -313,6 +317,7 @@
 				FA49AF372E151D0E008C76F7 /* Restaurantooditem.swift */,
 				FAA430652E1E3F0B001A9805 /* Registermodel.swift */,
 				FAA430672E1E4935001A9805 /* OtpResponseModel.swift */,
+				FA96F66C2E2A0B4800FD018F /* LoginResponsemodel.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -369,6 +374,7 @@
 				FA55925E2D897BE100790E02 /* LoginView.swift */,
 				FAB3C2E72DA3A3AE0072BC5C /* SplashscreeView.swift */,
 				FA9A532F2E12654500FCCD24 /* ResturantView.swift */,
+				FA0B0BA62E29DACB00D78B90 /* Fooddetailview.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -566,10 +572,12 @@
 				FA65B52A2D93B2F60039617F /* OrderViewpagerView.swift in Sources */,
 				FAB3C2E82DA3A3AE0072BC5C /* SplashscreeView.swift in Sources */,
 				FA42AE1C2D95099B00F724EE /* AddnewAddressView.swift in Sources */,
+				FA96F66D2E2A0B4800FD018F /* LoginResponsemodel.swift in Sources */,
 				FA65B5302D93C4580039617F /* WalletView.swift in Sources */,
 				FABBD1262E0E6586007139F7 /* DeleteCartModel.swift in Sources */,
 				FA749EAF2E05C8B000D46982 /* Shopdetailresponsmodel.swift in Sources */,
 				FA1C6CE32E1D7ED400A3F998 /* Appdelegate.swift in Sources */,
+				FA0B0BA72E29DACB00D78B90 /* Fooddetailview.swift in Sources */,
 				FA5EBB172E044C8C00905CB3 /* OfferModel.swift in Sources */,
 				FAB92A672D941227007A5B0A /* EditProfileView.swift in Sources */,
 				FA1C6CE12E1D7AF700A3F998 /* Firebase.swift in Sources */,

@@ -15,7 +15,12 @@ struct customerApp: App {
                 if showSplash {
                     SplashScreenView()
                 } else {
-                    RegisterView()
+                    if UserDefaults.standard.integer(forKey: "customerID") != 0 {
+                               HomeView()
+                           } else {
+                               LoginView()
+                           }
+                
                 }
             }
             .onAppear {

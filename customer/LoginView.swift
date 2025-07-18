@@ -143,124 +143,147 @@ struct LoginView: View {
     }
     
     
-    private var headerview :some View{
-        VStack {
-            // Logo and Title
-            Text("Login to Your Account")
-                .font(.title)
-                .bold()
-                .foregroundColor(.white)
-                .padding(.top, 10)
-            
-            Image("burger")
-                .resizable()
-                .frame(width: 150, height: 150)
-                .padding(.top, 20)
-            
-            Spacer()
-            
-            // White Curved Background
-            VStack(spacing: 20) {
-                Image("ic_logo")
-                    .resizable()
-                    .frame(width: 60, height: 60)
-                    .padding(.top, 30)
-                
-                HStack {
-                    CountryCodePicker(selectedCode: $selectedCountryCode)
-                        .frame(width: 80, height: 50)
-                        .background(Color.gray.opacity(0.2))
-                        .cornerRadius(5)
-                    
-                    // Mobile Number Input
-                    TextField("Enter Mobile Number", text: $viewModel.email)
-                        .padding()
-                        .keyboardType(.numberPad)
-                        .background(Color.gray.opacity(0.2))
-                        .cornerRadius(5)
-                }
-                .padding(.horizontal, 10)
-                
-                Divider()
-                
-                NavigationLink("", value: navigateToHome)
-                    .hidden()
-                
-                Button(action: {
-                    //                            navigateToHome = true
-                    showDialog=true
-                    print("ghfhgfh")
-                    viewModel.login()
-                }) {
-                    Text("Sign In")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, minHeight: 40)
-                        .background(Color("colorPrimary"))
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                }
-                .padding(.horizontal, 10)
-                .navigationDestination(isPresented: $navigateToHome) {
-                    HomeView()
-                }
-                
-                HStack {
-                    Rectangle()
-                        .frame(height: 2)
-                        .foregroundColor(.gray)
-                    
-                    Text("or continue with")
-                        .font(.footnote)
-                        .foregroundColor(.gray)
-                    
-                    Rectangle()
-                        .frame(height: 2)
-                        .foregroundColor(.gray)
-                }
-                .padding(.horizontal, 20)
-                
-                HStack(spacing: 30) {
-                    Image("fb_logo")
-                        .resizable()
-                        .frame(width: 25, height: 25)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 2)
-                    
-                    Image("google")
-                        .resizable()
-                        .frame(width: 25, height: 25)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 2)
-                }
-                .padding(.top, 10)
-                
-                Button(action: {
-                    navigateregister = true
-                }) {
-                    Text("Sign Up")
-                        .font(.footnote)
-                        .foregroundColor(.gray)
-                        .padding(.top, 10)
-                }
-                .navigationDestination(isPresented:
-                                        $navigateregister) {
-                    RegisterView()
-                }
-                Spacer()
-            }
-            .frame(maxWidth: .infinity)
-            .background(
-                RoundedRectangle(cornerRadius: 30)
-                    .fill(Color.white)
-                    .edgesIgnoringSafeArea(.bottom)
-            )
-        }
-        
-    }
+    private var headerview: some View {
+           VStack {
+               // Header
+               Text("Login to Your Account")
+                   .font(.title)
+                   .bold()
+                   .foregroundColor(.white)
+                   .padding(.top, 10)
+
+               Image("burger")
+                   .resizable()
+                   .frame(width: 150, height: 150)
+                   .padding(.top, 20)
+
+               Spacer()
+
+               // Curved White Container
+               VStack(spacing: 20) {
+                   Image("ic_logo")
+                       .resizable()
+                       .frame(width: 60, height: 60)
+                       .padding(.top, 30)
+
+                   VStack(spacing: 10) {
+                       TextField("Enter your email address", text: $viewModel.email)
+                           .padding()
+                           .keyboardType(.emailAddress)
+                           .autocapitalization(.none)
+                           .background(Color.gray.opacity(0.2))
+                           .cornerRadius(5)
+
+                       SecureField("Enter your password", text: $viewModel.password)
+                           .padding()
+                           .background(Color.gray.opacity(0.2))
+                           .cornerRadius(5)
+                   }
+                   .padding(.horizontal, 10)
+
+                   if let error = viewModel.errorMessage {
+                       Text(error)
+                           .foregroundColor(.red)
+                           .font(.caption)
+                   }
+
+                   if viewModel.isLoading {
+                       ProgressView()
+                           .padding(.top, 4)
+                   }
+
+                       Button(action: {
+                           viewModel.login { result in
+                               switch result {
+                               case .success(let loginResponse):
+                                   // ✅ Access loginResponse data here
+                                   print("✅ Token: \(loginResponse.accessToken)")
+                                   print("✅ Username: \(loginResponse.username)")
+                                   print("✅ Email: \(loginResponse.email)")
+                                   print("✅customeridail: \(loginResponse.customerId)")
+                                   UserDefaults.standard.set(loginResponse.customerId, forKey: "customerID")
+                                   // Example: Save token
+                                   UserDefaults.standard.set(loginResponse.accessToken, forKey: "authToken")
+
+                                   navigateToHome = true
+
+                               case .failure(let error):
+                                   print("❌ Login failed: \(error.localizedDescription)")
+                               }
+                           }
+
+                       }) {
+                           Text("Sign In")
+                               .font(.headline)
+                               .frame(maxWidth: .infinity, minHeight: 44)
+                               .background(Color("colorPrimary"))
+                               .foregroundColor(.white)
+                               .cornerRadius(10)
+                       }
+                       .padding(.horizontal, 10)
+
+                   NavigationLink("", destination: HomeView(), isActive: $navigateToHome)
+                       .hidden()
+
+                   // OR Divider
+                   HStack {
+                       Rectangle()
+                           .frame(height: 1)
+                           .foregroundColor(.gray)
+
+                       Text("or continue with")
+                           .font(.footnote)
+                           .foregroundColor(.gray)
+
+                       Rectangle()
+                           .frame(height: 1)
+                           .foregroundColor(.gray)
+                   }
+                   .padding(.horizontal, 20)
+
+                   // Social buttons
+                   HStack(spacing: 30) {
+                       Image("fb_logo")
+                           .resizable()
+                           .frame(width: 25, height: 25)
+                           .padding()
+                           .background(Color.white)
+                           .cornerRadius(10)
+                           .shadow(radius: 2)
+
+                       Image("google")
+                           .resizable()
+                           .frame(width: 25, height: 25)
+                           .padding()
+                           .background(Color.white)
+                           .cornerRadius(10)
+                           .shadow(radius: 2)
+                   }
+                   .padding(.top, 10)
+
+                   // Sign Up
+                   Button(action: {
+                       navigateregister = true
+                   }) {
+                       Text("Don't have an account? Sign Up")
+                           .font(.footnote)
+                           .foregroundColor(.gray)
+                           .padding(.top, 10)
+                   }
+                   .navigationDestination(isPresented: $navigateregister) {
+                       RegisterView()
+                   }
+
+                   Spacer()
+               }
+               .frame(maxWidth: .infinity)
+               .background(
+                   RoundedRectangle(cornerRadius: 30)
+                       .fill(Color.white)
+                       .edgesIgnoringSafeArea(.bottom)
+               )
+           }
+       }
   
     
     struct login_Previews: PreviewProvider {
