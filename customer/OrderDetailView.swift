@@ -5,6 +5,7 @@ struct OrderDetailView: View {
     var rating: String = "4.5 rating"
     var shipFrom: String = "Ai Karama, Dubai"
     var shipTo: String = "Oasis, Dubai"
+    var checkoutid: Int = 0
     @State private var foodCount: Int = 0
     @State private var walletAmount: String = ""
     @State private var showApplyCouponDialog = false
@@ -178,7 +179,10 @@ struct OrderDetailView: View {
         .opacity(0)
     }
     private var foodlist:some View{
+       
         ForEach(viewModel.cartresponse) { cart in
+            
+            
             ForEach(cart.cartItems.indices, id: \.self) { index in
                 let item = cart.cartItems[index]
                 let product = item.product
@@ -244,6 +248,9 @@ struct OrderDetailView: View {
                 }
                 .padding(.top, 14)
                 .padding(.horizontal)
+            }.onAppear{
+                UserDefaults.standard.set(cart.id, forKey: "checkoutid") // ✅ This works
+
             }
         }
 
@@ -386,7 +393,23 @@ struct OrderDetailView: View {
             
             Button(action: {
                 showPopup = true
-                viewModel.checkout(orderid:"456")
+                let customerId = UserDefaults.standard.integer(forKey: "customerID")
+                let checkoutId = UserDefaults.standard.integer(forKey: "checkoutid") // your order ID
+
+                let bodyData: [String: String] = [
+                    
+                    
+                    "pincode":"621012","address":"3/54A,south street,Naganallur","city":"Trichy","shopDeviceToken":"fltRlDfgTTSxCEjL7AXIo2:APA91bGAGaKVL3YkNQLNO_3XuHNsam8ZlkaGfINzEMhf1JCgon1ZWCLaX4UHNzIU3CfABLyqpMlI_EXoF0J-lUtJzNJxAo0K55hAmfuMX8-2QB8KUJotpP4","street":"southstreet","paymentStatus":"cash on delivery","landMark":"near by temple"
+
+                    
+                    
+                    
+                    
+               
+                ]
+
+                viewModel.checkout(customerId: customerId, checkoutId: checkoutId, body: bodyData)
+
             }) {
                 Text("Checkout")
                     .font(.headline)

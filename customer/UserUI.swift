@@ -25,7 +25,6 @@ struct UserUI: View {
             }
             .navigationTitle("Users")
             .onAppear {
-                viewModel.getUsers()
             }
         }
     }

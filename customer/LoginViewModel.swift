@@ -23,22 +23,7 @@ class LoginViewModel: ObservableObject {
     @Published var loginSuccess: Bool = false
     private let apiService = APIService()
 
-    func getUsers() {
-        isLoading = true
-        errorMessage = nil
-
-        apiService.fetchUsers { [weak self] result in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                switch result {
-                case .success(let users):
-                    self?.users = users
-                case .failure(let error):
-                    self?.errorMessage = error.localizedDescription
-                }
-            }
-        }
-    }
+  
     func login(completion: @escaping (Result<LoginResponseModel, Error>) -> Void) {
         guard !email.isEmpty, !password.isEmpty else {
             self.errorMessage = "Please enter both email and password"

@@ -6,7 +6,7 @@ struct ProfileView: View {
     @State private var naviagte_myfavourite = false
     @State private var naviagte_account = false
     @State private var naviagte_Address = false
-    let phoneNumber = "971564798662" // Removed '+' from here for WhatsApp link
+    let phoneNumber = "" // Removed '+' from here for WhatsApp link
 
     var body: some View {
         NavigationStack {
@@ -55,11 +55,16 @@ struct ProfileView: View {
             }
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Muthu Pandi")
-                    .font(.system(size: 13, weight: .bold))
-                    .foregroundColor(Color.black.opacity(0.8))
+                Text(
+                    (UserDefaults.standard.string(forKey: "userFirstName") ?? "") +
+                    " " +
+                    (UserDefaults.standard.string(forKey: "userLastName") ?? "")
+                )
+                .font(.system(size: 13, weight: .bold))
+                .foregroundColor(Color.black.opacity(0.8))
 
-                Text("9876543210")
+
+                Text((UserDefaults.standard.string(forKey: "mobileNo") ?? ""))
                     .font(.system(size: 10))
                     .foregroundColor(Color.black.opacity(0.7))
             }

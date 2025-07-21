@@ -16,16 +16,23 @@ class HomeviewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     var selectedChip: CategoriesResponseModelItem?
-    @Published var firstname: String = ""
-    @Published var lastname: String = ""
-    @Published var email: String = ""
-    @Published var mobileno: String = ""
+    @Published var isOrderSuccess: Bool = false
+    @Published var profileResponse: GetProfileResponseModel?
+    @Published var upadteprofilee: Updateemployee?
+
+    @Published var fcm: String = "fltRlDfgTTSxCEjL7AXIo2:APA91bGAGaKVL3YkNQLNO_3XuHNsam8ZlkaGfINzEMhf1JCgon1ZWCLaX4UHNzIU3CfABLyqpMlI_EXoF0J-lUtJzNJxAo0K55hAmfuMX8-2QB8KUJotpP4"
+    var checkout: CheckoutResponseModel?
+    var updateprofilee: RegisterResponseModel?
+    @Published var firstname: String =   (UserDefaults.standard.string(forKey: "userFirstName") ?? "")
+    @Published var lastname: String = (UserDefaults.standard.string(forKey: "userLastName") ?? "")
+    @Published var email: String = (UserDefaults.standard.string(forKey: "userEmail") ?? "")
+    @Published var mobileno: String = (UserDefaults.standard.string(forKey: "mobileNo") ?? "")
     @Published var gender: String = "male"
     @Published var city: String = ""
     @Published var loginSuccess: Bool = false
     @Published var address: String = ""
     @Published var date: String = ""
-    @Published var password: String = "hgfhfh"
+    @Published var password: String = ""
     @Published var regiaterpassword: String = ""
     private let apiService = APIService()
     func getoffer() {
@@ -210,6 +217,27 @@ class HomeviewModel: ObservableObject {
               }
           }
       }
+    func getProfile(customerId: Int) {
+        isLoading = true
+        errorMessage = nil
+
+        apiService.getProfile(customerId: customerId) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let profile):
+                    self?.profileResponse = profile
+                    UserDefaults.standard.set(profile.firstName, forKey: "userFirstName")
+                                       UserDefaults.standard.set(profile.lastName, forKey: "userLastName")
+                                       UserDefaults.standard.set(profile.email, forKey: "userEmail")
+                                       UserDefaults.standard.set(profile.mobileNumber, forKey: "mobileNo")
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+
     func addcart(customerId: Int,foodid:Int,quatity:Int) { // Accept categoryId as a parameter
           isLoading = true
           errorMessage = nil
@@ -359,22 +387,23 @@ class HomeviewModel: ObservableObject {
               }
           }
       }
-    func checkout(orderid: String) { // Accept categoryId as a parameter
-          isLoading = true
-          errorMessage = nil
+    func checkout(customerId: Int, checkoutId: Int, body: [String: String]) {
+        isLoading = true
+        errorMessage = nil
 
-          apiService.checkoutapi(orderid: orderid) { [weak self] result in
-              DispatchQueue.main.async {
-                  self?.isLoading = false
-                  switch result {
-                  case .success(let food):
-                      self?.food = food
-                  case .failure(let error):
-                      self?.errorMessage = error.localizedDescription
-                  }
-              }
-          }
-      }
+        apiService.checkoutapi(customerId: customerId, id: checkoutId, params: body) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let food):
+                    self?.checkout = food
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+
 
     
     func getorderdetail(orderid: String) {
@@ -557,30 +586,33 @@ class HomeviewModel: ObservableObject {
             }
         }
     }
-    func updateprofile() {
-           
-            
-            self.isLoading = true
-            self.errorMessage = nil
-      
-        apiService.updateprofile(firstname: firstname, lastname: lastname, city: city, address: address, date: date, email: email, password: regiaterpassword,mobileno: mobileno,gender: gender) { [weak self] result in
-                DispatchQueue.main.async {
-                    self?.isLoading = false
-                    switch result {
-                    case .success(let response):
-                        if response.status {
-                            self?.loginSuccess = true
-                            print("✅ Login Success: \(response.message)")
-                            // You can store user data here if needed
-                        } else {
-                            self?.errorMessage = response.message
-                        }
-                    case .failure(let error):
-                        self?.errorMessage = error.localizedDescription
-                    }
+    func updateprofile(completion: @escaping (Result<Updateemployee, Error>) -> Void) {
+        self.isLoading = true
+        self.errorMessage = nil
+
+        apiService.updateprofile(
+            customerId: UserDefaults.standard.integer(forKey: "customerID"),
+            firstName: firstname,
+            lastName: lastname,
+            password: password,
+            confirmpassword: password,
+            email: email,
+            mobileNumber: mobileno,
+            fcmToken: fcm
+        ) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let user):
+                    self?.upadteprofilee = user // Optional: store locally
+                    completion(.success(user)) // ✅ return success
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                    completion(.failure(error)) // ✅ return failure
                 }
             }
         }
+    }
 
 
    	

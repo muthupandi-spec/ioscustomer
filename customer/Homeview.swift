@@ -71,9 +71,11 @@ struct HomeView: View {
             
         }.onAppear {
 //            viewModel.getfood()
-            viewModel.getoffer()
-            viewModel.getbrach()
-            viewModel.getcategory()
+//            viewModel.getoffer()
+//            viewModel.getbrach()
+//            viewModel.getcategory()
+            let customerId = UserDefaults.standard.integer(forKey: "customerID") // Or hardcode for testing
+                        viewModel.getProfile(customerId: customerId)
 
         }
     }

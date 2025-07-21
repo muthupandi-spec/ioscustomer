@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA08FE602E2E1309008A9E0E /* Checkoutmodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA08FE5F2E2E1309008A9E0E /* Checkoutmodel.swift */; };
+		FA08FE622E2E2245008A9E0E /* Getprofileresposemodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA08FE612E2E2245008A9E0E /* Getprofileresposemodel.swift */; };
+		FA08FE642E2E291C008A9E0E /* UpdateResponsemodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA08FE632E2E291C008A9E0E /* UpdateResponsemodel.swift */; };
+		FA08FE662E2E2FBA008A9E0E /* Updateemployee.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA08FE652E2E2FBA008A9E0E /* Updateemployee.swift */; };
 		FA0B0BA72E29DACB00D78B90 /* Fooddetailview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0B0BA62E29DACB00D78B90 /* Fooddetailview.swift */; };
 		FA1C6CA82E1D724B00A3F998 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA1C6CA72E1D724B00A3F998 /* GoogleService-Info.plist */; };
 		FA1C6CAB2E1D744600A3F998 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = FA1C6CAA2E1D744600A3F998 /* FirebaseAnalytics */; };
@@ -117,6 +121,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FA08FE5F2E2E1309008A9E0E /* Checkoutmodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkoutmodel.swift; sourceTree = "<group>"; };
+		FA08FE612E2E2245008A9E0E /* Getprofileresposemodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Getprofileresposemodel.swift; sourceTree = "<group>"; };
+		FA08FE632E2E291C008A9E0E /* UpdateResponsemodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateResponsemodel.swift; sourceTree = "<group>"; };
+		FA08FE652E2E2FBA008A9E0E /* Updateemployee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Updateemployee.swift; sourceTree = "<group>"; };
 		FA0B0BA62E29DACB00D78B90 /* Fooddetailview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fooddetailview.swift; sourceTree = "<group>"; };
 		FA1C6CA72E1D724B00A3F998 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FA1C6CE02E1D7AF700A3F998 /* Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Firebase.swift; sourceTree = "<group>"; };
@@ -318,6 +326,10 @@
 				FAA430652E1E3F0B001A9805 /* Registermodel.swift */,
 				FAA430672E1E4935001A9805 /* OtpResponseModel.swift */,
 				FA96F66C2E2A0B4800FD018F /* LoginResponsemodel.swift */,
+				FA08FE5F2E2E1309008A9E0E /* Checkoutmodel.swift */,
+				FA08FE612E2E2245008A9E0E /* Getprofileresposemodel.swift */,
+				FA08FE632E2E291C008A9E0E /* UpdateResponsemodel.swift */,
+				FA08FE652E2E2FBA008A9E0E /* Updateemployee.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -565,6 +577,7 @@
 				FA8324E62D9008FE004EB45B /* SearchView.swift in Sources */,
 				FA49AF362E1514E9008C76F7 /* Restaurantcategorymodel.swift in Sources */,
 				FA254EFE2D8E847600406220 /* NotificationView.swift in Sources */,
+				FA08FE622E2E2245008A9E0E /* Getprofileresposemodel.swift in Sources */,
 				FA593FDD2D91263C00768A2A /* ShopDetailView.swift in Sources */,
 				FA707A032D9BC3E000DE6C96 /* LoginViewModel.swift in Sources */,
 				FA254EFA2D8E80E700406220 /* RecommendforyuyView.swift in Sources */,
@@ -576,6 +589,7 @@
 				FA65B5302D93C4580039617F /* WalletView.swift in Sources */,
 				FABBD1262E0E6586007139F7 /* DeleteCartModel.swift in Sources */,
 				FA749EAF2E05C8B000D46982 /* Shopdetailresponsmodel.swift in Sources */,
+				FA08FE602E2E1309008A9E0E /* Checkoutmodel.swift in Sources */,
 				FA1C6CE32E1D7ED400A3F998 /* Appdelegate.swift in Sources */,
 				FA0B0BA72E29DACB00D78B90 /* Fooddetailview.swift in Sources */,
 				FA5EBB172E044C8C00905CB3 /* OfferModel.swift in Sources */,
@@ -589,7 +603,9 @@
 				FACA5E102E04F56100925C82 /* FoodDetailResponseModel.swift in Sources */,
 				FA7079FC2D9BC27200DE6C96 /* ApiService.swift in Sources */,
 				FA42AE202D9510C700F724EE /* TopUpView.swift in Sources */,
+				FA08FE662E2E2FBA008A9E0E /* Updateemployee.swift in Sources */,
 				FACA01292E0C5C900045E87D /* AddcartResposemodel.swift in Sources */,
+				FA08FE642E2E291C008A9E0E /* UpdateResponsemodel.swift in Sources */,
 				FA42AE182D95040E00F724EE /* AccountsettingView.swift in Sources */,
 				FAA430682E1E4935001A9805 /* OtpResponseModel.swift in Sources */,
 				FA65B52E2D93BD090039617F /* OrderDetailpageView.swift in Sources */,
