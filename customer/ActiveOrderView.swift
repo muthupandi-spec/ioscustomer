@@ -1,51 +1,51 @@
 import SwiftUI
 
 struct ActiveOrderView: View {
-    var orderId: String // Dynamic Order ID
+    var order: ActiveOrderResponsemodel
     @State private var showOrderDetails = false
     @State private var trackOrderDetails = false
-    @StateObject private var viewModel = HomeviewModel()
-    @State private var hasAppeared = false
 
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .top, spacing: 12) {
-                // Food Image
-                Image("ic_bir")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 80, height: 80)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                if let base64String = order.orderItems.first?.product.image,
+                   let uiImage = imageFromBase64(base64String) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .frame(width: 80, height: 80)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                } else {
+                    Color.gray
+                        .frame(width: 80, height: 80)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+
 
                 VStack(alignment: .leading, spacing: 4) {
-                    // Order ID
                     HStack {
-                        Text("Order ID \(orderId)")
+                        Text("Order ID \(order.orderId)")
                             .font(.system(size: 13, weight: .bold))
-                        Text("• 3 items")
+                        Text("• \(order.orderItems.count) items")
                             .font(.system(size: 11))
                             .foregroundColor(.gray)
                     }
 
-                    // Food Name
-                    Text("Big Grand Salad")
+                    Text(order.orderItems.first?.product.foodName ?? "")
                         .font(.system(size: 13, weight: .bold))
                         .lineLimit(1)
 
-                    // Distance and Cost
                     HStack {
                         Text("2.4 km")
                             .font(.system(size: 11))
                         Divider()
                             .frame(height: 12)
                             .background(Color.gray)
-                        Text("$42.22")
+                        Text("₹\(order.totalAmount, specifier: "%.2f")")
                             .font(.system(size: 13, weight: .bold))
                             .foregroundColor(.gray)
                     }
 
-                    // Order Status
-                    Text("Paid")
+                    Text(order.orderStatus)
                         .font(.system(size: 9))
                         .foregroundColor(.white)
                         .padding(.horizontal, 10)
@@ -58,8 +58,8 @@ struct ActiveOrderView: View {
 
             Divider()
                 .padding(.horizontal)
-            // Ratings Section
-            HStack {
+
+ HStack {
                 VStack {
                     Text("Your Rating for Delivery")
                         .font(.system(size: 11))
@@ -123,34 +123,42 @@ struct ActiveOrderView: View {
             .padding(.bottom, 10)
             .sheet(isPresented: $trackOrderDetails) {
                 TrackOrderView() // Pass orderId to sheet
-            }
-        }
+            }        }
         .background(Color.white)
         .cornerRadius(15)
         .shadow(radius: 2)
         .padding()
-        .onAppear{
-            if !hasAppeared {
-                       viewModel.activeorder()
-                       hasAppeared = true
-                   }
-        }
     }
 }
+
 
 // **New Order Detail Sheet**
 // **Main View with List of Orders**
 struct ActiveOrder_View: View {
+    @StateObject private var viewModel = HomeviewModel()
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 10) {
-                ForEach(1...5, id: \.self) { index in
-                    ActiveOrderView(orderId: "#000\(index)")
-                }
-            }
+                ForEach(viewModel.Activeorder) { order in
+                                   ActiveOrderView(order: order)
+                               }
+                           }
             .padding()
+        }  .onAppear{
+  
+                       viewModel.activeorder()
+                  
         }
     }
+}
+
+func imageFromBase64(_ base64String: String) -> UIImage? {
+    guard let data = Data(base64Encoded: base64String),
+          let image = UIImage(data: data) else {
+        return nil
+    }
+    return image
 }
 
 struct OrderCardView_Previews: PreviewProvider {

@@ -1,7 +1,7 @@
 import Foundation
 
 class APIService {
-    let baseurl="https://64cde41311ca.ngrok-free.app/"
+    let baseurl="https://c11c732ff95c.ngrok-free.app/"
     func getProfile(customerId: Int, completion: @escaping (Result<GetProfileResponseModel, Error>) -> Void) {
         let urlString =  baseurl + "restaurant/api/customer/v1/getemployee/\(customerId)" // Replace with actual base URL
         guard let url = URL(string: urlString) else {
@@ -162,8 +162,9 @@ class APIService {
         task.resume()
     }
 
-    func activeorders(completion: @escaping (Result<[FoodModel], Error>) -> Void) {
-        let urlString = baseurl+"activeorders" // Replace with your actual API URL
+    func activeorders(customerId: Int, completion: @escaping (Result<[ActiveOrderResponsemodel], Error>) -> Void) {
+        let urlString = "\(baseurl)restaurant/api/orders/vieworder/\(customerId)"
+        
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
@@ -191,8 +192,8 @@ class APIService {
             print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8 Data")")
 
             do {
-                let users = try JSONDecoder().decode([FoodModel].self, from: data)
-                completion(.success(users))
+                let decoded = try JSONDecoder().decode([ActiveOrderResponsemodel].self, from: data)
+                completion(.success(decoded))
             } catch {
                 print("💥 JSON Decoding Error: \(error.localizedDescription)")
                 completion(.failure(error))

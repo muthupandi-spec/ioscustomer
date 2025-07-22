@@ -9,6 +9,7 @@ class HomeviewModel: ObservableObject {
     @Published var cartresponse: [CartResponseModel] = []
     @Published var shopresponse: FoodItem?
     @Published var addcartrespose:Addcartmodel?
+    @Published var Activeorder: [ActiveOrderResponsemodel] = []
     @Published var deletecart:DeleteCartModel?
     @Published var food: [FoodModel] = []
     @Published var offermodel: [OfferModellItem] = []
@@ -476,12 +477,12 @@ class HomeviewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        apiService.activeorders { [weak self] result in
+        apiService.activeorders( customerId: UserDefaults.standard.integer(forKey: "customerID")) { [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
                 switch result {
                 case .success(let food):
-                    self?.food = food
+                    self?.Activeorder = food
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
                 }
