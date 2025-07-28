@@ -1,50 +1,51 @@
 import SwiftUI
 
 struct CacelOrderView: View {
-    var orderId: String // Dynamic Order ID
-    @State private var showOrderDetails = false // Controls sheet visibility
-    @StateObject private var viewModel = HomeviewModel()
-    @State private var hasAppeared = false
+    var order: ActiveOrderResponsemodel
+    @State private var showOrderDetails = false
+    @State private var trackOrderDetails = false
 
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .top, spacing: 12) {
-                // Food Image
-                Image("ic_bir")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 80, height: 80)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                if let base64String = order.orderItems.first?.product.image,
+                   let uiImage = imageFromBase64(base64String) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .frame(width: 80, height: 80)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                } else {
+                    Color.gray
+                        .frame(width: 80, height: 80)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+
 
                 VStack(alignment: .leading, spacing: 4) {
-                    // Order ID
                     HStack {
-                        Text("Order ID \(orderId)")
+                        Text("Order ID \(order.orderId)")
                             .font(.system(size: 13, weight: .bold))
-                        Text("• 3 items")
+                        Text("• \(order.orderItems.count) items")
                             .font(.system(size: 11))
                             .foregroundColor(.gray)
                     }
 
-                    // Food Name
-                    Text("Big Grand Salad")
+                    Text(order.orderItems.first?.product.foodName ?? "")
                         .font(.system(size: 13, weight: .bold))
                         .lineLimit(1)
 
-                    // Distance and Cost
                     HStack {
                         Text("2.4 km")
                             .font(.system(size: 11))
                         Divider()
                             .frame(height: 12)
                             .background(Color.gray)
-                        Text("$42.22")
+                        Text("₹\(order.totalAmount, specifier: "%.2f")")
                             .font(.system(size: 13, weight: .bold))
                             .foregroundColor(.gray)
                     }
 
-                    // Order Status
-                    Text("Paid")
+                    Text(order.orderStatus)
                         .font(.system(size: 9))
                         .foregroundColor(.white)
                         .padding(.horizontal, 10)
@@ -58,8 +59,7 @@ struct CacelOrderView: View {
             Divider()
                 .padding(.horizontal)
 
-            // Ratings Section
-            HStack {
+ HStack {
                 VStack {
                     Text("Your Rating for Delivery")
                         .font(.system(size: 11))
@@ -89,16 +89,12 @@ struct CacelOrderView: View {
                 }
             }
             .padding()
-
-            Divider()
-                .padding(.horizontal)
-
             // Buttons
             VStack(spacing: 10) {
                 Button(action: {
                     showOrderDetails.toggle() // Open sheet on button tap
                 }) {
-                    Text("Cacelled")
+                    Text("Order Canceled")
                         .font(.system(size: 12, weight: .bold))
                         .foregroundColor(.black)
                         .frame(maxWidth: .infinity)
@@ -107,39 +103,41 @@ struct CacelOrderView: View {
                         .cornerRadius(8)
                 }
                 .sheet(isPresented: $showOrderDetails) {
-                    OrderDetailpageView() // Pass orderId to sheet
+                    OrderDetailpageView(order: order) // Pass orderId to sheet
                 }
 
+               
             }
             .padding(.horizontal)
             .padding(.bottom, 10)
-        }
+                 }
         .background(Color.white)
         .cornerRadius(15)
         .shadow(radius: 2)
         .padding()
-        .onAppear{
-            if !hasAppeared {
-                       viewModel.cancelorders()
-                       hasAppeared = true
-                   }
-            
-        }
     }
 }
 
 struct Cacelorder_View: View {
+    @StateObject private var viewModel = HomeviewModel()
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 10) {
-                ForEach(1...5, id: \.self) { index in
-                    CacelOrderView(orderId: "#000\(index)")
-                }
-            }
+                ForEach(viewModel.Activeorder) { order in
+                    CacelOrderView(order: order)
+                               }
+                           }
             .padding()
+        }  .onAppear{
+  
+                       viewModel.cancelorders()
+                  
         }
     }
 }
+
+
 
 struct cancelOrderCardView_Previews: PreviewProvider {
     static var previews: some View {

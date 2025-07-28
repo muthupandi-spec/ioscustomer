@@ -103,7 +103,7 @@ struct ActiveOrderView: View {
                         .cornerRadius(8)
                 }
                 .sheet(isPresented: $showOrderDetails) {
-                    OrderDetailpageView() // Pass orderId to sheet
+                    OrderDetailpageView(order:order) // Pass orderId to sheet
                 }
 
                 Button(action: {

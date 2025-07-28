@@ -108,7 +108,7 @@ struct CompletedOrderView: View {
                         .cornerRadius(8)
                 }
                 .sheet(isPresented: $showOrderDetails) {
-                    OrderDetailpageView() // Pass orderId to sheet
+//                    OrderDetailpageView() // Pass orderId to sheet
                 }
             }
             .padding(.horizontal)

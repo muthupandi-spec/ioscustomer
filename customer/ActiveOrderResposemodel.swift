@@ -3,85 +3,93 @@ import Foundation
 struct ActiveOrderResponsemodel: Codable, Identifiable {
     var id: Int { orderId }
 
-    let address: String
-    let cart: Cart
-    let city: String
-    let customer: Customer
-    let customerId: Int
-    let customerLat: Double
-    let customerLng: Double
-    let dateCreated: String
-    let firstName: String
-    let foodNames: String?
-    let isActive: Bool?
-    let isDelete: Bool?
-    let landMark: String
-    let lastName: String
-    let mobileNumber: String
     let orderId: Int
-    let orderItems: [OrderItem]
-    let orderStatus: String
-    let paymentStatus: String?
-    let pincode: Int
-    let restaurantLat: Double
-    let restaurantLng: Double
-    let shopDeviceToken: String?
-    let status: String?
-    let street: String
-    let totalAmount: Double
+       let firstName: String
+       let lastName: String
+       let dateCreated: String
+       let orderStatus: String
+       let mobileNumber: String
+       let foodNames: String?
+       let totalAmount: Double
+       let customerId: Int
+       let address: String
+       let pincode: Int
+       let street: String
+       let city: String
+       let landMark: String
+       let isDelete: Bool?
+       let isActive: Bool?
+       let status: String
+       let paymentStatus: String?
+       let data: [String: String]?
+       let customerLat: Double
+       let customerLng: Double
+       let restaurantLat: Double
+       let restaurantLng: Double
+       let shopDeviceToken: String?
+       let cart: Cart?
+       let customer: Customer?
+       let orderItems: [OrderItem]
+   }
 
-    struct Cart: Codable {
-        let cartItems: String?
-        let customerId: Int
-        let id: Int
-        let totalPrice: Double
-    }
+   // MARK: - Cart Model
+   struct Cart: Codable {
+       let id: Int
+       let customerId: Int
+       let totalPrice: Double
+       let isDelete: Bool?
+       let isActive: Bool?
+       let cartItems: [String]?
+   }
 
-    struct Customer: Codable {
-        let confirmpassword: String?
-        let customerId: Int
-        let email: String
-        let fcmToken: String?
-        let firstName: String
-        let isDelete: Bool?
-        let isVerified: Bool?
-        let lastName: String
-        let mobileNumber: String
-        let otp: String?
-        let password: String?
-    }
+   // MARK: - Customer Model
+   struct Customer: Codable {
+       let customerId: Int
+       let firstName: String
+       let lastName: String
+       let email: String
+       let mobileNumber: String
+       let password: String?
+       let confirmpassword: String?
+       let isDelete: Bool?
+       let fcmToken: String?
+       let otp: String?
+       let isVerified: Bool?
+   }
 
-    struct OrderItem: Codable {
-        let foodName: String
-        let orderItemId: Int
-        let price: Double
-        let product: Product
-        let quantity: Int
-        let subTotal: Double
+   // MARK: - OrderItem Model
+   struct OrderItem: Codable {
+       let orderItemId: Int
+       let foodName: String
+       let quantity: Int
+       let price: Double
+       let subTotal: Double
+       let product: Product
+   }
 
-        struct Product: Codable {
-            let catagoryId: Int
-            let catagorybo: CategoryBO
-            let decription: String
-            let decription1: String
-            let decription2: String
-            let foodId: Int
-            let foodName: String
-            let image: String
-            let imageData: String?
-            let isActive: Bool?
-            let isDelete: Bool?
-            let price: Int
-            let restaurantCatagoryBO: String?
-            let type: String?
+   // MARK: - Product Model
+   struct Product: Codable {
+       let foodId: Int
+       let foodName: String
+       let price: Int
+       let decription: String
+       let decription1: String
+       let decription2: String
+       let isDelete: Bool?
+       let isActive: Bool?
+       let type: String?
+       let catagorybo: CatagoryBO
+       let restaurantCatagoryBO: String?
+       let image: String
+       let imageData: String?
+       let catagoryId: Int
+   }
 
-            struct CategoryBO: Codable {
-                let catagory: String
-                let catagoryId: Int
-                let isActive: Bool?
-                let isDelete: Bool?
-                let time: String?
-            }
-        }
-    }
-}
+   // MARK: - CatagoryBO Model
+   struct CatagoryBO: Codable {
+       let catagoryId: Int
+       let catagory: String
+       let time: String?
+       let isDelete: Bool?
+       let isActive: Bool?
+   }

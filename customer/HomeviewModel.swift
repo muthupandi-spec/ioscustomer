@@ -20,7 +20,14 @@ class HomeviewModel: ObservableObject {
     @Published var isOrderSuccess: Bool = false
     @Published var profileResponse: GetProfileResponseModel?
     @Published var upadteprofilee: Updateemployee?
+    @Published  var doorNo = ""
+    @Published  var street = ""
+    @Published  var place = ""
+    @Published var addressResponse: CreateAddressResponseModel?
 
+    @Published  var cityy = ""
+    @Published  var pincode = ""
+    @Published  var landmark = ""
     @Published var fcm: String = "fltRlDfgTTSxCEjL7AXIo2:APA91bGAGaKVL3YkNQLNO_3XuHNsam8ZlkaGfINzEMhf1JCgon1ZWCLaX4UHNzIU3CfABLyqpMlI_EXoF0J-lUtJzNJxAo0K55hAmfuMX8-2QB8KUJotpP4"
     var checkout: CheckoutResponseModel?
     var updateprofilee: RegisterResponseModel?
@@ -477,7 +484,10 @@ class HomeviewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        apiService.activeorders( customerId: UserDefaults.standard.integer(forKey: "customerID")) { [weak self] result in
+        let customerId = UserDefaults.standard.integer(forKey: "customerID")
+        let type = "Order Placed"
+
+        apiService.activeorders(customerId: customerId, type: type) { [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
                 switch result {
@@ -494,12 +504,15 @@ class HomeviewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        apiService.cancelorders { [weak self] result in
+        let customerId = UserDefaults.standard.integer(forKey: "customerID")
+        let type = "Order Cancel"
+
+        apiService.activeorders(customerId: customerId, type: type) { [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
                 switch result {
                 case .success(let food):
-                    self?.food = food
+                    self?.Activeorder = food
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
                 }
@@ -610,6 +623,36 @@ class HomeviewModel: ObservableObject {
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
                     completion(.failure(error)) // ✅ return failure
+                }
+            }
+        }
+    }
+    func createAddress(completion: @escaping (Result<CreateAddressResponseModel, Error>) -> Void) {
+        self.isLoading = true
+        self.errorMessage = nil
+
+        // Prepare the model to send
+        let addressRequest = RequestAddressModel(
+            landMark: landmark,
+            doorNo: doorNo,
+            street: street,
+            place: place,
+            city: cityy,
+            pincode: pincode,
+            customerbo: CustomerBOq(customerId: UserDefaults.standard.integer(forKey: "customerID"))
+        )
+
+        // Call API from service layer
+        apiService.createAddress(addressRequest) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let response):
+                    self?.addressResponse = response  // optional: store the response
+                    completion(.success(response))
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                    completion(.failure(error))
                 }
             }
         }

@@ -81,7 +81,7 @@ struct AddressView: View {
                     .foregroundColor(.black)
                     .cornerRadius(10)
             }.navigationDestination(isPresented: $navigate_addaddress) {
-                MapAddressView()
+                ManualaddressView()
             }
 
             Button(action: {
