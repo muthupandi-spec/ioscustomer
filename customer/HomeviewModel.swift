@@ -7,6 +7,7 @@ class HomeviewModel: ObservableObject {
     @Published var fooddetailrespose: [FoodDetailResponseModel] = []
     @Published var resfooddetailrespose: [FoodDetailResponseModel] = []
     @Published var cartresponse: [CartResponseModel] = []
+    @Published var addressresponse: [GetAddressResponseModelItem] = []
     @Published var shopresponse: FoodItem?
     @Published var addcartrespose:Addcartmodel?
     @Published var Activeorder: [ActiveOrderResponsemodel] = []
@@ -92,6 +93,24 @@ class HomeviewModel: ObservableObject {
             }
         }
     }
+    func getaddress(customerId: Int) {
+        isLoading = true
+        errorMessage = nil
+
+        apiService.getaddress(customerId: customerId) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let response):
+                    print("✅ Address List Count: \(response.count)")
+                    self?.addressresponse = response
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+
     func getcategory() {
         isLoading = true
         errorMessage = nil
@@ -639,7 +658,7 @@ class HomeviewModel: ObservableObject {
             place: place,
             city: cityy,
             pincode: pincode,
-            customerbo: CustomerBOq(customerId: UserDefaults.standard.integer(forKey: "customerID"))
+            customerbo: CustomerBO(customerId: UserDefaults.standard.integer(forKey: "customerID"))
         )
 
         // Call API from service layer

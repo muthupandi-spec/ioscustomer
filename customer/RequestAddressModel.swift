@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct RequestAddressModel: Codable {
+struct RequestAddressModel: Encodable {
     let landMark: String
     let doorNo: String
     let street: String
@@ -16,7 +16,7 @@ struct RequestAddressModel: Codable {
     let customerbo: CustomerBO
 }
 
-struct CustomerBO: Codable {
+struct CustomerBO: Encodable {
     let customerId: Int
 }
 

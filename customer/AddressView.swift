@@ -2,90 +2,133 @@ import SwiftUI
 
 struct AddressView: View {
     @State private var navigate_addaddress = false
-    @State private var addresses: [String] = ["Home", "Office"] // Dummy data
+    @State private var errorMessage: String?
+    @State private var isLoading = false
+
     @Environment(\.dismiss) var dismiss
+    @StateObject private var viewModel = HomeviewModel()
 
     var body: some View {
-        NavigationStack{
-            
+        NavigationStack {
             ZStack {
                 VStack {
                     // Header Section
-                 header
+                    header
                     Divider()
-                    // Address List
-                  addresslist
 
-                    // Buttons
-                button
+                    // Address List
+                   
+                    ForEach(viewModel.addressresponse, id: \.addressId) { address in
+                                VStack {
+                                    HStack(alignment: .top, spacing: 12) {
+                                        Image(systemName: "location.fill")
+                                            .resizable()
+                                            .frame(width: 28, height: 28)
+                                            .padding(.vertical, 10)
+
+                                        VStack(alignment: .leading, spacing: 6) {
+                                            HStack {
+                                                Text("Home")
+                                                    .font(.system(size: 11, weight: .bold))
+                                                    .foregroundColor(.black)
+
+                                                Text("EDIT")
+                                                    .font(.system(size: 9))
+                                                    .padding(.vertical, 3)
+                                                    .padding(.horizontal, 10)
+                                                    .background(
+                                                        RoundedRectangle(cornerRadius: 4)
+                                                            .stroke(Color.black, lineWidth: 1)
+                                                    )
+                                                    .foregroundColor(.gray)
+                                            }
+
+                                            Text("\(address.doorNo), \(address.street), \(address.city)")
+                                                .font(.system(size: 10))
+                                                .lineLimit(1)
+
+                                            Text("\(address.pincode)")
+                                                .font(.system(size: 10))
+                                                .lineLimit(1)
+                                        }
+
+                                        Spacer()
+
+                                        Circle()
+                                            .strokeBorder(Color.green, lineWidth: 2)
+                                            .background(Circle().fill(Color.white))
+                                            .frame(width: 20, height: 20)
+                                    }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 12)
+                                }
+                                .background(
+                                    RoundedRectangle(cornerRadius: 15)
+                                        .fill(Color.white)
+                                        .shadow(color: .gray.opacity(0.2), radius: 1, x: 0, y: 1)
+                                )
+                                .padding(.horizontal, 4)
+                                .padding(.vertical, 8)
+                            }
+                        
+                    
+
+                    Spacer()
+                    button
                 }
                 .background(Color.white.edgesIgnoringSafeArea(.all))
-
-        
             }
             .navigationBarBackButtonHidden(true)
-            
+        }
+        .onAppear {
+            viewModel.getaddress(customerId: UserDefaults.standard.integer(forKey: "customerID"))
         }
     }
-    
-    private var header :some View{
+
+    // MARK: - Header View
+    private var header: some View {
         HStack {
             Button(action: {
                 dismiss()
-                
             }) {
-                Image("ic_back") // Replace with your back arrow asset
+                Image("ic_back")
                     .resizable()
                     .frame(width: 20, height: 20)
             }
-            
+
             Text("Address")
                 .font(.headline)
                 .foregroundColor(.black)
-            
+
             Spacer()
-            
-            Button(action: {
-                // Handle edit action
-            }) {
-                Image("edit") // Replace with your edit icon asset
-                    .resizable()
-                    .frame(width: 20, height: 20)
-            }
-            .opacity(0) // Initially hidden
+
+            Image("edit")
+                .resizable()
+                .frame(width: 20, height: 20)
+                .opacity(0)
         }
         .padding(.horizontal, 16)
         .padding(.top, 20)
-        
-       
     }
-    private var addresslist :some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(addresses, id: \.self) { address in
-                    AddressRow(address: address)
-                }
-            }
-            .padding(.horizontal, 16)
-        }
-        .frame(maxHeight: .infinity)
-    }
-    private var button: some View{
+
+    // MARK: - Bottom Button View
+    private var button: some View {
         VStack(spacing: 12) {
             Button(action: {
-               navigate_addaddress=true
+                navigate_addaddress = true
             }) {
                 Text("Add New Address")
                     .frame(maxWidth: .infinity, minHeight: 40)
                     .background(Color.gray.opacity(0.2))
                     .foregroundColor(.black)
                     .cornerRadius(10)
-            }.navigationDestination(isPresented: $navigate_addaddress) {
+            }
+            .navigationDestination(isPresented: $navigate_addaddress) {
                 ManualaddressView()
             }
 
             Button(action: {
-                // Handle apply action
+                // Handle Apply
             }) {
                 Text("Apply")
                     .frame(maxWidth: .infinity, minHeight: 40)
@@ -97,27 +140,7 @@ struct AddressView: View {
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
     }
+
+   
 }
 
-// Address Row
-struct AddressRow: View {
-    var address: String
-
-    var body: some View {
-        HStack {
-            Text(address)
-                .font(.body)
-            Spacer()
-        }
-        .padding()
-        .background(Color.gray.opacity(0.1))
-        .cornerRadius(10)
-    }
-}
-
-
-struct AddressView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddressView()
-    }
-}

@@ -1,7 +1,7 @@
 import Foundation
 
 class APIService {
-    let baseurl="https://16ad5b3e5163.ngrok-free.app/"
+    let baseurl="https://f06035553381.ngrok-free.app/"
     func getProfile(customerId: Int, completion: @escaping (Result<GetProfileResponseModel, Error>) -> Void) {
         let urlString =  baseurl + "restaurant/api/customer/v1/getemployee/\(customerId)" // Replace with actual base URL
         guard let url = URL(string: urlString) else {
@@ -455,6 +455,42 @@ class APIService {
 
         task.resume()
     }
+    
+    func getaddress(customerId: Int, completion: @escaping (Result<[GetAddressResponseModelItem], Error>) -> Void) {
+           let urlString = baseurl + "restaurant/api/address/getallcustomeraddress/\(customerId)"
+           guard let url = URL(string: urlString) else {
+               completion(.failure(NSError(domain: "Invalid URL", code: 0)))
+               return
+           }
+
+           print("🔗 URL: \(url.absoluteString)")
+
+           let task = URLSession.shared.dataTask(with: url) { data, response, error in
+               if let error = error {
+                   print("❌ Error: \(error)")
+                   completion(.failure(error))
+                   return
+               }
+
+               guard let data = data else {
+                   completion(.failure(NSError(domain: "No data", code: 0)))
+                   return
+               }
+
+               print("📩 Raw JSON: \(String(data: data, encoding: .utf8) ?? "")")
+
+               do {
+                   let addresses = try JSONDecoder().decode([GetAddressResponseModelItem].self, from: data)
+                   completion(.success(addresses))
+               } catch {
+                   print("💥 Decoding Error: \(error)")
+                   completion(.failure(error))
+               }
+           }
+
+           task.resume()
+       }
+    
 
     func getbanner(completion: @escaping (Result<[FoodModel], Error>) -> Void) {
         let urlString = baseurl+"/getbanner" // Replace with your actual API URL
@@ -1677,7 +1713,7 @@ class APIService {
 
     func createAddress(_ requestModel: RequestAddressModel, completion: @escaping (Result<CreateAddressResponseModel, Error>) -> Void) {
         let urlString = "\(baseurl)restaurant/api/address/createaddress"
-        
+
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0)))
             return
@@ -1690,44 +1726,56 @@ class APIService {
         do {
             let jsonData = try JSONEncoder().encode(requestModel)
             request.httpBody = jsonData
+
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print("📤 JSON Payload:\n\(jsonString)")
+            }
         } catch {
             completion(.failure(error))
             return
         }
 
-        print("📤 Sending address payload to: \(urlString)")
-
         URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("❌ Error: \(error.localizedDescription)")
-                completion(.failure(error))
-                return
+            DispatchQueue.main.async {
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("📥 HTTP Status Code: \(httpResponse.statusCode)")
+                }
+
+                if let error = error {
+                    print("❌ Network Error: \(error.localizedDescription)")
+                    completion(.failure(error))
+                    return
+                }
+
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "No data received", code: 0)))
+                    return
+                }
+
+                if let jsonString = String(data: data, encoding: .utf8) {
+                    print("📥 Raw JSON Response:\n\(jsonString)")
+                }
+
+                do {
+                    let decodedData = try JSONDecoder().decode(CreateAddressResponseModel.self, from: data)
+                    completion(.success(decodedData))
+                } catch let DecodingError.keyNotFound(key, context) {
+                    print("❌ Missing key: \(key.stringValue) – \(context.debugDescription)")
+                    completion(.failure(DecodingError.keyNotFound(key, context)))
+                } catch let DecodingError.valueNotFound(value, context) {
+                    print("❌ Missing value: \(value) – \(context.debugDescription)")
+                    completion(.failure(DecodingError.valueNotFound(value, context)))
+                } catch let DecodingError.typeMismatch(type, context) {
+                    print("❌ Type mismatch for type \(type) – \(context.debugDescription)")
+                    completion(.failure(DecodingError.typeMismatch(type, context)))
+                } catch let DecodingError.dataCorrupted(context) {
+                    print("❌ Data corrupted – \(context.debugDescription)")
+                    completion(.failure(DecodingError.dataCorrupted(context)))
+                } catch {
+                    print("❌ Other decoding error: \(error.localizedDescription)")
+                    completion(.failure(error))
+                }
             }
-
-            guard let data = data else {
-                completion(.failure(NSError(domain: "No Data", code: 0)))
-                return
-            }
-
-            do {
-                let decodedData = try JSONDecoder().decode(CreateAddressResponseModel.self, from: data)
-                completion(.success(decodedData))
-            } catch let DecodingError.keyNotFound(key, context) {
-                print("❌ Missing key: \(key.stringValue) – \(context.debugDescription)")
-            } catch let DecodingError.valueNotFound(value, context) {
-                print("❌ Missing value: \(value) – \(context.debugDescription)")
-            } catch let DecodingError.typeMismatch(type, context) {
-                print("❌ Type mismatch for type \(type) – \(context.debugDescription)")
-              
-            } catch let DecodingError.dataCorrupted(context) {
-                print("❌ Data corrupted – \(context.debugDescription)")
-               
-            } catch {
-                print("❌ Other decoding error: \(error.localizedDescription)")
-              
-            }
-
-
         }.resume()
     }
 
