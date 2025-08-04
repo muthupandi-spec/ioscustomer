@@ -1,7 +1,7 @@
 import Foundation
 
 class APIService {
-    let baseurl="https://f06035553381.ngrok-free.app/"
+    let baseurl="https://b4735c2865de.ngrok-free.app/"
     func getProfile(customerId: Int, completion: @escaping (Result<GetProfileResponseModel, Error>) -> Void) {
         let urlString =  baseurl + "restaurant/api/customer/v1/getemployee/\(customerId)" // Replace with actual base URL
         guard let url = URL(string: urlString) else {
@@ -490,7 +490,41 @@ class APIService {
 
            task.resume()
        }
-    
+    func getFavourite(customerId: Int, completion: @escaping (Result<[ViewFavouriteResponseModelItem], Error>) -> Void) {
+        let urlString = baseurl + "restaurant/api/favourite/viewfavourite/\(customerId)"
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0)))
+            return
+        }
+
+        print("🔗 URL: \(url.absoluteString)")
+
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print("❌ Error: \(error)")
+                completion(.failure(error))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(NSError(domain: "No data", code: 0)))
+                return
+            }
+
+            print("📩 Raw JSON: \(String(data: data, encoding: .utf8) ?? "")")
+
+            do {
+                let result = try JSONDecoder().decode([ViewFavouriteResponseModelItem].self, from: data)
+                completion(.success(result))
+            } catch {
+                print("💥 Decoding Error: \(error)")
+                completion(.failure(error))
+            }
+        }
+
+        task.resume()
+    }
+
 
     func getbanner(completion: @escaping (Result<[FoodModel], Error>) -> Void) {
         let urlString = baseurl+"/getbanner" // Replace with your actual API URL
@@ -1756,31 +1790,168 @@ class APIService {
                     print("📥 Raw JSON Response:\n\(jsonString)")
                 }
 
+            }
+        }.resume()
+    }
+    func createWishlist(_ requestModel: CreateRequestParamModel, completion: @escaping (Result<CreateRequestResponseModel, Error>) -> Void) {
+        let urlString = "\(baseurl)restaurant/api/favourite/createfavourite"
+
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0)))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        do {
+            let jsonData = try JSONEncoder().encode(requestModel)
+            request.httpBody = jsonData
+
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print("📤 JSON Payload:\n\(jsonString)")
+            }
+        } catch {
+            completion(.failure(error))
+            return
+        }
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("📥 HTTP Status Code: \(httpResponse.statusCode)")
+                }
+
+                if let error = error {
+                    print("❌ Network Error: \(error.localizedDescription)")
+                    completion(.failure(error))
+                    return
+                }
+
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "No data received", code: 0)))
+                    return
+                }
+
+                if let jsonString = String(data: data, encoding: .utf8) {
+                    print("📥 Raw JSON Response:\n\(jsonString)")
+                }
+
                 do {
-                    let decodedData = try JSONDecoder().decode(CreateAddressResponseModel.self, from: data)
-                    completion(.success(decodedData))
-                } catch let DecodingError.keyNotFound(key, context) {
-                    print("❌ Missing key: \(key.stringValue) – \(context.debugDescription)")
-                    completion(.failure(DecodingError.keyNotFound(key, context)))
-                } catch let DecodingError.valueNotFound(value, context) {
-                    print("❌ Missing value: \(value) – \(context.debugDescription)")
-                    completion(.failure(DecodingError.valueNotFound(value, context)))
-                } catch let DecodingError.typeMismatch(type, context) {
-                    print("❌ Type mismatch for type \(type) – \(context.debugDescription)")
-                    completion(.failure(DecodingError.typeMismatch(type, context)))
-                } catch let DecodingError.dataCorrupted(context) {
-                    print("❌ Data corrupted – \(context.debugDescription)")
-                    completion(.failure(DecodingError.dataCorrupted(context)))
+                    let decodedResponse = try JSONDecoder().decode(CreateRequestResponseModel.self, from: data)
+                    completion(.success(decodedResponse))
                 } catch {
-                    print("❌ Other decoding error: \(error.localizedDescription)")
+                    print("❌ Decoding Error: \(error)")
                     completion(.failure(error))
                 }
             }
         }.resume()
     }
 
-  
+    func updateAddress(        addressid: Int,
+_ requestModel: RequestAddressModel, completion: @escaping (Result<UpdateAddressResponseModel, Error>) -> Void) {
+        let urlString = "\(baseurl)restaurant/api/address/update/\(addressid)"
 
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0)))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT" // ✅ Use PUT instead of POST
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        do {
+            let jsonData = try JSONEncoder().encode(requestModel)
+            request.httpBody = jsonData
+
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print("📤 JSON Payload:\n\(jsonString)")
+            }
+        } catch {
+            completion(.failure(error))
+            return
+        }
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("📥 HTTP Status Code: \(httpResponse.statusCode)")
+                }
+
+                if let error = error {
+                    print("❌ Network Error: \(error.localizedDescription)")
+                    completion(.failure(error))
+                    return
+                }
+
+                guard let data = data else {
+                    completion(.failure(NSError(domain: "No data received", code: 0)))
+                    return
+                }
+
+                if let jsonString = String(data: data, encoding: .utf8) {
+                    print("📥 Raw JSON Response:\n\(jsonString)")
+                }
+
+                do {
+                    let decoded = try JSONDecoder().decode(UpdateAddressResponseModel.self, from: data)
+                    completion(.success(decoded))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+        }.resume()
+    }
+
+
+    func deleteAddress(addressId: Int, completion: @escaping (Result<DeleteAddressResponseModel, Error>) -> Void) {
+        let urlString = "\(baseurl)restaurant/api/address/deletecatagory/\(addressId)"
+        
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        print("🔗 Request URL: \(url.absoluteString)")
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("❌ Error: \(error.localizedDescription)")
+                    completion(.failure(error))
+                    return
+                }
+
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("📡 Status Code: \(httpResponse.statusCode)")
+                }
+
+                guard let data = data else {
+                    print("⚠️ No data received")
+                    completion(.failure(NSError(domain: "No Data", code: 0, userInfo: nil)))
+                    return
+                }
+
+                print("📩 Response: \(String(data: data, encoding: .utf8) ?? "Invalid response")")
+
+                do {
+                    let decodedResponse = try JSONDecoder().decode(DeleteAddressResponseModel.self, from: data)
+                    completion(.success(decodedResponse))
+                } catch {
+                    print("💥 JSON Decode Error: \(error.localizedDescription)")
+                    completion(.failure(error))
+                }
+            }
+        }
+
+        task.resume()
+    }
 
 
 }

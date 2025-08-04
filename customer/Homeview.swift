@@ -71,9 +71,9 @@ struct HomeView: View {
             
         }.onAppear {
 //            viewModel.getfood()
-//            viewModel.getoffer()
-//            viewModel.getbrach()
-//            viewModel.getcategory()
+            viewModel.getoffer()
+            viewModel.getbrach()
+            viewModel.getcategory()
             let customerId = UserDefaults.standard.integer(forKey: "customerID") // Or hardcode for testing
                         viewModel.getProfile(customerId: customerId)
 
@@ -325,6 +325,7 @@ struct HomeView: View {
 
 
     private var foodListView: some View {
+        
         ScrollView {
                  ForEach(Array(viewModel.fooddetailrespose.enumerated()), id: \.element.foodId) { index, food in
                      HStack {
@@ -364,8 +365,17 @@ struct HomeView: View {
                          .clipShape(RoundedRectangle(cornerRadius: 12))
                          .overlay(
                              Button(action: {
+
                                  print("❤️ Heart tapped for foodId: \(food.foodId)")
-                                 viewModel.addcart(customerId: 4, foodid: food.foodId, quatity: 1)
+                                 viewModel.createfavourite(foodid:food.foodId) { result in
+                                     switch result {
+                                     case .success(let response):
+                                         print("✅ Address Created: \(response)")
+                                     case .failure(let error):
+                                         print("✅ failure Created: ")
+
+                                     }
+                                 }
                              }) {
                                  Image("heart")
                                      .resizable()

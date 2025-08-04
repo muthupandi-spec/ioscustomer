@@ -2,6 +2,10 @@ import SwiftUI
 
 struct AddressView: View {
     @State private var navigate_addaddress = false
+    @State private var navigate_editaddress = false
+    @State private var selectedAddress: GetAddressResponseModelItem? = nil
+
+    @State private var selectedAddressId: Int? = nil
     @State private var errorMessage: String?
     @State private var isLoading = false
 
@@ -12,26 +16,35 @@ struct AddressView: View {
         NavigationStack {
             ZStack {
                 VStack {
-                    // Header Section
                     header
                     Divider()
 
                     // Address List
-                   
                     ForEach(viewModel.addressresponse, id: \.addressId) { address in
-                                VStack {
-                                    HStack(alignment: .top, spacing: 12) {
-                                        Image(systemName: "location.fill")
-                                            .resizable()
-                                            .frame(width: 28, height: 28)
-                                            .padding(.vertical, 10)
+                        Button(action: {
+                            selectedAddressId = address.addressId
+                            UserDefaults.standard.set(address.addressId, forKey: "selectedAddressId")
+                            selectedAddress = address
+                        }) {
+                            VStack {
+                                HStack(alignment: .top, spacing: 12) {
+                                    Image(systemName: "location.fill")
+                                        .resizable()
+                                        .frame(width: 28, height: 28)
+                                        .padding(.vertical, 10)
 
-                                        VStack(alignment: .leading, spacing: 6) {
-                                            HStack {
-                                                Text("Home")
-                                                    .font(.system(size: 11, weight: .bold))
-                                                    .foregroundColor(.black)
+                                    VStack(alignment: .leading, spacing: 6) {
+                                        HStack {
+                                            Text("Home")
+                                                .font(.system(size: 11, weight: .bold))
+                                                .foregroundColor(.black)
 
+                                            Button(action: {
+                                                selectedAddress = address
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                    navigate_editaddress = true
+                                                }
+                                            }) {
                                                 Text("EDIT")
                                                     .font(.system(size: 9))
                                                     .padding(.vertical, 3)
@@ -42,36 +55,64 @@ struct AddressView: View {
                                                     )
                                                     .foregroundColor(.gray)
                                             }
-
-                                            Text("\(address.doorNo), \(address.street), \(address.city)")
-                                                .font(.system(size: 10))
-                                                .lineLimit(1)
-
-                                            Text("\(address.pincode)")
-                                                .font(.system(size: 10))
-                                                .lineLimit(1)
                                         }
 
-                                        Spacer()
+                                        Text("\(address.doorNo), \(address.street), \(address.city)")
+                                            .font(.system(size: 10))
+                                            .fixedSize(horizontal: false, vertical: true) // Allows multiline
 
+                                        Text("\(address.pincode)")
+                                            .font(.system(size: 10))
+                                            .fixedSize(horizontal: false, vertical: true)
+                                    }
+
+                                    Spacer()
+
+                                    VStack {
+                                        // Delete Button
+                                        Button(action: {
+                                            viewModel.deleteadress(addressid: address.addressId) { success in
+                                                if success {
+                                                    viewModel.getaddress(customerId: UserDefaults.standard.integer(forKey: "customerID"))
+                                                }
+                                            }
+                                        }) {
+                                            Image(systemName: "trash.fill")
+                                                .foregroundColor(.red)
+                                                .padding(6)
+                                        }
+                                        .buttonStyle(PlainButtonStyle())
+
+
+                                        // Radio Circle
                                         Circle()
-                                            .strokeBorder(Color.green, lineWidth: 2)
-                                            .background(Circle().fill(Color.white))
+                                            .strokeBorder(
+                                                selectedAddressId == address.addressId ? Color.green : Color.gray,
+                                                lineWidth: 2
+                                            )
+                                            .background(
+                                                Circle().fill(
+                                                    selectedAddressId == address.addressId ? Color.green : Color.white
+                                                )
+                                            )
                                             .frame(width: 20, height: 20)
                                     }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 12)
                                 }
-                                .background(
-                                    RoundedRectangle(cornerRadius: 15)
-                                        .fill(Color.white)
-                                        .shadow(color: .gray.opacity(0.2), radius: 1, x: 0, y: 1)
-                                )
-                                .padding(.horizontal, 4)
-                                .padding(.vertical, 8)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 12)
                             }
-                        
-                    
+                            .background(
+                                RoundedRectangle(cornerRadius: 15)
+                                    .fill(Color.white)
+                                    .shadow(color: .gray.opacity(0.2), radius: 1, x: 0, y: 1)
+                            )
+                            .padding(.horizontal)
+                            .padding(.vertical, 8)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
+
 
                     Spacer()
                     button
@@ -79,13 +120,24 @@ struct AddressView: View {
                 .background(Color.white.edgesIgnoringSafeArea(.all))
             }
             .navigationBarBackButtonHidden(true)
+            .navigationDestination(isPresented: $navigate_addaddress) {
+                ManualaddressView()
+            }
+            .navigationDestination(isPresented: $navigate_editaddress) {
+                Group {
+                    if let selected = selectedAddress {
+                        EditaddressView(address: selected, viewModel: viewModel)
+                    } else {
+                        EmptyView() // Fallback view
+                    }
+                }
+            }
         }
         .onAppear {
             viewModel.getaddress(customerId: UserDefaults.standard.integer(forKey: "customerID"))
         }
     }
 
-    // MARK: - Header View
     private var header: some View {
         HStack {
             Button(action: {
@@ -111,7 +163,6 @@ struct AddressView: View {
         .padding(.top, 20)
     }
 
-    // MARK: - Bottom Button View
     private var button: some View {
         VStack(spacing: 12) {
             Button(action: {
@@ -123,12 +174,13 @@ struct AddressView: View {
                     .foregroundColor(.black)
                     .cornerRadius(10)
             }
-            .navigationDestination(isPresented: $navigate_addaddress) {
-                ManualaddressView()
-            }
 
             Button(action: {
-                // Handle Apply
+                // Handle Apply with selectedAddressId
+                if let id = selectedAddressId {
+                    print("Selected Address ID: \(id)")
+                    // You can now use it to apply selection
+                }
             }) {
                 Text("Apply")
                     .frame(maxWidth: .infinity, minHeight: 40)
@@ -140,7 +192,4 @@ struct AddressView: View {
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
     }
-
-   
 }
-

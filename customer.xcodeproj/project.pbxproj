@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA02B10F2E406FF7009BC8DC /* EditAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02B10E2E406FF7009BC8DC /* EditAddressView.swift */; };
+		FA02B1112E407172009BC8DC /* UpdateAddressresponsemodel].swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02B1102E407172009BC8DC /* UpdateAddressresponsemodel].swift */; };
+		FA02B1132E408237009BC8DC /* DeleteAddressResposeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02B1122E408237009BC8DC /* DeleteAddressResposeModel.swift */; };
+		FA02B1152E40B625009BC8DC /* CreateRequestParamodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02B1142E40B625009BC8DC /* CreateRequestParamodel.swift */; };
+		FA02B1172E40B671009BC8DC /* CreatefavouriteResposeMpodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02B1162E40B671009BC8DC /* CreatefavouriteResposeMpodel.swift */; };
+		FA02B1192E40BBA5009BC8DC /* Viewfouritemodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02B1182E40BBA5009BC8DC /* Viewfouritemodel.swift */; };
 		FA08FE602E2E1309008A9E0E /* Checkoutmodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA08FE5F2E2E1309008A9E0E /* Checkoutmodel.swift */; };
 		FA08FE622E2E2245008A9E0E /* Getprofileresposemodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA08FE612E2E2245008A9E0E /* Getprofileresposemodel.swift */; };
 		FA08FE642E2E291C008A9E0E /* UpdateResponsemodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA08FE632E2E291C008A9E0E /* UpdateResponsemodel.swift */; };
@@ -127,6 +133,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FA02B10E2E406FF7009BC8DC /* EditAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAddressView.swift; sourceTree = "<group>"; };
+		FA02B1102E407172009BC8DC /* UpdateAddressresponsemodel].swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateAddressresponsemodel].swift"; sourceTree = "<group>"; };
+		FA02B1122E408237009BC8DC /* DeleteAddressResposeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAddressResposeModel.swift; sourceTree = "<group>"; };
+		FA02B1142E40B625009BC8DC /* CreateRequestParamodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestParamodel.swift; sourceTree = "<group>"; };
+		FA02B1162E40B671009BC8DC /* CreatefavouriteResposeMpodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatefavouriteResposeMpodel.swift; sourceTree = "<group>"; };
+		FA02B1182E40BBA5009BC8DC /* Viewfouritemodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Viewfouritemodel.swift; sourceTree = "<group>"; };
 		FA08FE5F2E2E1309008A9E0E /* Checkoutmodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkoutmodel.swift; sourceTree = "<group>"; };
 		FA08FE612E2E2245008A9E0E /* Getprofileresposemodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Getprofileresposemodel.swift; sourceTree = "<group>"; };
 		FA08FE632E2E291C008A9E0E /* UpdateResponsemodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateResponsemodel.swift; sourceTree = "<group>"; };
@@ -347,6 +359,11 @@
 				FA0C2E942E3764E800D41BB4 /* CreateAddressResposeMOdel.swift */,
 				FA0C2E962E37650A00D41BB4 /* RequestAddressModel.swift */,
 				FADFE2B12E3DAFCE001A14B3 /* AddressResposeModel.swift */,
+				FA02B1102E407172009BC8DC /* UpdateAddressresponsemodel].swift */,
+				FA02B1122E408237009BC8DC /* DeleteAddressResposeModel.swift */,
+				FA02B1142E40B625009BC8DC /* CreateRequestParamodel.swift */,
+				FA02B1162E40B671009BC8DC /* CreatefavouriteResposeMpodel.swift */,
+				FA02B1182E40BBA5009BC8DC /* Viewfouritemodel.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -405,6 +422,7 @@
 				FA9A532F2E12654500FCCD24 /* ResturantView.swift */,
 				FA0B0BA62E29DACB00D78B90 /* Fooddetailview.swift */,
 				FA0C2E922E37619D00D41BB4 /* ManualAddressview.swift */,
+				FA02B10E2E406FF7009BC8DC /* EditAddressView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -605,6 +623,7 @@
 				FA254EFA2D8E80E700406220 /* RecommendforyuyView.swift in Sources */,
 				FA42AE222D95157D00F724EE /* TrackOrderView.swift in Sources */,
 				FA65B52A2D93B2F60039617F /* OrderViewpagerView.swift in Sources */,
+				FA02B1112E407172009BC8DC /* UpdateAddressresponsemodel].swift in Sources */,
 				FAB3C2E82DA3A3AE0072BC5C /* SplashscreeView.swift in Sources */,
 				FA42AE1C2D95099B00F724EE /* AddnewAddressView.swift in Sources */,
 				FA96F66D2E2A0B4800FD018F /* LoginResponsemodel.swift in Sources */,
@@ -614,6 +633,7 @@
 				FA08FE602E2E1309008A9E0E /* Checkoutmodel.swift in Sources */,
 				FA1C6CE32E1D7ED400A3F998 /* Appdelegate.swift in Sources */,
 				FA0B0BA72E29DACB00D78B90 /* Fooddetailview.swift in Sources */,
+				FA02B1172E40B671009BC8DC /* CreatefavouriteResposeMpodel.swift in Sources */,
 				FA5EBB172E044C8C00905CB3 /* OfferModel.swift in Sources */,
 				FAB92A672D941227007A5B0A /* EditProfileView.swift in Sources */,
 				FA1C6CE12E1D7AF700A3F998 /* Firebase.swift in Sources */,
@@ -621,6 +641,8 @@
 				FA3854C52D940B3E00FB4E6D /* ProfileView.swift in Sources */,
 				FA7079FA2D9BC25300DE6C96 /* UserModel.swift in Sources */,
 				FA49AF382E151D0E008C76F7 /* Restaurantooditem.swift in Sources */,
+				FA02B1132E408237009BC8DC /* DeleteAddressResposeModel.swift in Sources */,
+				FA02B1192E40BBA5009BC8DC /* Viewfouritemodel.swift in Sources */,
 				FA35EE2E2D8FD5D6000D09CA /* Bottomview.swift in Sources */,
 				FACA5E102E04F56100925C82 /* FoodDetailResponseModel.swift in Sources */,
 				FA7079FC2D9BC27200DE6C96 /* ApiService.swift in Sources */,
@@ -628,10 +650,12 @@
 				FA08FE662E2E2FBA008A9E0E /* Updateemployee.swift in Sources */,
 				FACA01292E0C5C900045E87D /* AddcartResposemodel.swift in Sources */,
 				FA08FE642E2E291C008A9E0E /* UpdateResponsemodel.swift in Sources */,
+				FA02B10F2E406FF7009BC8DC /* EditAddressView.swift in Sources */,
 				FA42AE182D95040E00F724EE /* AccountsettingView.swift in Sources */,
 				FAA430682E1E4935001A9805 /* OtpResponseModel.swift in Sources */,
 				FA65B52E2D93BD090039617F /* OrderDetailpageView.swift in Sources */,
 				FA55925F2D897BE100790E02 /* LoginView.swift in Sources */,
+				FA02B1152E40B625009BC8DC /* CreateRequestParamodel.swift in Sources */,
 				FAA430662E1E3F0B001A9805 /* Registermodel.swift in Sources */,
 				FA55925D2D897BE100790E02 /* customerApp.swift in Sources */,
 				FA42AE1A2D9508CC00F724EE /* AddressView.swift in Sources */,

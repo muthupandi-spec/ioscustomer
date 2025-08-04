@@ -233,7 +233,7 @@ struct RestaurantView: View {
                  }
              }
              .fullScreenCover(isPresented: $navigateDetail) {
-                 ShopDetailView()
+                 FoodDetailView()
              }
          
     }

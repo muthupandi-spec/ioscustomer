@@ -8,6 +8,7 @@ class HomeviewModel: ObservableObject {
     @Published var resfooddetailrespose: [FoodDetailResponseModel] = []
     @Published var cartresponse: [CartResponseModel] = []
     @Published var addressresponse: [GetAddressResponseModelItem] = []
+    @Published var favouriteresponse: [ViewFavouriteResponseModelItem] = []
     @Published var shopresponse: FoodItem?
     @Published var addcartrespose:Addcartmodel?
     @Published var Activeorder: [ActiveOrderResponsemodel] = []
@@ -24,8 +25,11 @@ class HomeviewModel: ObservableObject {
     @Published  var doorNo = ""
     @Published  var street = ""
     @Published  var place = ""
+    @Published  var addressid = 0
     @Published var addressResponse: CreateAddressResponseModel?
-
+    @Published var createfavouriteResponse: CreateRequestResponseModel?
+    @Published var updateaddressResponse: UpdateAddressResponseModel?
+    @Published var deleteddressResponse: DeleteAddressResponseModel?
     @Published  var cityy = ""
     @Published  var pincode = ""
     @Published  var landmark = ""
@@ -110,6 +114,25 @@ class HomeviewModel: ObservableObject {
             }
         }
     }
+    func viewfavourite() {
+        isLoading = true
+        errorMessage = nil
+        let customerId = UserDefaults.standard.integer(forKey: "customerID")
+
+        apiService.getFavourite(customerId: customerId) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let response):
+                    print("✅ Address List Count: \(response.count)")
+                    self?.favouriteresponse = response
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+
 
     func getcategory() {
         isLoading = true
@@ -676,7 +699,84 @@ class HomeviewModel: ObservableObject {
             }
         }
     }
+    func createfavourite(foodid:Int,completion: @escaping (Result<CreateRequestResponseModel, Error>) -> Void) {
+        self.isLoading = true
+        self.errorMessage = nil
+        let customerID = UserDefaults.standard.integer(forKey: "customerID")
 
+           let restaurantID = 0 // e.g. selected restaurant ID
 
-   	
+           // Prepare the model to send
+           let favouriteRequest = CreateRequestParamModel(
+               customerbo: CreateRequestParamModel.Customer(customerId: customerID),
+               itembo: CreateRequestParamModel.ItemBO(foodId: foodid),
+               restaurantbo: CreateRequestParamModel.Restaurant(restaurantId: restaurantID)
+           )
+
+        // Call API from service layer
+        apiService.createWishlist(favouriteRequest) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let response):
+                    self?.createfavouriteResponse = response  // optional: store the response
+                    completion(.success(response))
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    func updateAddress(completion: @escaping (Result<UpdateAddressResponseModel, Error>) -> Void) {
+        self.isLoading = true
+        self.errorMessage = nil
+
+        // Prepare the model to send
+        let addressRequest = RequestAddressModel(
+            landMark: landmark,
+            doorNo: doorNo,
+            street: street,
+            place: place,
+            city: cityy,
+            pincode: pincode,
+            customerbo: CustomerBO(customerId: UserDefaults.standard.integer(forKey: "customerID"))
+        )
+
+        // Call API from service layer
+       
+        apiService.updateAddress(addressid:addressid,addressRequest) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let response):
+                    self?.updateaddressResponse = response  // optional: store the response
+                    completion(.success(response))
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    func deleteadress(addressid: Int, completion: @escaping (Bool) -> Void) {
+        isLoading = true
+        errorMessage = nil
+
+        apiService.deleteAddress(addressId: addressid) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let response):
+                    self?.deleteddressResponse = response
+                    completion(true)
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                    completion(false)
+                }
+            }
+        }
+    }
 }
