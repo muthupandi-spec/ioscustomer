@@ -244,7 +244,7 @@ dismiss()                    }) {
                             }
                             
                             Button(action: {
-                                viewModel.deleteaccount(userid:"675")
+//                                viewModel.deleteaccount(userid:"675")
 
                                 dismiss()                        }) {
                                     Text("Confirm")

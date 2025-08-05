@@ -109,6 +109,7 @@
 		FAB3C2E82DA3A3AE0072BC5C /* SplashscreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB3C2E72DA3A3AE0072BC5C /* SplashscreeView.swift */; };
 		FAB92A672D941227007A5B0A /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB92A662D941227007A5B0A /* EditProfileView.swift */; };
 		FABBD1262E0E6586007139F7 /* DeleteCartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABBD1252E0E6586007139F7 /* DeleteCartModel.swift */; };
+		FAC9AF392E41C608009979E9 /* DeleteFavouriteResposemodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9AF382E41C608009979E9 /* DeleteFavouriteResposemodel.swift */; };
 		FACA01292E0C5C900045E87D /* AddcartResposemodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA01282E0C5C900045E87D /* AddcartResposemodel.swift */; };
 		FACA012B2E0C652D0045E87D /* Cartresposemodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA012A2E0C652D0045E87D /* Cartresposemodel.swift */; };
 		FACA5E102E04F56100925C82 /* FoodDetailResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA5E0F2E04F56100925C82 /* FoodDetailResponseModel.swift */; };
@@ -209,6 +210,7 @@
 		FAB3C2E72DA3A3AE0072BC5C /* SplashscreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashscreeView.swift; sourceTree = "<group>"; };
 		FAB92A662D941227007A5B0A /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		FABBD1252E0E6586007139F7 /* DeleteCartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCartModel.swift; sourceTree = "<group>"; };
+		FAC9AF382E41C608009979E9 /* DeleteFavouriteResposemodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteFavouriteResposemodel.swift; sourceTree = "<group>"; };
 		FACA01282E0C5C900045E87D /* AddcartResposemodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddcartResposemodel.swift; sourceTree = "<group>"; };
 		FACA012A2E0C652D0045E87D /* Cartresposemodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cartresposemodel.swift; sourceTree = "<group>"; };
 		FACA5E0F2E04F56100925C82 /* FoodDetailResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodDetailResponseModel.swift; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 				FA02B1142E40B625009BC8DC /* CreateRequestParamodel.swift */,
 				FA02B1162E40B671009BC8DC /* CreatefavouriteResposeMpodel.swift */,
 				FA02B1182E40BBA5009BC8DC /* Viewfouritemodel.swift */,
+				FAC9AF382E41C608009979E9 /* DeleteFavouriteResposemodel.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				FA707A032D9BC3E000DE6C96 /* LoginViewModel.swift in Sources */,
 				FADFE2B22E3DAFCE001A14B3 /* AddressResposeModel.swift in Sources */,
 				FA254EFA2D8E80E700406220 /* RecommendforyuyView.swift in Sources */,
+				FAC9AF392E41C608009979E9 /* DeleteFavouriteResposemodel.swift in Sources */,
 				FA42AE222D95157D00F724EE /* TrackOrderView.swift in Sources */,
 				FA65B52A2D93B2F60039617F /* OrderViewpagerView.swift in Sources */,
 				FA02B1112E407172009BC8DC /* UpdateAddressresponsemodel].swift in Sources */,

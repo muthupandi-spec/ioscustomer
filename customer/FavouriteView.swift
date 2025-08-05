@@ -6,31 +6,32 @@ struct FavouriteView: View {
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        NavigationStack {
+        VStack(spacing: 0) {
+            header
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 16) {
-                    header
                     foodview
                 }
                 .padding()
             }
-            .navigationBarBackButtonHidden(true)
-            .navigationBarHidden(true)
         }
         .onAppear {
             viewModel.viewfavourite()
         }
+        .navigationBarBackButtonHidden(false) // ✅ Let SwiftUI show back arrow
         .background(Color(.systemGroupedBackground))
     }
 
     private var header: some View {
         HStack {
             Button(action: {
-                dismiss()
+                dismiss() // ✅ Will work if view was pushed using NavigationLink
             }) {
-                Image("ic_back")
-                    .resizable()
-                    .frame(width: 23, height: 23)
+                Image(systemName: "chevron.left")
+                    .foregroundColor(.black)
+                    .frame(width: 32, height: 32)
+                    .background(Color.white)
+                    .clipShape(Circle())
             }
 
             Text("My Favourite")
@@ -40,6 +41,8 @@ struct FavouriteView: View {
 
             Spacer()
         }
+        .padding()
+        .background(Color.white)
     }
 
     private var foodview: some View {
@@ -49,16 +52,15 @@ struct FavouriteView: View {
                     ZStack(alignment: .bottomLeading) {
                         if let image = imageFromBase64(item.itembo.image) {
                             image
+                                .resizable()
                                 .scaledToFill()
                                 .frame(width: 120, height: 160)
                                 .clipped()
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                                .cornerRadius(10)
                         } else {
                             Color.gray
                                 .frame(width: 120, height: 160)
                         }
-                    
 
                         VStack(alignment: .leading, spacing: 4) {
                             Text("UPTO 23%")
@@ -77,19 +79,33 @@ struct FavouriteView: View {
                         }
                         .padding(6)
                     }
-                    .overlay(
-                        Image("heart")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .padding(6),
-                        alignment: .topTrailing
-                    )
+                    
 
                     VStack(alignment: .leading, spacing: 6) {
-                        Text(item.itembo.foodName)
-                            .font(.headline)
-                            .foregroundColor(.black)
-                            .lineLimit(1)
+                        HStack{
+                            Text(item.itembo.foodName)
+                                .font(.headline)
+                                .foregroundColor(.black)
+                                .lineLimit(1)
+                            Spacer()
+                            Button(action: {
+                          
+                                
+                                viewModel.deletefavourite(favid: item.addFavId) { success in
+                                    if success {
+                                        viewModel.viewfavourite()
+
+                                    }
+                                }
+    
+                            }) {
+                                Image(systemName: "trash")
+                                    .foregroundColor(.red)
+                                    .padding(18)
+                            }
+                        }
+                      
+                        
 
                         Text(item.itembo.decription)
                             .font(.subheadline)
@@ -130,15 +146,15 @@ struct FavouriteView: View {
     }
 }
 
-struct FavouriteView_Previews: PreviewProvider {
-    static var previews: some View {
-        FavouriteView()
-    }
-}
 func imageFromBase64(_ base64String: String) -> Image? {
     if let imageData = Data(base64Encoded: base64String),
        let uiImage = UIImage(data: imageData) {
         return Image(uiImage: uiImage)
     }
     return nil
+}
+struct favouroite_Previews: PreviewProvider {
+    static var previews: some View {
+        FavouriteView()
+    }
 }

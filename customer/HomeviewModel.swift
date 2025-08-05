@@ -30,6 +30,7 @@ class HomeviewModel: ObservableObject {
     @Published var createfavouriteResponse: CreateRequestResponseModel?
     @Published var updateaddressResponse: UpdateAddressResponseModel?
     @Published var deleteddressResponse: DeleteAddressResponseModel?
+    @Published var deletefavouriteResponse: DeleteFavouriteResposeModel?
     @Published  var cityy = ""
     @Published  var pincode = ""
     @Published  var landmark = ""
@@ -356,22 +357,22 @@ class HomeviewModel: ObservableObject {
               }
           }
       }
-    func deleteaccount(userid: String) { // Accept categoryId as a parameter
-          isLoading = true
-          errorMessage = nil
-
-          apiService.deleteaccount(userid: userid) { [weak self] result in
-              DispatchQueue.main.async {
-                  self?.isLoading = false
-                  switch result {
-                  case .success(let food):
-                      self?.food = food
-                  case .failure(let error):
-                      self?.errorMessage = error.localizedDescription
-                  }
-              }
-          }
-      }
+//    func deleteaccount(userid: String) { // Accept categoryId as a parameter
+//          isLoading = true
+//          errorMessage = nil
+//
+//          apiService.deleteaccount(userid: userid) { [weak self] result in
+//              DispatchQueue.main.async {
+//                  self?.isLoading = false
+//                  switch result {
+//                  case .success(let food):
+//                      self?.food = food
+//                  case .failure(let error):
+//                      self?.errorMessage = error.localizedDescription
+//                  }
+//              }
+//          }
+//      }
     func viewcart(orderid: String) { // Accept categoryId as a parameter
           isLoading = true
           errorMessage = nil
@@ -437,23 +438,22 @@ class HomeviewModel: ObservableObject {
               }
           }
       }
-    func checkout(customerId: Int, checkoutId: Int, body: [String: String]) {
-        isLoading = true
-        errorMessage = nil
+    func CheckOut(customerId: Int, checkoutId: Int, addressId: Int, body: [String: String]) {
+           isLoading = true
+           errorMessage = nil
 
-        apiService.checkoutapi(customerId: customerId, id: checkoutId, params: body) { [weak self] result in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                switch result {
-                case .success(let food):
-                    self?.checkout = food
-                case .failure(let error):
-                    self?.errorMessage = error.localizedDescription
-                }
-            }
-        }
-    }
-
+           apiService.checkoutAPI(customerId: customerId, id: checkoutId, addressId: addressId, params: body) { [weak self] result in
+               DispatchQueue.main.async {
+                   self?.isLoading = false
+                   switch result {
+                   case .success(let response):
+                       self?.checkout = response
+                   case .failure(let error):
+                       self?.errorMessage = error.localizedDescription
+                   }
+               }
+           }
+       }
 
     
     func getorderdetail(orderid: String) {
@@ -779,4 +779,23 @@ class HomeviewModel: ObservableObject {
             }
         }
     }
+    func deletefavourite(favid: Int, completion: @escaping (Bool) -> Void) {
+        isLoading = true
+        errorMessage = nil
+
+        apiService.deleteFavourite(favId: favid) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let response):
+                    self?.deletefavouriteResponse = response
+                    completion(true)
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                    completion(false)
+                }
+            }
+        }
+    }
+
 }

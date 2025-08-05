@@ -1,7 +1,7 @@
 import Foundation
 
 class APIService {
-    let baseurl="https://b4735c2865de.ngrok-free.app/"
+    let baseurl="https://e6fdfa4334d1.ngrok-free.app/"
     func getProfile(customerId: Int, completion: @escaping (Result<GetProfileResponseModel, Error>) -> Void) {
         let urlString =  baseurl + "restaurant/api/customer/v1/getemployee/\(customerId)" // Replace with actual base URL
         guard let url = URL(string: urlString) else {
@@ -1044,23 +1044,18 @@ class APIService {
 
         task.resume()
     }
-    func deleteaccount(userid: String, completion: @escaping (Result<[FoodModel], Error>) -> Void) {
-        let urlString = baseurl + "/deleteaccount" // Replace with actual API URL
+    func deleteFavourite(favId: Int, completion: @escaping (Result<DeleteFavouriteResposeModel, Error>) -> Void) {
+        let urlString = baseurl+"restaurant/api/favourite/deletefavourite/\(favId)"
+        
         guard let url = URL(string: urlString) else {
-            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            completion(.failure(NSError(domain: "Invalid URL", code: 0)))
             return
         }
 
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-
-        // ✅ URL-Encoded Parameters
-        let postString = "userid=\(userid)"
-        request.httpBody = postString.data(using: .utf8)
+        request.httpMethod = "DELETE"
 
         print("🔗 Request URL: \(url.absoluteString)")
-        print("📨 Request Body: \(postString)")
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -1069,23 +1064,25 @@ class APIService {
                 return
             }
 
-            if let httpResponse = response as? HTTPURLResponse {
-                print("📡 Response Status Code: \(httpResponse.statusCode)")
-            }
-
-            guard let data = data else {
-                print("⚠️ No data received")
-                completion(.failure(NSError(domain: "No Data", code: 0, userInfo: nil)))
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(NSError(domain: "Invalid Response", code: 0)))
                 return
             }
 
-            print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8 Data")")
+            print("📡 Status Code: \(httpResponse.statusCode)")
+
+            guard let data = data else {
+                completion(.failure(NSError(domain: "No Data", code: 0)))
+                return
+            }
+
+            print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8")")
 
             do {
-                let categories = try JSONDecoder().decode([FoodModel].self, from: data)
-                completion(.success(categories))
+                let result = try JSONDecoder().decode(DeleteFavouriteResposeModel.self, from: data)
+                completion(.success(result))
             } catch {
-                print("💥 JSON Decoding Error: \(error.localizedDescription)")
+                print("💥 JSON Decode Error: \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }
@@ -1189,18 +1186,24 @@ class APIService {
 
         task.resume()
     }
-    func checkoutapi(customerId: Int, id: Int, params: [String: String], completion: @escaping (Result<CheckoutResponseModel, Error>) -> Void) {
-        let urlString = "\(baseurl)restaurant/api/orders/confirmorder/\(customerId)/\(id)"
+    func checkoutAPI(
+        customerId: Int,
+        id: Int,
+        addressId: Int,
+        params: [String: String],
+        completion: @escaping (Result<CheckoutResponseModel, Error>) -> Void
+    ) {
+        let urlString = "\(baseurl)restaurant/api/orders/confirmorder/\(customerId)/\(id)/\(addressId)"
+        
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0)))
             return
         }
-
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type") // ✅ JSON
-
-        // ✅ Fix: send raw JSON
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: params, options: [])
             request.httpBody = jsonData
@@ -1209,37 +1212,40 @@ class APIService {
             completion(.failure(error))
             return
         }
-
+        
         print("🔗 Request URL: \(url.absoluteString)")
         print("📨 Request Body: \(String(data: request.httpBody ?? Data(), encoding: .utf8) ?? "N/A")")
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("❌ Error: \(error.localizedDescription)")
                 completion(.failure(error))
                 return
             }
-
+            
             if let httpResponse = response as? HTTPURLResponse {
                 print("📡 Status Code: \(httpResponse.statusCode)")
             }
-
+            
             guard let data = data else {
                 completion(.failure(NSError(domain: "No Data", code: 0)))
                 return
             }
-
+            
             do {
-                let responseModel = try JSONDecoder().decode(CheckoutResponseModel.self, from: data)
+                let decoder = JSONDecoder()
+                let responseModel = try decoder.decode(CheckoutResponseModel.self, from: data)
                 completion(.success(responseModel))
             } catch {
                 print("💥 JSON Decode Error: \(error)")
                 completion(.failure(error))
             }
         }
-
+        
         task.resume()
     }
+
+    
     func viewcart(orderid: String, completion: @escaping (Result<[FoodModel], Error>) -> Void) {
         let urlString = baseurl + "/viewcart" // Replace with actual API URL
         guard let url = URL(string: urlString) else {

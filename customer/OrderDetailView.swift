@@ -199,27 +199,11 @@ struct OrderDetailView: View {
 
                         if item.quantity > 0 {
                             HStack(spacing: 10) {
-                                Button(action: {
-                                 
-                                }) {
-                                    Image("minimize-sign")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 20, height: 20)
-                                }
-
+                               
                                 Text("\(item.quantity)")
                                     .font(.system(size: 13, weight: .bold))
                                     .foregroundColor(Color("colorPrimary"))
 
-                                Button(action: {
-                            
-                                }) {
-                                    Image("add")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 20, height: 20)
-                                }
                             }
                             .padding(2)
                             .background(RoundedRectangle(cornerRadius: 7)
@@ -394,21 +378,18 @@ struct OrderDetailView: View {
             Button(action: {
                 showPopup = true
                 let customerId = UserDefaults.standard.integer(forKey: "customerID")
-                let checkoutId = UserDefaults.standard.integer(forKey: "checkoutid") // your order ID
+                let checkoutId = UserDefaults.standard.integer(forKey: "checkoutid")
+                let addressid = UserDefaults.standard.integer(forKey: "adddressid")
 
                 let bodyData: [String: String] = [
-                    
-                    
-                    "pincode":"621012","address":"3/54A,south street,Naganallur","city":"Trichy","shopDeviceToken":"fltRlDfgTTSxCEjL7AXIo2:APA91bGAGaKVL3YkNQLNO_3XuHNsam8ZlkaGfINzEMhf1JCgon1ZWCLaX4UHNzIU3CfABLyqpMlI_EXoF0J-lUtJzNJxAo0K55hAmfuMX8-2QB8KUJotpP4","street":"southstreet","paymentStatus":"cash on delivery","landMark":"near by temple"
-
-                    
-                    
-                    
-                    
-               
+                 
+                    "shopDeviceToken": "fltRlDfgTTSxCEjL7AXIo2:APA91bGAGaKVL3YkNQLNO_3XuHNsam8ZlkaGfINzEMhf1JCgon1ZWCLaX4UHNzIU3CfABLyqpMlI_EXoF0J-lUtJzNJxAo0K55hAmfuMX8-2QB8KUJotpP4",
+                   
+                    "paymentStatus": "cash on delivery",
+                  
                 ]
 
-                viewModel.checkout(customerId: customerId, checkoutId: checkoutId, body: bodyData)
+                viewModel.CheckOut(customerId: customerId, checkoutId: checkoutId,addressId:2, body: bodyData)
 
             }) {
                 Text("Checkout")
