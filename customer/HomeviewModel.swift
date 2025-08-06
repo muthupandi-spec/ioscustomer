@@ -406,7 +406,7 @@ class HomeviewModel: ObservableObject {
               }
           }
       }
-    func cancelorder(orderid: In') { // Accept categoryId as a parameter
+    func cancelorder(orderid: Int) { // Accept categoryId as a parameter
           isLoading = true
           errorMessage = nil
 
