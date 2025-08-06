@@ -60,6 +60,7 @@
 		FA254F022D8E899B00406220 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA254F012D8E899B00406220 /* CartView.swift */; };
 		FA295DA32D9E6B12006250F3 /* HomeviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA295DA22D9E6B12006250F3 /* HomeviewModel.swift */; };
 		FA295DA52D9E6B63006250F3 /* FoodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA295DA42D9E6B63006250F3 /* FoodModel.swift */; };
+		FA3162852E41F7D5000323C6 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = FA3162842E41F7D5000323C6 /* AlertToast */; };
 		FA35EE2E2D8FD5D6000D09CA /* Bottomview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA35EE2D2D8FD5D6000D09CA /* Bottomview.swift */; };
 		FA35EE302D8FD780000D09CA /* CotetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA35EE2F2D8FD780000D09CA /* CotetView.swift */; };
 		FA3854C52D940B3E00FB4E6D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3854C42D940B3E00FB4E6D /* ProfileView.swift */; };
@@ -225,6 +226,7 @@
 				FA1C6CD52E1D744600A3F998 /* FirebaseMessaging in Frameworks */,
 				FA9242FE2D8BDBB600B3B546 /* Algorithms in Frameworks */,
 				FA1C6CC72E1D744600A3F998 /* FirebaseFirestoreSwift in Frameworks */,
+				FA3162852E41F7D5000323C6 /* AlertToast in Frameworks */,
 				FA1C6CB12E1D744600A3F998 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				FA1C6CC92E1D744600A3F998 /* FirebaseFunctions in Frameworks */,
 				FA9243042D8BDE5E00B3B546 /* CountryPickerView in Frameworks */,
@@ -476,6 +478,7 @@
 				FA1C6CDA2E1D744600A3F998 /* FirebaseRemoteConfigSwift */,
 				FA1C6CDC2E1D744600A3F998 /* FirebaseStorage */,
 				FA1C6CDE2E1D744600A3F998 /* FirebaseStorageCombine-Community */,
+				FA3162842E41F7D5000323C6 /* AlertToast */,
 			);
 			productName = customer;
 			productReference = FA5592592D897BE000790E02 /* customer.app */;
@@ -554,6 +557,7 @@
 				FA9242FF2D8BDC9100B3B546 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
 				FA9243022D8BDE5E00B3B546 /* XCRemoteSwiftPackageReference "CountryPickerView" */,
 				FA1C6CA92E1D744600A3F998 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				FA3162832E41F7D5000323C6 /* XCRemoteSwiftPackageReference "AlertToast" */,
 			);
 			productRefGroup = FA55925A2D897BE000790E02 /* Products */;
 			projectDirPath = "";
@@ -1001,6 +1005,14 @@
 				minimumVersion = 9.0.0;
 			};
 		};
+		FA3162832E41F7D5000323C6 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elai950/AlertToast";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		FA9242FC2D8BDBB600B3B546 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-algorithms.git";
@@ -1162,6 +1174,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA1C6CA92E1D744600A3F998 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseStorageCombine-Community";
+		};
+		FA3162842E41F7D5000323C6 /* AlertToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA3162832E41F7D5000323C6 /* XCRemoteSwiftPackageReference "AlertToast" */;
+			productName = AlertToast;
 		};
 		FA9242FD2D8BDBB600B3B546 /* Algorithms */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -1,4 +1,6 @@
 import SwiftUI
+import AlertToast
+
 
 struct OrderDetailView: View {
     var foodName: String = "Chicken Biryani"
@@ -6,6 +8,7 @@ struct OrderDetailView: View {
     var shipFrom: String = "Ai Karama, Dubai"
     var shipTo: String = "Oasis, Dubai"
     var checkoutid: Int = 0
+    @State private var showToast = false
     @State private var foodCount: Int = 0
     @State private var walletAmount: String = ""
     @State private var showApplyCouponDialog = false
@@ -376,20 +379,39 @@ struct OrderDetailView: View {
             .padding(.horizontal, 12)
             
             Button(action: {
-                showPopup = true
                 let customerId = UserDefaults.standard.integer(forKey: "customerID")
                 let checkoutId = UserDefaults.standard.integer(forKey: "checkoutid")
-                let addressid = UserDefaults.standard.integer(forKey: "adddressid")
+                let addressid = UserDefaults.standard.integer(forKey: "selectedAddressId")
 
                 let bodyData: [String: String] = [
                  
-                    "shopDeviceToken": "fltRlDfgTTSxCEjL7AXIo2:APA91bGAGaKVL3YkNQLNO_3XuHNsam8ZlkaGfINzEMhf1JCgon1ZWCLaX4UHNzIU3CfABLyqpMlI_EXoF0J-lUtJzNJxAo0K55hAmfuMX8-2QB8KUJotpP4",
+                    "shopDeviceToken": "fmZsv4A6QeGx3HhmoyV1uy:APA91bGe05ia9T4jNvDkIRf_Iue-kl9oIYjR2pJIwJ_pWKRZMO1CQj1eTBS-1932Nic9NMGmPpGDCkRXdOQnNKbDEizzZZc3q1YxkS5cRsLsPcNY6uhAzIo",
                    
                     "paymentStatus": "cash on delivery",
                   
                 ]
+                if addressid != 0 {
+                    viewModel.CheckOut(
+                        customerId: customerId,
+                        checkoutId: checkoutId,
+                        addressId: addressid,
+                        body: bodyData
+                    ) { success, message in
+                        if success {
+                            
+                            // ✅ Show success alert, navigate, or show dialog
+                            print("Checkout success")
+                        } else {
+                            // ❌ Show error alert or toast
+                            print("Checkout failed: \(message ?? "Unknown error")")
+                        }
+                    }
+                } else {
+                    showToast = true
 
-                viewModel.CheckOut(customerId: customerId, checkoutId: checkoutId,addressId:2, body: bodyData)
+                    // Show toast message
+                }
+               
 
             }) {
                 Text("Checkout")
@@ -399,6 +421,8 @@ struct OrderDetailView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 
+            }.toast(isPresenting: $showToast) {
+                AlertToast(type: .error(Color.red), title: "Please select an address")
             }
             .padding(.horizontal, 10)
             .frame(height: 45)
@@ -564,7 +588,7 @@ struct CancelOrderView: View {
 
                 Button(action: {
                     showPopup = false
-                    viewModel.cancelorder(orderid: "456")
+                    viewModel.cancelorder(orderid: UserDefaults.standard.integer(forKey: "selectedAddressId"))
                 }) {
                     Text("Cancel Order")
                         .font(.system(size: 13, weight: .bold))

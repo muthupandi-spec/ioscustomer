@@ -406,7 +406,7 @@ class HomeviewModel: ObservableObject {
               }
           }
       }
-    func cancelorder(orderid: String) { // Accept categoryId as a parameter
+    func cancelorder(orderid: In') { // Accept categoryId as a parameter
           isLoading = true
           errorMessage = nil
 
@@ -438,22 +438,31 @@ class HomeviewModel: ObservableObject {
               }
           }
       }
-    func CheckOut(customerId: Int, checkoutId: Int, addressId: Int, body: [String: String]) {
-           isLoading = true
-           errorMessage = nil
+    func CheckOut(
+        customerId: Int,
+        checkoutId: Int,
+        addressId: Int,
+        body: [String: String],
+        completion: @escaping (Bool, String?) -> Void
+    ) {
+        isLoading = true
+        errorMessage = nil
 
-           apiService.checkoutAPI(customerId: customerId, id: checkoutId, addressId: addressId, params: body) { [weak self] result in
-               DispatchQueue.main.async {
-                   self?.isLoading = false
-                   switch result {
-                   case .success(let response):
-                       self?.checkout = response
-                   case .failure(let error):
-                       self?.errorMessage = error.localizedDescription
-                   }
-               }
-           }
-       }
+        apiService.checkoutAPI(customerId: customerId, id: checkoutId, addressId: addressId, params: body) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let response):
+                    self?.checkout = response
+                    completion(true, nil)  // ✅ success
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                    completion(false, error.localizedDescription) // ❌ failure
+                }
+            }
+        }
+    }
+
 
     
     func getorderdetail(orderid: String) {

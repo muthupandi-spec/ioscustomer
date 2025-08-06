@@ -1,7 +1,7 @@
 import Foundation
 
 class APIService {
-    let baseurl="https://e6fdfa4334d1.ngrok-free.app/"
+    let baseurl="https://df0243f8be00.ngrok-free.app/"
     func getProfile(customerId: Int, completion: @escaping (Result<GetProfileResponseModel, Error>) -> Void) {
         let urlString =  baseurl + "restaurant/api/customer/v1/getemployee/\(customerId)" // Replace with actual base URL
         guard let url = URL(string: urlString) else {
@@ -1138,7 +1138,7 @@ class APIService {
         task.resume()
     }
 
-    func cancelorder(orderid: String, completion: @escaping (Result<[FoodModel], Error>) -> Void) {
+    func cancelorder(orderid: Int, completion: @escaping (Result<[FoodModel], Error>) -> Void) {
         let urlString = baseurl + "/cancelorder" // Replace with actual API URL
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
