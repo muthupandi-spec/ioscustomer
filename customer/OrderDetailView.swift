@@ -398,7 +398,7 @@ struct OrderDetailView: View {
                         body: bodyData
                     ) { success, message in
                         if success {
-                            
+                            showPopup=true
                             // ✅ Show success alert, navigate, or show dialog
                             print("Checkout success")
                         } else {
