@@ -93,12 +93,29 @@ class HomeviewModel: ObservableObject {
                 switch result {
                 case .success(let food):
                     self?.cartresponse = food
+
+                    // ✅ Save checkoutId & totalPrice once here
+                    if let firstCart = food.first {
+                        UserDefaults.standard.set(firstCart.id, forKey: "checkoutid")
+                        UserDefaults.standard.set(firstCart.totalPrice, forKey: "totalprice")
+                        
+                        print("✅ CheckoutID:", firstCart.id)
+                        print("✅ TotalPrice:", firstCart.totalPrice)
+                    } else {
+                        // If no cart exists, reset defaults
+                        UserDefaults.standard.set(0, forKey: "checkoutid")
+                        UserDefaults.standard.set(0.0, forKey: "totalprice")
+                        
+                        print("⚠️ Cart is empty. Saved checkoutId=0, totalPrice=0.0")
+                    }
+
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
                 }
             }
         }
     }
+
     func getaddress(customerId: Int) {
         isLoading = true
         errorMessage = nil
