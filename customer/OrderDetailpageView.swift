@@ -82,7 +82,7 @@ struct OrderDetailpageView: View {
                             Image(systemName: "mappin.circle")
                                 .foregroundColor(.red)
 
-                            Text(order.address)
+                            Text(order.city)
                                 .font(.footnote)
                                 .foregroundColor(.gray)
                             Spacer()

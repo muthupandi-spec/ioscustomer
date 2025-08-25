@@ -3,6 +3,7 @@ import SwiftUI
 struct EditaddressView: View {
     var address: GetAddressResponseModelItem
     @ObservedObject var viewModel: HomeviewModel
+    var onAddressCreated: (() -> Void)?   // ✅ callback
 
     @Environment(\.dismiss) var dismiss
     @State private var showLoader = false

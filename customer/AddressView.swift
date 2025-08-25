@@ -2,8 +2,8 @@ import SwiftUI
 
 struct AddressView: View {
     @State private var navigate_addaddress = false
-    @State private var navigate_editaddress = false
-    @State private var selectedAddress: GetAddressResponseModelItem? = nil
+    @State private var selectedAddress: GetAddressResponseModelItem? = nil   // For selection only
+    @State private var editAddress: GetAddressResponseModelItem? = nil       // For editing
 
     @State private var selectedAddressId: Int? = nil
     @State private var errorMessage: String?
@@ -14,12 +14,20 @@ struct AddressView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                VStack {
-                    header
-                    Divider()
+            VStack {
+                header
+                Divider()
 
-                    // Address List
+                // Address List
+                if viewModel.addressresponse.isEmpty {
+                    // ✅ No addresses → set default value 0
+                    Text("No address found")
+                        .foregroundColor(.gray)
+                        .padding()
+                        .onAppear {
+                            UserDefaults.standard.set(0, forKey: "selectedAddressId")
+                        }
+                } else {
                     ForEach(viewModel.addressresponse, id: \.addressId) { address in
                         Button(action: {
                             selectedAddressId = address.addressId
@@ -39,11 +47,9 @@ struct AddressView: View {
                                                 .font(.system(size: 11, weight: .bold))
                                                 .foregroundColor(.black)
 
+                                            // ✅ Use editAddress for editing flow
                                             Button(action: {
-                                                selectedAddress = address
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                    navigate_editaddress = true
-                                                }
+                                                editAddress = address
                                             }) {
                                                 Text("EDIT")
                                                     .font(.system(size: 9))
@@ -59,7 +65,7 @@ struct AddressView: View {
 
                                         Text("\(address.doorNo), \(address.street), \(address.city)")
                                             .font(.system(size: 10))
-                                            .fixedSize(horizontal: false, vertical: true) // Allows multiline
+                                            .fixedSize(horizontal: false, vertical: true)
 
                                         Text("\(address.pincode)")
                                             .font(.system(size: 10))
@@ -83,19 +89,26 @@ struct AddressView: View {
                                         }
                                         .buttonStyle(PlainButtonStyle())
 
-
-                                        // Radio Circle
-                                        Circle()
-                                            .strokeBorder(
-                                                selectedAddressId == address.addressId ? Color.green : Color.gray,
-                                                lineWidth: 2
-                                            )
-                                            .background(
-                                                Circle().fill(
-                                                    selectedAddressId == address.addressId ? Color.green : Color.white
+                                        // ✅ Radio Circle (Selection Only — No Edit Trigger)
+                                        Button(action: {
+                                            selectedAddressId = address.addressId
+                                            UserDefaults.standard.set(address.addressId, forKey: "selectedAddressId")
+                                            selectedAddress = address
+                                            dismiss()   // Just dismiss, don’t open edit
+                                        }) {
+                                            Circle()
+                                                .strokeBorder(
+                                                    selectedAddressId == address.addressId ? Color.green : Color.gray,
+                                                    lineWidth: 2
                                                 )
-                                            )
-                                            .frame(width: 20, height: 20)
+                                                .background(
+                                                    Circle().fill(
+                                                        selectedAddressId == address.addressId ? Color.green : Color.white
+                                                    )
+                                                )
+                                                .frame(width: 20, height: 20)
+                                        }
+                                        .buttonStyle(PlainButtonStyle())
                                     }
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -112,25 +125,25 @@ struct AddressView: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
-
-
-                    Spacer()
-                    button
                 }
-                .background(Color.white.edgesIgnoringSafeArea(.all))
+
+                Spacer()
+                button
             }
             .navigationBarBackButtonHidden(true)
-            .navigationDestination(isPresented: $navigate_addaddress) {
+
+            // Add New Address
+            .fullScreenCover(isPresented: $navigate_addaddress, onDismiss: {
+                viewModel.getaddress(customerId: UserDefaults.standard.integer(forKey: "customerID"))
+            }) {
                 ManualaddressView()
             }
-            .navigationDestination(isPresented: $navigate_editaddress) {
-                Group {
-                    if let selected = selectedAddress {
-                        EditaddressView(address: selected, viewModel: viewModel)
-                    } else {
-                        EmptyView() // Fallback view
-                    }
-                }
+
+            // Edit Address (only opens when "EDIT" button clicked)
+            .fullScreenCover(item: $editAddress, onDismiss: {
+                viewModel.getaddress(customerId: UserDefaults.standard.integer(forKey: "customerID"))
+            }) { selected in
+                EditaddressView(address: selected, viewModel: viewModel)
             }
         }
         .onAppear {
@@ -172,20 +185,6 @@ struct AddressView: View {
                     .frame(maxWidth: .infinity, minHeight: 40)
                     .background(Color.gray.opacity(0.2))
                     .foregroundColor(.black)
-                    .cornerRadius(10)
-            }
-
-            Button(action: {
-                // Handle Apply with selectedAddressId
-                if let id = selectedAddressId {
-                    print("Selected Address ID: \(id)")
-                    // You can now use it to apply selection
-                }
-            }) {
-                Text("Apply")
-                    .frame(maxWidth: .infinity, minHeight: 40)
-                    .background(Color.green)
-                    .foregroundColor(.white)
                     .cornerRadius(10)
             }
         }

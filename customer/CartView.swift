@@ -64,8 +64,9 @@ struct CartView: View {
                                         .fill(Color.white)
                                         .frame(width: 75, height: 75)
                                         .shadow(radius: 1)
-
-                                    if let imageData = Data(base64Encoded: item.product.image),
+                                    
+                                    if let base64String = item.product.image, // unwrap optional String
+                                       let imageData = Data(base64Encoded: base64String),
                                        let uiImage = UIImage(data: imageData) {
                                         Image(uiImage: uiImage)
                                             .resizable()

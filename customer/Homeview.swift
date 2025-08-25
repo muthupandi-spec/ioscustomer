@@ -71,9 +71,9 @@ struct HomeView: View {
             
         }.onAppear {
 //            viewModel.getfood()
-            viewModel.getoffer()
+//            viewModel.getoffer()
             viewModel.getbrach()
-            viewModel.getcategory()
+//            viewModel.getcategory()
             let customerId = UserDefaults.standard.integer(forKey: "customerID") // Or hardcode for testing
                         viewModel.getProfile(customerId: customerId)
 
@@ -179,8 +179,10 @@ struct HomeView: View {
                                 .fill(Color(UIColor.systemGray5))
                                 .frame(width: 150, height: 150)
                             
-                            if let imageData = Data(base64Encoded:branch.images[0].imageData),
+                            if let images = branch.images, !images.isEmpty,
+                               let imageData = Data(base64Encoded: images[0].imageData),
                                let uiImage = UIImage(data: imageData) {
+                                
                                 Image(uiImage: uiImage)
                                     .resizable()
                                     .scaledToFill()
@@ -192,6 +194,7 @@ struct HomeView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 11))
                                     .overlay(Text("Invalid Image").font(.caption).foregroundColor(.white))
                             }
+
 
                         }
                         .overlay(

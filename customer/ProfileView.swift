@@ -83,9 +83,9 @@ struct ProfileView: View {
                 FavouriteView()
             }
 
-            profileButton(title: "My Orders", icon: "cart", navigate: $naviagte_myorder) {
-                OrderViewpager()
-            }
+//            profileButton(title: "My Orders", icon: "cart", navigate: $naviagte_myorder) {
+//                OrderViewpager()
+//            }
 
             profileButton(title: "Address", icon: "map", navigate: $naviagte_Address) {
                 AddressView()
@@ -110,7 +110,7 @@ struct ProfileView: View {
         }) {
             buttonRow(title: title, icon: icon)
         }
-        .navigationDestination(isPresented: navigate) {
+        .fullScreenCover(isPresented: navigate) {
             destination()
         }
         .padding(.horizontal)

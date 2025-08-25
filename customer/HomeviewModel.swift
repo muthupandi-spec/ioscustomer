@@ -27,6 +27,7 @@ class HomeviewModel: ObservableObject {
     @Published  var place = ""
     @Published  var addressid = 0
     @Published var addressResponse: CreateAddressResponseModel?
+    @Published var canncelResponse: CancelOrderResponseModel?
     @Published var createfavouriteResponse: CreateRequestResponseModel?
     @Published var updateaddressResponse: UpdateAddressResponseModel?
     @Published var deleteddressResponse: DeleteAddressResponseModel?
@@ -406,22 +407,28 @@ class HomeviewModel: ObservableObject {
               }
           }
       }
-    func cancelorder(orderid: Int) { // Accept categoryId as a parameter
-          isLoading = true
-          errorMessage = nil
+    func cancelorder(
+        orderid: Int,
+        completion: @escaping (Bool, String?) -> Void
+    ) {
+        isLoading = true
+        errorMessage = nil
 
-          apiService.cancelorder(orderid: orderid) { [weak self] result in
-              DispatchQueue.main.async {
-                  self?.isLoading = false
-                  switch result {
-                  case .success(let food):
-                      self?.food = food
-                  case .failure(let error):
-                      self?.errorMessage = error.localizedDescription
-                  }
-              }
-          }
-      }
+        apiService.cancelorder(orderid: orderid) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                switch result {
+                case .success(let response):
+                    self?.canncelResponse = response
+                    completion(true, nil) // ✅ success
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                    completion(false, error.localizedDescription) // ❌ failure
+                }
+            }
+        }
+    }
+
     func topupwallet(topup: String) { // Accept categoryId as a parameter
           isLoading = true
           errorMessage = nil
@@ -678,36 +685,36 @@ class HomeviewModel: ObservableObject {
             }
         }
     }
-    func createAddress(completion: @escaping (Result<CreateAddressResponseModel, Error>) -> Void) {
-        self.isLoading = true
-        self.errorMessage = nil
+        func createAddress(completion: @escaping (Result<CreateAddressResponseModel, Error>) -> Void) {
+            self.isLoading = true
+            self.errorMessage = nil
 
-        // Prepare the model to send
-        let addressRequest = RequestAddressModel(
-            landMark: landmark,
-            doorNo: doorNo,
-            street: street,
-            place: place,
-            city: cityy,
-            pincode: pincode,
-            customerbo: CustomerBO(customerId: UserDefaults.standard.integer(forKey: "customerID"))
-        )
+            // Prepare the model to send
+            let addressRequest = RequestAddressModel(
+                landMark: landmark,
+                doorNo: doorNo,
+                street: street,
+                place: place,
+                city: cityy,
+                pincode: pincode,
+                customerbo: CustomerBO(customerId: UserDefaults.standard.integer(forKey: "customerID"))
+            )
 
-        // Call API from service layer
-        apiService.createAddress(addressRequest) { [weak self] result in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                switch result {
-                case .success(let response):
-                    self?.addressResponse = response  // optional: store the response
-                    completion(.success(response))
-                case .failure(let error):
-                    self?.errorMessage = error.localizedDescription
-                    completion(.failure(error))
+            // Call API from service layer
+            apiService.createAddress(addressRequest) { [weak self] result in
+                DispatchQueue.main.async {
+                    self?.isLoading = false
+                    switch result {
+                    case .success(let response):
+                        self?.addressResponse = response  // optional: store the response
+                        completion(.success(response))
+                    case .failure(let error):
+                        self?.errorMessage = error.localizedDescription
+                        completion(.failure(error))
+                    }
                 }
             }
         }
-    }
     func createfavourite(foodid:Int,completion: @escaping (Result<CreateRequestResponseModel, Error>) -> Void) {
         self.isLoading = true
         self.errorMessage = nil

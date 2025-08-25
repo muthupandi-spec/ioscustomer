@@ -13,6 +13,8 @@ struct OrderDetailView: View {
     @State private var walletAmount: String = ""
     @State private var showApplyCouponDialog = false
     @State private var naviagte_payment = false
+    @State private var gotoaddress = false
+    
     @Environment(\.presentationMode) var presentationMode // Access presentation mode
     @State private var showPopup = false
     
@@ -24,10 +26,10 @@ struct OrderDetailView: View {
                 VStack(spacing: 0) {
                     
                     // **Toolbar**
-               toolbar
+                    toolbar
                     // **Food Card**
-//                    foodcart
-            
+                    //                    foodcart
+                    
                     // **Section Divider**
                     Rectangle()
                         .foregroundColor(.gray.opacity(0.6))
@@ -79,7 +81,7 @@ struct OrderDetailView: View {
                 
                 paymentmetod
                 
-               
+                
                 
             }
             
@@ -91,10 +93,10 @@ struct OrderDetailView: View {
             
         }
         .onAppear{
-//            viewModel.getfooddetail(foodid: "5275")
-//            viewModel.getrestaurantfood()
+            //            viewModel.getfooddetail(foodid: "5275")
+            //            viewModel.getrestaurantfood()
             viewModel.getcartitem(customerId:UserDefaults.standard.integer(forKey: "customerID") )
-
+            
         }
         
     }
@@ -182,7 +184,7 @@ struct OrderDetailView: View {
         .opacity(0)
     }
     private var foodlist:some View{
-       
+        
         ForEach(viewModel.cartresponse) { cart in
             
             
@@ -190,7 +192,7 @@ struct OrderDetailView: View {
                 let item = cart.cartItems[index]
                 let product = item.product
                 let foodId = product.foodId
-
+                
                 VStack(alignment: .leading, spacing: 10) {
                     
                     HStack {
@@ -199,21 +201,21 @@ struct OrderDetailView: View {
                             .font(.system(size: 12, weight: .bold))
                             .foregroundColor(.black)
                             .frame(maxWidth: .infinity, alignment: .leading)
-
+                        
                         if item.quantity > 0 {
                             HStack(spacing: 10) {
-                               
+                                
                                 Text("\(item.quantity)")
                                     .font(.system(size: 13, weight: .bold))
                                     .foregroundColor(Color("colorPrimary"))
-
+                                
                             }
                             .padding(2)
                             .background(RoundedRectangle(cornerRadius: 7)
                                 .stroke(Color("colorPrimary"), lineWidth: 1))
                         } else {
                             Button(action: {
-                            
+                                
                             }) {
                                 Text("Add")
                                     .font(.system(size: 13, weight: .bold))
@@ -223,24 +225,24 @@ struct OrderDetailView: View {
                                         .stroke(Color("colorPrimary"), lineWidth: 1))
                             }
                         }
-
+                        
                         Spacer()
-
+                        
                         Text("₹\(item.subTotal, specifier: "%.2f")")
                             .font(.system(size: 13, weight: .bold))
                             .foregroundColor(.black)
                     }
-
+                    
                     Divider().background(Color.gray.opacity(0.3))
                 }
                 .padding(.top, 14)
                 .padding(.horizontal)
             }.onAppear{
                 UserDefaults.standard.set(cart.id, forKey: "checkoutid") // ✅ This works
-
+                
             }
         }
-
+        
     }
     private var offer :some View{
         VStack(alignment: .leading, spacing: 14) {
@@ -282,7 +284,7 @@ struct OrderDetailView: View {
                     .presentationDragIndicator(.visible) // Show the drag indicator
             }
         }
-
+        
     }
     private var ewallet:some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -323,9 +325,9 @@ struct OrderDetailView: View {
             .padding(.horizontal, 14)
             .padding(.bottom, 14)
         }
-
+        
     }
-    private var paymentmetod:some View{
+    private var paymentmetod: some View {
         VStack(spacing: 12) {
             
             // Payment Method Section
@@ -337,7 +339,7 @@ struct OrderDetailView: View {
                         .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                         .frame(width: 56, height: 56)
                     
-                    Image("wallet") // Replace with your asset
+                    Image("wallet")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 40, height: 40)
@@ -357,86 +359,86 @@ struct OrderDetailView: View {
                 
                 // Change Payment Option
                 Button(action: {
-                    naviagte_payment=true
-                }){
+                    naviagte_payment = true
+                }) {
                     HStack {
                         Text("Change")
                             .font(.system(size: 12))
                             .foregroundColor(Color("colorPrimary"))
                         
-                        Image("right-arrow") // Replace with your asset
+                        Image("right-arrow")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 16, height: 16)
                             .foregroundColor(Color("colorPrimary"))
                     }
-                }.navigationDestination(isPresented: $naviagte_payment) {
+                }
+                .navigationDestination(isPresented: $naviagte_payment) {
                     PaymentView()
                 }
-                
-                
             }
             .padding(.horizontal, 12)
             
-            Button(action: {
-                let customerId = UserDefaults.standard.integer(forKey: "customerID")
-                let checkoutId = UserDefaults.standard.integer(forKey: "checkoutid")
-                let addressid = UserDefaults.standard.integer(forKey: "selectedAddressId")
-
-                let bodyData: [String: String] = [
-                 
-                    "shopDeviceToken": "fmZsv4A6QeGx3HhmoyV1uy:APA91bGe05ia9T4jNvDkIRf_Iue-kl9oIYjR2pJIwJ_pWKRZMO1CQj1eTBS-1932Nic9NMGmPpGDCkRXdOQnNKbDEizzZZc3q1YxkS5cRsLsPcNY6uhAzIo",
-                   
-                    "paymentStatus": "cash on delivery",
-                  
-                ]
-                if addressid != 0 {
-                    viewModel.CheckOut(
-                        customerId: customerId,
-                        checkoutId: checkoutId,
-                        addressId: addressid,
-                        body: bodyData
-                    ) { success, message in
-                        if success {
-                            showPopup=true
-                            // ✅ Show success alert, navigate, or show dialog
-                            print("Checkout success")
-                        } else {
-                            // ❌ Show error alert or toast
-                            print("Checkout failed: \(message ?? "Unknown error")")
-                        }
-                    }
-                } else {
-                    showToast = true
-
-                    // Show toast message
-                }
-               
-
-            }) {
+            // Checkout Button
+            Button(action: checkoutAction) {
                 Text("Checkout")
                     .font(.headline)
                     .frame(maxWidth: .infinity, minHeight: 40)
                     .background(Color("colorPrimary"))
                     .foregroundColor(.white)
                     .cornerRadius(10)
-                
-            }.toast(isPresenting: $showToast) {
-                AlertToast(type: .error(Color.red), title: "Please select an address")
             }
             .padding(.horizontal, 10)
             .frame(height: 45)
             .padding(.horizontal, 12)
+            // 👇 Navigate automatically when triggered
+            .navigationDestination(isPresented: $gotoaddress) {
+                AddressView()
+            }
             
         }
-        
         .padding(.vertical, 12)
         .background(Color.white)
         .cornerRadius(14)
         .shadow(color: Color.gray.opacity(0.2), radius: 4, x: 0, y: 2)
     }
     
-}
+    // MARK: - Checkout Action
+    private func checkoutAction() {
+        let customerId = UserDefaults.standard.integer(forKey: "customerID")
+        let checkoutId = UserDefaults.standard.integer(forKey: "checkoutid")
+        let addressid = UserDefaults.standard.integer(forKey: "selectedAddressId")
+        
+        let bodyData: [String: String] = [
+            "shopDeviceToken": "fmZsv4A6QeGx3HhmoyV1uy:APA91bGe05ia9T4jNvDkIRf_Iue-kl9oIYjR2pJIwJ_pWKRZMO1CQj1eTBS-1932Nic9NMGmPpGDCkRXdOQnNKbDEizzZZc3q1YxkS5cRsLsPcNY6uhAzIo",
+            "paymentStatus": "cash on delivery",
+        ]
+        
+        if addressid != 0 {
+            viewModel.CheckOut(
+                customerId: customerId,
+                checkoutId: checkoutId,
+                addressId: addressid,
+                body: bodyData
+            ) { success, message in
+                if success {
+                    showPopup = true
+                    print("✅ Checkout success")
+                } else {
+                    print("❌ Checkout failed: \(message ?? "Unknown error")")
+                }
+            }
+        } else {
+            // No Address Selected
+            showToast = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                gotoaddress = true
+            }
+        }
+    }
+       
+    }
+
 
 
 
@@ -558,6 +560,7 @@ struct CancelOrderView: View {
     @Binding var showPopup: Bool
     @State private var timerValue: Int = 30
     @State private var timer: Timer?
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         ZStack {
@@ -588,7 +591,16 @@ struct CancelOrderView: View {
 
                 Button(action: {
                     showPopup = false
-                    viewModel.cancelorder(orderid: UserDefaults.standard.integer(forKey: "selectedAddressId"))
+                    viewModel.cancelorder(orderid: UserDefaults.standard.integer(forKey: "selectedAddressId")){ success, message in
+                        if success {
+                            DispatchQueue.main.async {
+                                          presentationMode.wrappedValue.dismiss()
+                                      }
+
+                        } else {
+                      
+                        }
+                    }
                 }) {
                     Text("Cancel Order")
                         .font(.system(size: 13, weight: .bold))
@@ -619,6 +631,9 @@ struct CancelOrderView: View {
             } else {
                 showPopup = false
                 timer?.invalidate()
+                DispatchQueue.main.async {
+                              presentationMode.wrappedValue.dismiss()
+                          }
             }
         }
     }

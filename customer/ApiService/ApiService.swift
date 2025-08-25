@@ -1,7 +1,7 @@
 import Foundation
 
 class APIService {
-    let baseurl="https://0e4f6dc77c11.ngrok-free.app/"
+    let baseurl="https://2a947dd07371.ngrok-free.app/"
     func getProfile(customerId: Int, completion: @escaping (Result<GetProfileResponseModel, Error>) -> Void) {
         let urlString =  baseurl + "restaurant/api/customer/v1/getemployee/\(customerId)" // Replace with actual base URL
         guard let url = URL(string: urlString) else {
@@ -1728,29 +1728,35 @@ class APIService {
         }
 
         URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                if let httpResponse = response as? HTTPURLResponse {
-                    print("📥 HTTP Status Code: \(httpResponse.statusCode)")
-                }
+            if let httpResponse = response as? HTTPURLResponse {
+                print("📥 HTTP Status Code: \(httpResponse.statusCode)")
+            }
 
-                if let error = error {
-                    print("❌ Network Error: \(error.localizedDescription)")
-                    completion(.failure(error))
-                    return
-                }
+            if let error = error {
+                print("❌ Network Error: \(error.localizedDescription)")
+                completion(.failure(error))
+                return
+            }
 
-                guard let data = data else {
-                    completion(.failure(NSError(domain: "No data received", code: 0)))
-                    return
-                }
+            guard let data = data else {
+                completion(.failure(NSError(domain: "No data received", code: 0)))
+                return
+            }
 
-                if let jsonString = String(data: data, encoding: .utf8) {
-                    print("📥 Raw JSON Response:\n\(jsonString)")
-                }
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("📥 Raw JSON Response:\n\(jsonString)")
+            }
 
+            do {
+                let decodedResponse = try JSONDecoder().decode(CreateAddressResponseModel.self, from: data)
+                completion(.success(decodedResponse))   // ✅ return success here
+            } catch {
+                print("❌ Decoding Error: \(error.localizedDescription)")
+                completion(.failure(error))   // ✅ return decoding failure
             }
         }.resume()
     }
+
     func createWishlist(_ requestModel: CreateRequestParamModel, completion: @escaping (Result<CreateRequestResponseModel, Error>) -> Void) {
         let urlString = "\(baseurl)restaurant/api/favourite/createfavourite"
 
@@ -1911,7 +1917,7 @@ _ requestModel: RequestAddressModel, completion: @escaping (Result<UpdateAddress
         task.resume()
     }
 
-    func cancelorder(orderid: Int, completion: @escaping (Result<DeleteAddressResponseModel, Error>) -> Void) {
+    func cancelorder(orderid: Int, completion: @escaping (Result<CancelOrderResponseModel, Error>) -> Void) {
         let urlString = "\(baseurl)restaurant/api/orders/cancelorder/\(orderid)"
         
         guard let url = URL(string: urlString) else {
@@ -1945,13 +1951,13 @@ _ requestModel: RequestAddressModel, completion: @escaping (Result<UpdateAddress
 
                 print("📩 Response: \(String(data: data, encoding: .utf8) ?? "Invalid response")")
 
-                do {
-                    let decodedResponse = try JSONDecoder().decode(DeleteAddressResponseModel.self, from: data)
-                    completion(.success(decodedResponse))
-                } catch {
-                    print("💥 JSON Decode Error: \(error.localizedDescription)")
-                    completion(.failure(error))
-                }
+//                do {
+//                    let decodedResponse = try JSONDecoder().decode(CancelOrderResponseModel.self, from: data)
+//                    completion(.success(decodedResponse))
+//                } catch {
+//                    print("💥 JSON Decode Error: \(error.localizedDescription)")
+//                    completion(.failure(error))
+//                }
             }
         }
 
