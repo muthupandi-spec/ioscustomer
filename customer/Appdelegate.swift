@@ -2,6 +2,8 @@ import UIKit
 import Firebase
 import FirebaseMessaging
 import UserNotifications
+import GooglePlaces
+
 
 class AppDelegate: NSObject, UIApplicationDelegate {
 
@@ -12,6 +14,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
 
         requestNotificationPermissions()
+        GMSPlacesClient.provideAPIKey("AIzaSyCWQj746sQoI8ul4djjQjopk-YhISxmi9o")
+
 
         return true
     }

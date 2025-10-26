@@ -104,6 +104,9 @@
 		FA9243042D8BDE5E00B3B546 /* CountryPickerView in Frameworks */ = {isa = PBXBuildFile; productRef = FA9243032D8BDE5E00B3B546 /* CountryPickerView */; };
 		FA9243062D8BE50400B3B546 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9243052D8BE50400B3B546 /* RegisterView.swift */; };
 		FA96F66D2E2A0B4800FD018F /* LoginResponsemodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA96F66C2E2A0B4800FD018F /* LoginResponsemodel.swift */; };
+		FA978FBD2EADB742003D9238 /* PlaceSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA978FBC2EADB742003D9238 /* PlaceSearchView.swift */; };
+		FA978FBF2EADB770003D9238 /* PlaceSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA978FBE2EADB770003D9238 /* PlaceSearchViewModel.swift */; };
+		FA978FC72EADBBB5003D9238 /* GooglePlaces in Frameworks */ = {isa = PBXBuildFile; productRef = FA978FC62EADBBB5003D9238 /* GooglePlaces */; };
 		FA9A53302E12654500FCCD24 /* ResturantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9A532F2E12654500FCCD24 /* ResturantView.swift */; };
 		FAA430662E1E3F0B001A9805 /* Registermodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA430652E1E3F0B001A9805 /* Registermodel.swift */; };
 		FAA430682E1E4935001A9805 /* OtpResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA430672E1E4935001A9805 /* OtpResponseModel.swift */; };
@@ -206,6 +209,8 @@
 		FA8E25D32DA5A927003350E6 /* CategoriesResposeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesResposeModel.swift; sourceTree = "<group>"; };
 		FA9243052D8BE50400B3B546 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		FA96F66C2E2A0B4800FD018F /* LoginResponsemodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponsemodel.swift; sourceTree = "<group>"; };
+		FA978FBC2EADB742003D9238 /* PlaceSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchView.swift; sourceTree = "<group>"; };
+		FA978FBE2EADB770003D9238 /* PlaceSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchViewModel.swift; sourceTree = "<group>"; };
 		FA9A532F2E12654500FCCD24 /* ResturantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResturantView.swift; sourceTree = "<group>"; };
 		FAA430652E1E3F0B001A9805 /* Registermodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registermodel.swift; sourceTree = "<group>"; };
 		FAA430672E1E4935001A9805 /* OtpResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpResponseModel.swift; sourceTree = "<group>"; };
@@ -242,6 +247,7 @@
 				FA1C6CD12E1D744600A3F998 /* FirebaseInstallations in Frameworks */,
 				FA1C6CCB2E1D744600A3F998 /* FirebaseFunctionsCombine-Community in Frameworks */,
 				FA1C6CC52E1D744600A3F998 /* FirebaseFirestoreCombine-Community in Frameworks */,
+				FA978FC72EADBBB5003D9238 /* GooglePlaces in Frameworks */,
 				FA1C6CBD2E1D744600A3F998 /* FirebaseDatabase in Frameworks */,
 				FA1C6CD72E1D744600A3F998 /* FirebasePerformance in Frameworks */,
 				FA1C6CB32E1D744600A3F998 /* FirebaseAppCheck in Frameworks */,
@@ -309,6 +315,7 @@
 				FA35EE2F2D8FD780000D09CA /* CotetView.swift */,
 				FA1C6CE02E1D7AF700A3F998 /* Firebase.swift */,
 				FA1C6CE22E1D7ED400A3F998 /* Appdelegate.swift */,
+				FA978FBE2EADB770003D9238 /* PlaceSearchViewModel.swift */,
 			);
 			path = customer;
 			sourceTree = "<group>";
@@ -397,6 +404,7 @@
 		FA707A012D9BC38500DE6C96 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FA978FBC2EADB742003D9238 /* PlaceSearchView.swift */,
 				FA42AE1F2D9510C700F724EE /* TopUpView.swift */,
 				FA7079FF2D9BC2B800DE6C96 /* UserUI.swift */,
 				FA42AE212D95157D00F724EE /* TrackOrderView.swift */,
@@ -482,6 +490,7 @@
 				FA1C6CDC2E1D744600A3F998 /* FirebaseStorage */,
 				FA1C6CDE2E1D744600A3F998 /* FirebaseStorageCombine-Community */,
 				FA3162842E41F7D5000323C6 /* AlertToast */,
+				FA978FC62EADBBB5003D9238 /* GooglePlaces */,
 			);
 			productName = customer;
 			productReference = FA5592592D897BE000790E02 /* customer.app */;
@@ -561,6 +570,7 @@
 				FA9243022D8BDE5E00B3B546 /* XCRemoteSwiftPackageReference "CountryPickerView" */,
 				FA1C6CA92E1D744600A3F998 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				FA3162832E41F7D5000323C6 /* XCRemoteSwiftPackageReference "AlertToast" */,
+				FA978FC52EADBBB5003D9238 /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
 			);
 			productRefGroup = FA55925A2D897BE000790E02 /* Products */;
 			projectDirPath = "";
@@ -631,6 +641,7 @@
 				FA707A032D9BC3E000DE6C96 /* LoginViewModel.swift in Sources */,
 				FADFE2B22E3DAFCE001A14B3 /* AddressResposeModel.swift in Sources */,
 				FA254EFA2D8E80E700406220 /* RecommendforyuyView.swift in Sources */,
+				FA978FBD2EADB742003D9238 /* PlaceSearchView.swift in Sources */,
 				FAC9AF392E41C608009979E9 /* DeleteFavouriteResposemodel.swift in Sources */,
 				FA42AE222D95157D00F724EE /* TrackOrderView.swift in Sources */,
 				FA65B52A2D93B2F60039617F /* OrderViewpagerView.swift in Sources */,
@@ -641,6 +652,7 @@
 				FA65B5302D93C4580039617F /* WalletView.swift in Sources */,
 				FABBD1262E0E6586007139F7 /* DeleteCartModel.swift in Sources */,
 				FA749EAF2E05C8B000D46982 /* Shopdetailresponsmodel.swift in Sources */,
+				FA978FBF2EADB770003D9238 /* PlaceSearchViewModel.swift in Sources */,
 				FA08FE602E2E1309008A9E0E /* Checkoutmodel.swift in Sources */,
 				FA1C6CE32E1D7ED400A3F998 /* Appdelegate.swift in Sources */,
 				FA0B0BA72E29DACB00D78B90 /* Fooddetailview.swift in Sources */,
@@ -1041,6 +1053,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		FA978FC52EADBBB5003D9238 /* XCRemoteSwiftPackageReference "ios-places-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googlemaps/ios-places-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1193,6 +1213,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA9243022D8BDE5E00B3B546 /* XCRemoteSwiftPackageReference "CountryPickerView" */;
 			productName = CountryPickerView;
+		};
+		FA978FC62EADBBB5003D9238 /* GooglePlaces */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA978FC52EADBBB5003D9238 /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
+			productName = GooglePlaces;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

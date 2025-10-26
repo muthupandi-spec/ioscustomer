@@ -16,7 +16,8 @@ struct customerApp: App {
                     SplashScreenView()
                 } else {
                     if UserDefaults.standard.integer(forKey: "customerID") != 0 {
-                               HomePageView()
+//                               HomePageView()
+                        PlaceSearchView()
                            } else {
                                LoginView()
                            }
