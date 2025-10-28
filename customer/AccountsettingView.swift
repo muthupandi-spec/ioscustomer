@@ -14,7 +14,7 @@ struct AccountsettinngView: View {
                 // Logout Button
                logoutview
                 // Remove Account Button
-              deleteview
+//              deleteview
                 
                 
                 
@@ -30,7 +30,7 @@ struct AccountsettinngView: View {
     }
     private var logoutview:some View{
         Button(action: {
-           showDeleteSheet=true
+           showLogoutSheet=true
         }) {
             HStack {
                 Image(systemName: "trash")
@@ -105,84 +105,106 @@ dismiss()                    }) {
     .padding(.leading, 18)
         
     }
+
     struct LogoutConfirmationView: View {
-        @Environment(\.dismiss) var dismiss // To close the sheet
+        @Environment(\.dismiss) var dismiss
+        @AppStorage("selectedRestaurantId") var userId: String = ""
+     
         @StateObject private var viewModel = HomeviewModel()
+        @State private var navigateToSplash = false
 
         var body: some View {
-            VStack {
-                Spacer()
+            ZStack {
+                Color.black.opacity(0.4).ignoresSafeArea() // Dimmed background
                 
-                ZStack {
-                    RoundedRectangle(cornerRadius: 25)
-                        .fill(Color.white)
-                        .shadow(radius: 5)
-                        .frame(maxWidth: .infinity)
-                        .ignoresSafeArea(edges: .bottom)
+                VStack {
+                    Spacer()
                     
-                    VStack(spacing: 16) {
-                        // Top Divider (Small line)
-                        Rectangle()
-                            .frame(width: 30, height: 2)
-                            .foregroundColor(Color.gray.opacity(0.5))
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 25)
+                            .fill(Color.white)
+                            .shadow(radius: 5)
+                            .frame(maxWidth: .infinity)
+                            .ignoresSafeArea(edges: .bottom)
                         
-                        // Logout Text
-                        Text("Logout")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.black)
-                        
-                        // Divider Line
-                        Divider()
-                            .frame(height: 2)
-                            .background(Color.gray.opacity(0.5))
-                            .padding(.horizontal, 16)
-                        
-                        // Confirmation Message
-                        Text("Are you sure you want to log out?")
-                            .font(.body)
-                            .foregroundColor(Color.gray)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 16)
-                        
-                        // Buttons (Cancel & Confirm)
-                        HStack(spacing: 10) {
-                            Button(action: {
-                                dismiss()
-                            }) {
-                                Text("Cancel")
-                                    .font(.body)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.blue)
-                                    .frame(maxWidth: .infinity, minHeight: 40)
-                                    .background(Color.gray.opacity(0.2))
-                                    .cornerRadius(10)
-                            }
+                        VStack(spacing: 16) {
+                            // Top Handle
+                            Rectangle()
+                                .frame(width: 30, height: 2)
+                                .foregroundColor(Color.gray.opacity(0.5))
                             
-                            Button(action: {
-                                viewModel.logout(userid: "675")
-
-                                dismiss()
-                            }) {
-                                Text("Confirm")
-                                    .font(.body)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                                    .frame(maxWidth: .infinity, minHeight: 40)
-                                    .background(Color.red)
-                                    .cornerRadius(10)
+                            // Title
+                            Text("Logout")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundColor(.black)
+                            
+                            Divider()
+                                .frame(height: 2)
+                                .background(Color.gray.opacity(0.5))
+                                .padding(.horizontal, 16)
+                            
+                            // Message
+                            Text("Are you sure you want to log out?")
+                                .font(.body)
+                                .foregroundColor(.gray)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 16)
+                            
+                            // MARK: Buttons
+                            HStack(spacing: 10) {
+                                Button(action: {
+                                    dismiss()
+                                }) {
+                                    Text("Cancel")
+                                        .font(.body)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.blue)
+                                        .frame(maxWidth: .infinity, minHeight: 40)
+                                        .background(Color.gray.opacity(0.2))
+                                        .cornerRadius(10)
+                                }
+                                
+                                Button(action: handleLogout) {
+                                    Text("Confirm")
+                                        .font(.body)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.white)
+                                        .frame(maxWidth: .infinity, minHeight: 40)
+                                        .background(Color.red)
+                                        .cornerRadius(10)
+                                }
                             }
+                            .padding(.horizontal, 16)
+                            
+                            Spacer().frame(height: 20)
                         }
-                        .padding(.horizontal, 16)
-                        
-                        Spacer().frame(height: 20)
+                        .padding(.top, 20)
+                        .padding(.bottom, 30)
                     }
-                    .padding(.top, 20)
-                    .padding(.bottom, 30)
+                    .frame(height: 280)
                 }
-                .frame(height: 280)
             }
-            .background(Color.black.opacity(0.4).edgesIgnoringSafeArea(.all)) // Dimmed background
+            .fullScreenCover(isPresented: $navigateToSplash) {
+                LoginView() // ✅ Replace with your actual Splash screen view
+            }
+        }
+
+        // MARK: - Handle Logout
+        private func handleLogout() {
+            // Optionally call API logout
+            viewModel.logout(userid: userId)
+            
+            // Clear local storage
+            userId = ""
+            // Clear UserDefaults
+                   let keys = ["selectedFoodId", "customerID", "authToken", "selectedAddressId", "totalprice","checkoutid","mobileNo","userLastName","userFirstName","userEmail","",""]
+                   keys.forEach { UserDefaults.standard.removeObject(forKey: $0) }
+            
+            // Dismiss the sheet first, then navigate
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                navigateToSplash = true
+            }
         }
     }
 

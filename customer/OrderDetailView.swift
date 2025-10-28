@@ -579,7 +579,7 @@ struct ApplyCouponView: View {
 struct CancelOrderView: View {
     @StateObject private var viewModel = HomeviewModel()
     @Binding var showPopup: Bool
-    @State private var timerValue: Int = 30
+    @State private var timerValue: Int = 10
     @State private var timer: Timer?
     @Environment(\.presentationMode) var presentationMode
 

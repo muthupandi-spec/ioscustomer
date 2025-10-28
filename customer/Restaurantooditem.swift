@@ -11,7 +11,7 @@ struct RestaurantFoodItem: Codable, Identifiable {
     let isDelete: Bool
     let isActive: Bool
     let type: String? // or use a custom type if needed
-    let catagorybo: String? // change type if this becomes an object
+    let catagorybo: FoodCategory?
     let restaurantCatagoryBO: RestaurantCatagoryBO?
     let image: String?
     let imageData: String?
@@ -19,7 +19,12 @@ struct RestaurantFoodItem: Codable, Identifiable {
 
     var id: Int { foodId } // For ForEach use
 }
-
+struct FoodCategory: Codable {
+    let catagoryId: Int
+    let catagory: String
+    let time: String? // nullable
+    let isDelete, isActive: Bool
+}
 // MARK: - RestaurantCatagoryBO
 struct RestaurantCatagoryBO: Codable {
     let restaurantCatagoryId: Int

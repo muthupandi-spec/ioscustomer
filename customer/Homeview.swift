@@ -45,7 +45,7 @@ struct HomeView: View {
                             specialofferlist
                             categorySection
                             branchesSection
-                            bracheslistsection
+                            branchesListSection
                             recommendedSection
                             chipSelectionView
                             foodListView
@@ -59,7 +59,7 @@ struct HomeView: View {
                             specialofferlist
                             categorySection
                             branchesSection
-                            bracheslistsection
+                            branchesListSection
                             recommendedSection
                             chipSelectionView
                             foodListView
@@ -71,9 +71,9 @@ struct HomeView: View {
             
         }.onAppear {
 //            viewModel.getfood()
-//            viewModel.getoffer()
+            viewModel.getoffer()
             viewModel.getbrach()
-//            viewModel.getcategory()
+            viewModel.getcategory()
             let customerId = UserDefaults.standard.integer(forKey: "customerID") // Or hardcode for testing
                         viewModel.getProfile(customerId: customerId)
 
@@ -169,47 +169,40 @@ struct HomeView: View {
             .padding(.horizontal, 10)
         }
     }
-    private  var bracheslistsection:some View{
+    private var branchesListSection: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) { // Ensures items are aligned in a row
-                ForEach(viewModel.restaurantmodel) { branch in
+            HStack(spacing: 10) {
+                ForEach(viewModel.restaurantmodel, id: \.restaurantId) { branch in
                     VStack(spacing: 10) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 15)
                                 .fill(Color(UIColor.systemGray5))
                                 .frame(width: 150, height: 150)
                             
-                            if let images = branch.images, !images.isEmpty,
-                               let imageData = Data(base64Encoded: images[0].imageData),
-                               let uiImage = UIImage(data: imageData) {
+                            if let images = branch.images, !images.isEmpty {
+                                let base64 = images[0].imageData?
+                                    .replacingOccurrences(of: "\n", with: "")
+                                    .replacingOccurrences(of: "\r", with: "")
+                                    .replacingOccurrences(of: "data:image/png;base64,", with: "")
+                                    .replacingOccurrences(of: "data:image/jpeg;base64,", with: "")
                                 
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 140, height: 140)
-                                    .clipShape(RoundedRectangle(cornerRadius: 11))
+                                if let base64 = base64,
+                                   let data = Data(base64Encoded: base64),
+                                   let uiImage = UIImage(data: data) {
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 140, height: 140)
+                                        .clipShape(RoundedRectangle(cornerRadius: 11))
+                                } else {
+                                    placeholderImage
+                                }
                             } else {
-                                Color.gray
-                                    .frame(width: 140, height: 140)
-                                    .clipShape(RoundedRectangle(cornerRadius: 11))
-                                    .overlay(Text("Invalid Image").font(.caption).foregroundColor(.white))
+                                placeholderImage
                             }
-
-
                         }
-                        .overlay(
-                            HStack {
-                                Spacer()
-                                Image(systemName: "heart.fill")
-                                    .foregroundColor(.red)
-                                    .padding(8)
-                                    .background(Circle().fill(Color.white))
-                                    .opacity(0) // Initially hidden
-                                    .offset(x: -10, y: 10)
-                            }
-                        )
                         
-                        Text(branch.restaurantName)
+                        Text(branch.restaurantName ?? "Unknown")
                             .font(.headline)
                             .foregroundColor(.black)
                             .multilineTextAlignment(.center)
@@ -227,20 +220,23 @@ struct HomeView: View {
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 15).fill(Color.white))
                     .shadow(radius: 2)
-                    .padding(.vertical) .onTapGesture {
-                   
-                        selectedRestaurantId = branch.restaurantId
-                           navigateRestaurat = true
-                        let id=branch.restaurantId
-                            navigateRestaurat = true
-                        
+                    .padding(.vertical)
+                    .onTapGesture {
+                        selectedRestaurantId = branch.restaurantId ?? 0
+                        navigateRestaurat = true
                     }
                 }
             }
-            .padding(.horizontal) // Ensures smooth horizontal
-        }.fullScreenCover(isPresented: $navigateRestaurat) {
-            RestaurantView()
+            .padding(.horizontal)
         }
+        .fullScreenCover(isPresented: $navigateRestaurat) { RestaurantView() }
+    }
+
+    private var placeholderImage: some View {
+        Color.gray
+            .frame(width: 140, height: 140)
+            .clipShape(RoundedRectangle(cornerRadius: 11))
+            .overlay(Text("No Image").font(.caption).foregroundColor(.white))
     }
     private var branchesSection: some View {
         sectionHeader(title: "Branches", action: {})

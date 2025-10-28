@@ -28,13 +28,13 @@ struct RestaurantView: View {
                         type
                         chipSelectionView
                         foodListView
-                        
+                
                     }
                     
                 }
                 .edgesIgnoringSafeArea(.bottom)
             }.onAppear {
-                viewModel.getrestauerantcategory( )
+                viewModel.getrestauerantcategory(categoryId: selectedRestaurantId )
                 
             }
         }

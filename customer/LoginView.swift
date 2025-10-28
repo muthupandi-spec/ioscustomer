@@ -222,7 +222,7 @@ struct LoginView: View {
                        }
                        .padding(.horizontal, 10)
 
-                   NavigationLink("", destination: HomeView(), isActive: $navigateToHome)
+                   NavigationLink("", destination: HomePageView(), isActive: $navigateToHome)
                        .hidden()
 
                    // OR Divider

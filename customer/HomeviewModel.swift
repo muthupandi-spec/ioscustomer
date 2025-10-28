@@ -35,6 +35,8 @@ class HomeviewModel: ObservableObject {
     @Published  var cityy = ""
     @Published  var pincode = ""
     @Published  var landmark = ""
+    @Published var latitude: Double? = nil
+    @Published var longitude: Double? = nil
     @Published var fcm: String = "fltRlDfgTTSxCEjL7AXIo2:APA91bGAGaKVL3YkNQLNO_3XuHNsam8ZlkaGfINzEMhf1JCgon1ZWCLaX4UHNzIU3CfABLyqpMlI_EXoF0J-lUtJzNJxAo0K55hAmfuMX8-2QB8KUJotpP4"
     var checkout: CheckoutResponseModel?
     var updateprofilee: RegisterResponseModel?
@@ -170,11 +172,11 @@ class HomeviewModel: ObservableObject {
             }
         }
     }
-    func getrestauerantcategory() {
+    func getrestauerantcategory(categoryId: Int) {
         isLoading = true
         errorMessage = nil
         
-        apiService.getrestaurantcategorylist { [weak self] result in
+        apiService.getrestaurantcategorylist(categoryId: categoryId) {  [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
                 switch result {
