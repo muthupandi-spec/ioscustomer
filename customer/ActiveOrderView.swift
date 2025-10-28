@@ -2,59 +2,62 @@ import SwiftUI
 
 struct ActiveOrderView: View {
     var order: ActiveOrderResponsemodel
-    @State private var showOrderDetails = false
-    @State private var trackOrderDetails = false
+      @State private var showOrderDetails = false
+      @State private var trackOrderDetails = false
 
-    var body: some View {
-        VStack(alignment: .leading) {
-            HStack(alignment: .top, spacing: 12) {
-                if let base64String = order.orderItems.first?.product.image,
-                   let uiImage = imageFromBase64(base64String) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .frame(width: 80, height: 80)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                } else {
-                    Color.gray
-                        .frame(width: 80, height: 80)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                }
+      var body: some View {
+          let firstOrderItem = order.orderItems.first
+          let product = firstOrderItem?.product
+          let base64Image = product?.image
+          let uiImage = base64Image.flatMap { imageFromBase64($0) }
 
+          VStack(alignment: .leading) {
+              HStack(alignment: .top, spacing: 12) {
+                  if let uiImage = uiImage {
+                      Image(uiImage: uiImage)
+                          .resizable()
+                          .frame(width: 80, height: 80)
+                          .clipShape(RoundedRectangle(cornerRadius: 10))
+                  } else {
+                      Color.gray
+                          .frame(width: 80, height: 80)
+                          .clipShape(RoundedRectangle(cornerRadius: 10))
+                  }
 
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack {
-                        Text("Order ID \(order.orderId)")
-                            .font(.system(size: 13, weight: .bold))
-                        Text("• \(order.orderItems.count) items")
-                            .font(.system(size: 11))
-                            .foregroundColor(.gray)
-                    }
+                  VStack(alignment: .leading, spacing: 4) {
+                      HStack {
+                          Text("Order ID \(order.orderId)")
+                              .font(.system(size: 13, weight: .bold))
+                          Text("• \(order.orderItems.count) items")
+                              .font(.system(size: 11))
+                              .foregroundColor(.gray)
+                      }
 
-                    Text(order.orderItems.first?.product.foodName ?? "")
-                        .font(.system(size: 13, weight: .bold))
-                        .lineLimit(1)
+                      Text(product?.foodName ?? "")
+                          .font(.system(size: 13, weight: .bold))
+                          .lineLimit(1)
 
-                    HStack {
-                        Text("2.4 km")
-                            .font(.system(size: 11))
-                        Divider()
-                            .frame(height: 12)
-                            .background(Color.gray)
-                        Text("₹\(order.totalAmount, specifier: "%.2f")")
-                            .font(.system(size: 13, weight: .bold))
-                            .foregroundColor(.gray)
-                    }
+                      HStack {
+                          Text("2.4 km")
+                              .font(.system(size: 11))
+                          Divider()
+                              .frame(height: 12)
+                              .background(Color.gray)
+                          Text("₹\(order.totalAmount, specifier: "%.2f")")
+                              .font(.system(size: 13, weight: .bold))
+                              .foregroundColor(.gray)
+                      }
 
-                    Text(order.orderStatus)
-                        .font(.system(size: 9))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 4)
-                        .background(Color.orange)
-                        .cornerRadius(5)
-                }
-            }
-            .padding()
+                      Text(order.orderStatus)
+                          .font(.system(size: 9))
+                          .foregroundColor(.white)
+                          .padding(.horizontal, 10)
+                          .padding(.vertical, 4)
+                          .background(Color.orange)
+                          .cornerRadius(5)
+                  }
+              }
+              .padding()
 
             Divider()
                 .padding(.horizontal)

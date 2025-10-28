@@ -1,13 +1,14 @@
 import Foundation
 
+// MARK: - ActiveOrderResponse
 typealias ActiveOrderResponse = [ActiveOrderResponsemodel]
 
+// MARK: - ActiveOrderResponseModel
 struct ActiveOrderResponsemodel: Codable, Identifiable {
     var id: Int { orderId }
 
     let orderId: Int
-    let firstName: String
-    let lastName: String
+    let firstName, lastName: String
     let dateCreated: String
     let orderStatus: String
     let mobileNumber: String
@@ -16,79 +17,81 @@ struct ActiveOrderResponsemodel: Codable, Identifiable {
     let customerId: Int
     let address: String?
     let pincode: Int
-    let street: String
-    let city: String
-    let landMark: String
-    let isDelete: Bool?
-    let isActive: Bool?
+    let street, city, landMark: String
+    let isDelete, isActive: Bool?
     let status: String
+    let restaurantId: Int?
     let paymentStatus: String?
     let data: [String: String]?
-    let customerLat: Double
-    let customerLng: Double
-    let restaurantLat: Double
-    let restaurantLng: Double
+    let customerLat, customerLng, restaurantLat, restaurantLng: Double
     let shopDeviceToken: String?
-    let cart: Cart?
-    let customer: Customer?
+    let cart: Cart
+    let customer: Customer
     let orderItems: [OrderItem]
 }
 
+// MARK: - Cart
 struct Cart: Codable {
-    let id: Int
-    let customerId: Int
+    let id, customerId: Int
     let totalPrice: Double
-    let isDelete: Bool?
-    let isActive: Bool?
-    let cartItems: [String]?
+    let isDelete, isActive: Bool?
+    let cartItems: String?
 }
 
+// MARK: - Customer
 struct Customer: Codable {
     let customerId: Int
-    let firstName: String
-    let lastName: String
-    let email: String
+    let firstName, lastName, email: String
     let dateCreated: String?
     let mobileNumber: String
-    let password: String?
-    let confirmpassword: String?
-    let isDelete: Bool?
-    let fcmToken: String?
-    let otp: String?
-    let isVerified: Bool?
+    let password, confirmpassword: String?
+    let isDelete, isVerified: Bool?
+    let fcmToken, otp: String?
     let data: [String: String]?
 }
 
-struct OrderItem: Codable {
+// MARK: - OrderItem
+struct OrderItem: Codable, Identifiable {
     let orderItemId: Int
     let foodName: String
     let quantity: Int
-    let price: Double
-    let subTotal: Double
-    let product: Product2
+    let price, subTotal: Double
+    let product: APIProduct?
+
+    var id: Int { orderItemId }
 }
 
-struct Product2: Codable {
+
+// MARK: - Product
+struct APIProduct: Codable {
     let foodId: Int
     let foodName: String
-    let price: Int
-    let decription: String
-    let decription1: String
-    let decription2: String
-    let isDelete: Bool?
-    let isActive: Bool?
+    let price: Double
+    let decription, decription1, decription2: String
+    let isDelete, isActive: Bool?
     let type: String?
-    let catagorybo: CatagoryBO
-    let restaurantCatagoryBO: String?
+    let catagorybo: CategoryDetail?
+    let restaurantCatagoryBO: APIRestaurantCategory?
     let image: String
     let imageData: String?
     let catagoryId: Int
 }
 
-struct CatagoryBO: Codable {
-    let catagoryId: Int
-    let catagory: String
-    let time: String?
-    let isDelete: Bool?
-    let isActive: Bool?
+struct APIRestaurantCategory: Codable {
+    let restaurantCatagoryId: Int
+    let restaurantCatagory: String
+    let isDelete, isActive: Bool?
+    let restaurantBo: String?
+    let restaurantId: Int?
 }
+
+
+// MARK: - CategoryDetail
+struct CategoryDetail: Codable {
+    let catagory: String
+    let catagoryId: Int
+    let isActive, isDelete: Bool?
+    let time: String?
+}
+
+

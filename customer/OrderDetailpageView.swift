@@ -3,77 +3,83 @@ import SwiftUI
 struct OrderDetailpageView: View {
     var order: ActiveOrderResponsemodel
 
-    var body: some View {
-        NavigationStack {
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(alignment: .leading) {
+       var body: some View {
+           // Extract first order item
+           let firstItem = order.orderItems.first
+           let product = firstItem?.product
+           let foodName = product?.foodName ?? "Item"
+           let category = product?.catagorybo?.catagory ?? "Restaurant"
+           let quantity = firstItem?.quantity ?? 1
+           let image = product.flatMap { imageFromBase64($0.image) }
 
-                    // Order ID
-                    HStack {
-                        Text("Order_ID: #\(order.orderId)")
-                            .font(.system(size: 18))
-                            .bold()
-                            .padding(.horizontal, 30)
-                            .foregroundColor(.black)
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity)
+           NavigationStack {
+               ScrollView(.vertical, showsIndicators: false) {
+                   VStack(alignment: .leading) {
 
-                    // Main Card
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack(alignment: .top, spacing: 10) {
-                            if let base64String = order.orderItems.first?.product.image,
-                               let uiImage = imageFromBase64(base64String) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 80, height: 80)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                            } else {
-                                Color.gray
-                                    .frame(width: 80, height: 80)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                            }
+                       // Order ID
+                       HStack {
+                           Text("Order_ID: #\(order.orderId)")
+                               .font(.system(size: 18))
+                               .bold()
+                               .padding(.horizontal, 30)
+                               .foregroundColor(.black)
+                           Spacer()
+                       }
 
-                            VStack(alignment: .leading, spacing: 5) {
-                                Text(order.orderItems.first?.product.foodName ?? "Item")
-                                    .font(.headline)
-                                    .foregroundColor(.black)
+                       // Main Card
+                       VStack(alignment: .leading, spacing: 10) {
+                           HStack(alignment: .top, spacing: 10) {
+                               if let image = image {
+                                   Image(uiImage: image)
+                                       .resizable()
+                                       .scaledToFill()
+                                       .frame(width: 80, height: 80)
+                                       .clipShape(RoundedRectangle(cornerRadius: 10))
+                               } else {
+                                   Color.gray
+                                       .frame(width: 80, height: 80)
+                                       .clipShape(RoundedRectangle(cornerRadius: 10))
+                               }
 
-                                Text(order.orderItems.first?.product.catagorybo.catagory ?? "Restaurant")
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
+                               VStack(alignment: .leading, spacing: 5) {
+                                   Text(foodName)
+                                       .font(.headline)
+                                       .foregroundColor(.black)
 
-                                HStack {
-                                    Text("\(order.orderItems.first?.quantity ?? 1) Qty")
-                                        .font(.caption)
-                                        .foregroundColor(.gray)
+                                   Text(category)
+                                       .font(.subheadline)
+                                       .foregroundColor(.gray)
 
-                                    Divider()
-                                        .frame(height: 12)
-                                        .background(Color.gray)
+                                   HStack {
+                                       Text("\(quantity) Qty")
+                                           .font(.caption)
+                                           .foregroundColor(.gray)
 
-                                    Text("3 km") // If you have distance logic, use it
-                                        .font(.caption)
-                                        .foregroundColor(.gray)
-                                }
-                            }
-                            Spacer()
+                                       Divider()
+                                           .frame(height: 12)
+                                           .background(Color.gray)
 
-                            VStack(alignment: .trailing) {
-                                Text("₹\(order.totalAmount, specifier: "%.2f")")
-                                    .font(.headline)
-                                    .foregroundColor(.green)
+                                       Text("3 km")
+                                           .font(.caption)
+                                           .foregroundColor(.gray)
+                                   }
+                               }
+                               Spacer()
 
-                                Text(order.orderStatus)
-                                    .font(.caption)
-                                    .padding(.horizontal, 10)
-                                    .padding(.vertical, 3)
-                                    .background(Color("colorPrimary"))
-                                    .foregroundColor(.white)
-                                    .cornerRadius(5)
-                            }
-                        }
+                               VStack(alignment: .trailing) {
+                                   Text("₹\(order.totalAmount, specifier: "%.2f")")
+                                       .font(.headline)
+                                       .foregroundColor(.green)
+
+                                   Text(order.orderStatus)
+                                       .font(.caption)
+                                       .padding(.horizontal, 10)
+                                       .padding(.vertical, 3)
+                                       .background(Color("colorPrimary"))
+                                       .foregroundColor(.white)
+                                       .cornerRadius(5)
+                               }
+                           }
 
                         Divider()
 
@@ -145,7 +151,7 @@ struct OrderDetailpageView: View {
                         HStack {
                             Text("Promo Code")
                             Spacer()
-                            Text(order.data?["promoCode"] ?? "-")
+                            Text("promoCode")
                                 .foregroundColor(.blue)
                         }
 

@@ -3,12 +3,12 @@ import SwiftUI
 struct CacelOrderView: View {
     var order: ActiveOrderResponsemodel
     @State private var showOrderDetails = false
-    @State private var trackOrderDetails = false
 
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .top, spacing: 12) {
-                if let base64String = order.orderItems.first?.product.image,
+                // Product Image
+                if let base64String = order.orderItems.first?.product?.image,
                    let uiImage = imageFromBase64(base64String) {
                     Image(uiImage: uiImage)
                         .resizable()
@@ -20,7 +20,6 @@ struct CacelOrderView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
 
-
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
                         Text("Order ID \(order.orderId)")
@@ -30,12 +29,12 @@ struct CacelOrderView: View {
                             .foregroundColor(.gray)
                     }
 
-                    Text(order.orderItems.first?.product.foodName ?? "")
+                    Text(order.orderItems.first?.product?.foodName ?? "")
                         .font(.system(size: 13, weight: .bold))
                         .lineLimit(1)
 
                     HStack {
-                        Text("2.4 km")
+                        Text("2.4 km") // Replace with actual distance if available
                             .font(.system(size: 11))
                         Divider()
                             .frame(height: 12)
@@ -59,7 +58,8 @@ struct CacelOrderView: View {
             Divider()
                 .padding(.horizontal)
 
- HStack {
+            // Ratings
+            HStack {
                 VStack {
                     Text("Your Rating for Delivery")
                         .font(.system(size: 11))
@@ -89,10 +89,11 @@ struct CacelOrderView: View {
                 }
             }
             .padding()
-            // Buttons
+
+            // Button
             VStack(spacing: 10) {
                 Button(action: {
-                    showOrderDetails.toggle() // Open sheet on button tap
+                    showOrderDetails.toggle()
                 }) {
                     Text("Order Canceled")
                         .font(.system(size: 12, weight: .bold))
@@ -103,14 +104,12 @@ struct CacelOrderView: View {
                         .cornerRadius(8)
                 }
                 .sheet(isPresented: $showOrderDetails) {
-                    OrderDetailpageView(order: order) // Pass orderId to sheet
+                    OrderDetailpageView(order: order)
                 }
-
-               
             }
             .padding(.horizontal)
             .padding(.bottom, 10)
-                 }
+        }
         .background(Color.white)
         .cornerRadius(15)
         .shadow(radius: 2)
@@ -118,6 +117,7 @@ struct CacelOrderView: View {
     }
 }
 
+// Scrollable list view
 struct Cacelorder_View: View {
     @StateObject private var viewModel = HomeviewModel()
 
@@ -126,22 +126,21 @@ struct Cacelorder_View: View {
             VStack(spacing: 10) {
                 ForEach(viewModel.Activeorder) { order in
                     CacelOrderView(order: order)
-                               }
-                           }
+                }
+            }
             .padding()
-        }  .onAppear{
-  
-                       viewModel.cancelorders()
-                  
+        }
+        .onAppear {
+            viewModel.cancelorders()
         }
     }
 }
 
 
 
+// Preview
 struct cancelOrderCardView_Previews: PreviewProvider {
     static var previews: some View {
         Cacelorder_View()
-        
     }
 }
