@@ -1,7 +1,7 @@
 import Foundation
 
 class APIService {
-    let baseurl="https://3e46baded003.ngrok-free.app/"
+    let baseurl="https://margot-nonscandalous-untunably.ngrok-free.dev/"
     func getProfile(customerId: Int, completion: @escaping (Result<GetProfileResponseModel, Error>) -> Void) {
         let urlString =  baseurl + "restaurant/api/customer/v1/getemployee/\(customerId)" // Replace with actual base URL
         guard let url = URL(string: urlString) else {
@@ -245,14 +245,16 @@ class APIService {
         task.resume()
 
     }
-    func completedorders(completion: @escaping (Result<[FoodModel], Error>) -> Void) {
-        let urlString = baseurl+"completedorders" // Replace with your actual API URL
+    func completedorders(customerId: Int, type: String,completion: @escaping (Result<[ActiveOrderResponsemodel], Error>) -> Void) {
+        let encodedType = type.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        let urlString = "\(baseurl)restaurant/api/orders/vieworder/\(customerId)/\(encodedType)"
+
+        print("🔗 Request URL: \(urlString)")
+
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
         }
-        
-        print("🔗 Request URL: \(url.absoluteString)")
 
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
@@ -274,8 +276,8 @@ class APIService {
             print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8 Data")")
 
             do {
-                let users = try JSONDecoder().decode([FoodModel].self, from: data)
-                completion(.success(users))
+                let decoded = try JSONDecoder().decode([ActiveOrderResponsemodel].self, from: data)
+                completion(.success(decoded))
             } catch {
                 print("💥 JSON Decoding Error: \(error.localizedDescription)")
                 completion(.failure(error))
@@ -283,6 +285,7 @@ class APIService {
         }
 
         task.resume()
+
     }
 
 

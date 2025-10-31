@@ -13,6 +13,8 @@ struct RequestAddressModel: Encodable {
     let place: String
     let city: String
     let pincode: String
+    let customerLat: Double
+    let customerLng: Double
     let customerbo: CustomerBO
 }
 

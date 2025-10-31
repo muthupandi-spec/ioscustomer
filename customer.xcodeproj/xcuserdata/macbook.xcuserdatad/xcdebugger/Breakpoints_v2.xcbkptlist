@@ -94,8 +94,8 @@
             filePath = "customer/ApiService/ApiService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "734"
-            endingLineNumber = "734"
+            startingLineNumber = "737"
+            endingLineNumber = "737"
             landmarkName = "getcategorylist(completion:)"
             landmarkType = "7">
          </BreakpointContent>

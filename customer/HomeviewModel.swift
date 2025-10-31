@@ -582,7 +582,7 @@ class HomeviewModel: ObservableObject {
         errorMessage = nil
 
         let customerId = UserDefaults.standard.integer(forKey: "customerID")
-        let type = "Order Cancel"
+        let type = "Cancelled"
 
         apiService.activeorders(customerId: customerId, type: type) { [weak self] result in
             DispatchQueue.main.async {
@@ -600,18 +600,22 @@ class HomeviewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        apiService.completedorders { [weak self] result in
+        let customerId = UserDefaults.standard.integer(forKey: "customerID")
+        let type = "Completed"
+
+        apiService.activeorders(customerId: customerId, type: type) { [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
                 switch result {
                 case .success(let food):
-                    self?.food = food
+                    self?.Activeorder = food
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
                 }
             }
         }
     }
+ 
 
     func getrestaurantfood() {
         isLoading = true
@@ -716,6 +720,8 @@ class HomeviewModel: ObservableObject {
                 place: place,
                 city: cityy,
                 pincode: pincode,
+                customerLat: latitude ?? 0.0,
+                customerLng: longitude  ?? 0.0,
                 customerbo: CustomerBO(customerId: UserDefaults.standard.integer(forKey: "customerID"))
             )
 
@@ -776,6 +782,8 @@ class HomeviewModel: ObservableObject {
             place: place,
             city: cityy,
             pincode: pincode,
+            customerLat: latitude ?? 0.0,
+            customerLng: longitude ?? 0.0,
             customerbo: CustomerBO(customerId: UserDefaults.standard.integer(forKey: "customerID"))
         )
 
