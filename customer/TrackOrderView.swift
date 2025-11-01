@@ -1,173 +1,73 @@
 import SwiftUI
+import MapKit
 
 struct TrackOrderView: View {
+    @StateObject private var viewModel = MapViewModel()
+    @Environment(\.dismiss) var dismiss
+
     var body: some View {
-        NavigationStack{
-            ZStack{
-                VStack{
-                   header
-                    
-                    MapView()
-                        .frame(height: 300)
-                        .edgesIgnoringSafeArea(.top)
-                        .offset(y: -32) // Equivalent to marginBottom -32dp
-                 trackorder
-                }
-            }
+        ZStack(alignment: .topLeading) {
+            // ✅ Map that supports overlays (with polyline)
+            MapViewRepresentable(viewModel: viewModel)
+                .ignoresSafeArea()
 
-        }
-    
-        
-    }
-    private var header :some  View{
-        HStack {
-            Button(action: {
-                // Handle back button action
-            }) {
-                Image("ic_back") // Replace with your back arrow asset
-                    .resizable()
-                    .frame(width: 20, height: 20)
-            }
-            
-            Text("TrackOrderView")
-                .font(.headline)
-                .foregroundColor(.black)
-            
-            Spacer()
-            
-            Button(action: {
-                // Handle edit action
-            }) {
-                Image("edit") // Replace with your edit icon asset
-                    .resizable()
-                    .frame(width: 20, height: 20)
-            }
-            .opacity(0) // Initially hidden
-        }
-        .padding(.horizontal, 16)
-        .padding(.top, 20)
-    }
-    private var trackorder :some View{
-        VStack{
-        
-            VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: 0) {
+
+                // 🔹 Custom Top Bar
                 HStack {
-                    Circle().fill(Color.gray.opacity(0.3))
-                        .frame(width: 32, height: 32)
-                        .overlay(Image(systemName: "checkmark.circle").resizable().scaledToFit().frame(width: 20, height: 20))
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .font(.title2)
+                            .foregroundColor(.black)
+                            .padding(8)
+                            .background(Color.white.opacity(0.9))
+                            .clipShape(Circle())
+                            .shadow(radius: 2)
+                    }
+
+                    Text("Track Order View")
+                        .font(.headline)
+                        .foregroundColor(.black)
+                        .padding(.leading, 8)
+
                     Spacer()
-                    Circle().fill(Color.gray.opacity(0.3))
-                        .frame(width: 32, height: 32)
-                        .overlay(Image(systemName:"shippingbox").resizable().scaledToFit().frame(width: 20, height: 20))
-                    Spacer()
-                    Circle().fill(Color.gray.opacity(0.3))
-                        .frame(width: 32, height: 32)
-                        .overlay(Image(systemName:"checkmark.seal.fill").resizable().scaledToFit().frame(width: 20, height: 20))
-                    Spacer()
-                    Circle().fill(Color.gray.opacity(0.3))
-                        .frame(width: 32, height: 32)
-                        .overlay(Image("box").resizable().scaledToFit().frame(width: 20, height: 20))
                 }
+                .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top ?? 40)
                 .padding(.horizontal)
-                
-                HStack(spacing: 0) {
-                    Rectangle().fill(Color.gray.opacity(0.3)).frame(height: 2)
-                    Rectangle().fill(Color.gray.opacity(0.3)).frame(height: 2)
-                    Rectangle().fill(Color.gray.opacity(0.3)).frame(height: 2)
-                }
-                .frame(height: 2)
-                .padding(.horizontal)
-                
-                HStack {
-                    Text("Order Status")
-                        .font(.system(size: 13))
-                    Spacer()
-                    Text("10.22 PM")
-                        .font(.system(size: 12))
-                }
-                .padding(.horizontal)
-                
-                Text("Status Description")
-                    .font(.system(size: 11))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal)
-                
-                Button(action: {}) {
-                    Text("More Track Details")
-                        .font(.system(size: 11))
-                        .foregroundColor(Color.blue)
+                .padding(.bottom, 8)
+                .background(
+                    Color.white.opacity(0.8)
+                        .blur(radius: 10)
+                        .shadow(radius: 3)
+                )
+
+                Spacer()
+
+                // 🔹 Button to draw the route
+                Button(action: {
+                    let origin = CLLocationCoordinate2D(latitude: 12.9716, longitude: 77.5946)   // Bangalore
+                    let destination = CLLocationCoordinate2D(latitude: 13.0827, longitude: 80.2707) // Chennai
+                    viewModel.drawBusRoute(from: origin, to: destination)
+                }) {
+                    Text("Draw Bus Route")
+                        .font(.headline)
+                        .foregroundColor(.white)
                         .padding()
-                        .frame(width: 120, height: 28)
-                        .background(RoundedRectangle(cornerRadius: 5).fill(Color.gray.opacity(0.3)))
+                        .frame(maxWidth: .infinity)
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                        .padding(.horizontal)
+                        .shadow(radius: 4)
                 }
-                .padding(.horizontal)
+                .padding(.bottom, 30)
             }
-
-            HStack(alignment: .top, spacing: 10) {
-                       // Food Image Card
-                       ZStack {
-                           Image("food1")
-                               .resizable()
-                               .scaledToFill()
-                               .frame(width: 80, height: 80)
-                               .clipShape(RoundedRectangle(cornerRadius: 10))
-                       }
-                       .frame(width: 80, height: 80)
-                       .background(Color.white)
-                       .cornerRadius(10)
-                       .shadow(radius: 2)
-                       
-                       VStack(alignment: .leading, spacing: 4) {
-                           Text("Biryani")
-                               .font(.system(size: 13, weight: .bold))
-                               .foregroundColor(Color.black)
-                           
-                           HStack(spacing: 5) {
-                               Text("2 count")
-                                   .font(.system(size: 10))
-                                   
-                               Rectangle()
-                                   .frame(width: 1, height: 12)
-                                   .foregroundColor(Color.gray)
-                               
-                               Text("2km")
-                                   .font(.system(size: 10))
-                           }
-                           
-                           HStack {
-                               Text("AED 5")
-                                   .font(.system(size: 13, weight: .bold))
-                                   .foregroundColor(Color.black)
-                               
-                               Text("Delivered")
-                                   .font(.system(size: 10))
-                                   .foregroundColor(Color.white)
-                                   .padding(.horizontal, 10)
-                                   .padding(.vertical, 2)
-                                   .background(Color.green)
-                                   .cornerRadius(5)
-                           }
-                       }
-                       Spacer()
-                   }
-            .padding(10)
-            .background(Color.white)
-                   .cornerRadius(10)
-                   .shadow(radius: 2)
-                   .padding(.horizontal,2)
-                   .padding()
         }
-        .padding(.vertical,30)
-        .background(Color.white)
-               .cornerRadius(10)
-               .shadow(radius: 2)
-               .padding(.horizontal,2)
-               .padding()
+        .onAppear {
+            viewModel.setupLocationManager()
+        }
     }
 }
 
-struct TrackOrderView_Previews: PreviewProvider {
-    static var previews: some View {
-        TrackOrderView()
-    }
-}
+
