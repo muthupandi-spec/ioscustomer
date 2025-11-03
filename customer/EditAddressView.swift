@@ -4,6 +4,7 @@ struct EditaddressView: View {
     var address: GetAddressResponseModelItem
     @ObservedObject var viewModel: HomeviewModel
     var onAddressCreated: (() -> Void)?   // ✅ callback
+    @State private var showPlaceSearch = false // show Google search view
 
     @Environment(\.dismiss) var dismiss
     @State private var showLoader = false
@@ -19,17 +20,17 @@ struct EditaddressView: View {
                             .resizable()
                             .frame(width: 20, height: 20)
                     }
-
+                    
                     Text("Address")
                         .font(.system(size: 16, weight: .bold))
                         .foregroundColor(.black)
                         .padding(.leading, 10)
-
+                    
                     Spacer()
                 }
                 .padding(.top, 10)
                 .padding(.horizontal)
-
+                
                 // Form
                 VStack(spacing: 12) {
                     CustomTextField(title: "Door No", text: $viewModel.doorNo)
@@ -37,17 +38,29 @@ struct EditaddressView: View {
                     CustomTextField(title: "Place", text: $viewModel.place)
                     CustomTextField(title: "City", text: $viewModel.cityy)
                     CustomTextField(title: "Pin Code", text: $viewModel.pincode, keyboardType: .numberPad)
-                    CustomTextField(title: "Landmark", text: $viewModel.landmark)
+                    Button(action: { showPlaceSearch = true }) {
+                        HStack {
+                            Text(viewModel.landmark.isEmpty ? "Select Landmark" : viewModel.landmark)
+                                .foregroundColor(viewModel.landmark.isEmpty ? .gray : .black)
+                            Spacer()
+                            Image(systemName: "magnifyingglass")
+                                .foregroundColor(.gray)
+                        }
+                        .padding(.horizontal, 10)
+                        .frame(height: 40)
+                        .background(RoundedRectangle(cornerRadius: 6).stroke(Color.gray.opacity(0.4)))
+                        .font(.system(size: 14))
+                    }
                 }
                 .padding(.horizontal)
-
+                
                 if let error = errorMessage {
                     Text(error)
                         .foregroundColor(.red)
                         .font(.caption)
                         .padding(.horizontal)
                 }
-
+                
                 Button(action: {
                     if validateForm() {
                         showLoader = true
@@ -59,6 +72,7 @@ struct EditaddressView: View {
                                 print("✅ Address Created: \(response.addressId)")
                                 viewModel.addressid = response.addressId
                                 dismiss()
+                                onAddressCreated?()
                             case .failure(let error):
                                 errorMessage = error.localizedDescription
                             }
@@ -74,11 +88,32 @@ struct EditaddressView: View {
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)
-
+                
                 Spacer()
             }
             .background(Color.white.ignoresSafeArea())
-
+            .sheet(isPresented: $showPlaceSearch) {
+                PlaceSearchView { name, coordinate in
+                    if let coordinate = coordinate {
+                        viewModel.landmark = name
+                        viewModel.latitude = coordinate.latitude
+                        viewModel.longitude = coordinate.longitude
+                    } else {
+                        viewModel.landmark = name
+                    }
+                }
+            }
+            .onAppear {
+                viewModel.addressid = address.addressId
+                viewModel.doorNo = address.doorNo
+                viewModel.street = address.street
+                viewModel.place = address.city
+                viewModel.cityy = address.city
+                viewModel.pincode = String(address.pincode)
+                viewModel.landmark = address.landMark
+            }
+            
+            // Loader overlay
             if showLoader {
                 ProgressView("Please wait...")
                     .padding()
@@ -86,15 +121,6 @@ struct EditaddressView: View {
                     .cornerRadius(10)
                     .shadow(radius: 5)
             }
-        }
-        .onAppear {
-            viewModel.addressid = address.addressId
-            viewModel.doorNo = address.doorNo
-            viewModel.street = address.street
-            viewModel.place = address.city
-            viewModel.cityy = address.city
-            viewModel.pincode = String(address.pincode)
-            viewModel.landmark = address.landMark
         }
     }
 

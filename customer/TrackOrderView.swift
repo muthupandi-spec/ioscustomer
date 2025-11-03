@@ -47,9 +47,7 @@ struct TrackOrderView: View {
 
                 // 🔹 Button to draw the route
                 Button(action: {
-                    let origin = CLLocationCoordinate2D(latitude: 12.9716, longitude: 77.5946)   // Bangalore
-                    let destination = CLLocationCoordinate2D(latitude: 13.0827, longitude: 80.2707) // Chennai
-                    viewModel.drawBusRoute(from: origin, to: destination)
+                 
                 }) {
                     Text("Draw Bus Route")
                         .font(.headline)
@@ -68,6 +66,10 @@ struct TrackOrderView: View {
             viewModel.setupLocationManager()
             viewModel.fetchTrackOrder(deliveryboyid: UserDefaults.standard.integer(forKey: "deliveryid"))
         }
+        if viewModel.currentRoute != nil {
+                       // Optional: You can overlay the polyline if needed
+                       RoutePolylineView(route: viewModel.currentRoute!)
+                   }
     }
 }
 

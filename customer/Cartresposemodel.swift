@@ -1,15 +1,14 @@
 import Foundation
 
+// MARK: - Cart Response
 struct CartResponseModel: Codable, Identifiable {
     let id: Int
-      let customerId: Int
-      let totalPrice: Double
-      let isDelete: Bool?
-      let isActive: Bool?
-      let cartItems: [CartItem]
-  }
-import Foundation
-
+    let customerId: Int
+    let totalPrice: Double
+    let isDelete: Bool?
+    let isActive: Bool?
+    let cartItems: [CartItem]
+}
 
 // MARK: - Cart Item
 struct CartItem: Codable {
@@ -33,8 +32,8 @@ struct Product: Codable {
     let isDelete: Bool?
     let isActive: Bool?
     let type: String?
-    let catagorybo: CategoryBO
-    let restaurantCatagoryBO: RestaurantCategoryBO
+    let catagorybo: CategoryBO?               // <-- optional
+    let restaurantCatagoryBO: RestaurantCategoryBO? // <-- optional
     let image: String?
     let imageData: String?
     let catagoryId: Int
@@ -55,8 +54,6 @@ struct RestaurantCategoryBO: Codable {
     let restaurantCatagory: String
     let isDelete: Bool?
     let isActive: Bool?
-    let restaurantBo: String?
-    let restaurantId: Int?
+    let restaurantBo: String?  // <-- optional
+    let restaurantId: Int?     // <-- optional
 }
-
-

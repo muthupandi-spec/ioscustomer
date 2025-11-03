@@ -56,12 +56,14 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         }
     }
 
-
-
     // MARK: - 🗺️ Update map and draw route
     private func updateMap(with response: TrackOrderResponseModel) {
         guard let currentLoc = userCoordinate else {
-            print("⚠️ Current location not available yet.")
+            print("⚠️ Current location not available yet. Waiting…")
+            // Retry after short delay
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.updateMap(with: response)
+            }
             return
         }
 
@@ -70,7 +72,6 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
             longitude: response.deliveryPartnerLng ?? 0.0
         )
 
-        // ✅ Use current location (restaurant device) instead of restaurantLat/Lng from API
         drawBusRoute(from: currentLoc, to: deliveryCoord)
     }
 
@@ -109,7 +110,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 
             DispatchQueue.main.async {
                 self?.annotations = [
-                    MapAnnotationItem(coordinate: origin, title: "You ", color: .blue),
+                    MapAnnotationItem(coordinate: origin, title: "You", color: .blue),
                     MapAnnotationItem(coordinate: destination, title: "Delivery Boy", color: .red)
                 ]
                 self?.currentRoute = route

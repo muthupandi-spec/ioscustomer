@@ -53,11 +53,11 @@ struct RestaurantBOFavourite: Codable {
     let restaurantDescreption: String?
     let restaurantEMail: String?
     let restaurantId: Int
-    let restaurantLandMark: String?  // <-- Make this optional
-    let restaurantLat: Double
-    let restaurantLng: Double
+    let restaurantLandMark: String?
+    let restaurantLat: Double?
+    let restaurantLng: Double?
     let restaurantName: String
-    let restaurantPhoneNumber1: Int64
+    let restaurantPhoneNumber1: Int64?   // <-- optional now
     let restaurantPhoneNumber2: String?
     let restaurantPinCode: String?
     let restaurantStreet: String?
