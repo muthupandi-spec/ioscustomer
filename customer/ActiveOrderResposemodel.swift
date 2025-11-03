@@ -25,8 +25,11 @@ struct ActiveOrderResponsemodel: Codable, Identifiable {
     let data: [String: String]?
     let customerLat, customerLng, restaurantLat, restaurantLng: Double
     let shopDeviceToken: String?
+    let otp: String?
     let cart: Cart
     let customer: Customer
+    let delivery: Delivery?
+
     let orderItems: [OrderItem]
 }
 
@@ -94,4 +97,45 @@ struct CategoryDetail: Codable {
     let time: String?
 }
 
+// MARK: - Delivery
+struct Delivery: Codable {
+    let deliveryId: Int?
+    let handoverOtp: String?
+    let deliveryOtp: String?
+    let deliveryPartner: DeliveryPartner?
+}
+
+// MARK: - DeliveryPartner
+struct DeliveryPartner: Codable {
+    let deliveryPartnerId: Int?
+    let deliveryPartnerName: String?
+    let deliveryPartnerEmail: String?
+    let mobileNumber: String?
+    let deliveryPartnerAddress: String?
+    let vehicleDetails: String?
+    let vehicleNumber: String?
+    let deliveryPartnerProof1: String?
+    let deliveryPartnerProof2: String?
+    let deliveryPartnerVehicleLicence: String?
+    let password: String?
+    let confirmPassword: String?
+    let isDelete: Bool?
+    let isActive: Bool?
+    let dateCreated: String?
+    let dateModified: String?
+    let isVerified: Bool?
+    let otp: String?
+    let data: [String: String]?
+    let bankName: String?
+    let accountHolderName: String?
+    let accountNumber: String?
+    let ifscCode: String?
+    let partnerStatus: String?
+    let profileImage: String?
+    let profileImageData: String?
+    let deliveryPartnerFcmToken: String?
+    let deliveryPartnerLat: Double?
+    let deliveryPartnerLng: Double?
+    let images: [String]?
+}
 

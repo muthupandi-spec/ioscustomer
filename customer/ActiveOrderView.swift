@@ -38,8 +38,12 @@ struct ActiveOrderView: View {
                           .lineLimit(1)
 
                       HStack {
-                          Text("2.4 km")
-                              .font(.system(size: 11))
+                          if let otp = order.otp {
+                              Text("OTP : \(otp)")
+                                  .font(.system(size: 11, weight: .bold))
+                                  .foregroundColor(.orange)
+                          }
+
                           Divider()
                               .frame(height: 12)
                               .background(Color.gray)
@@ -93,37 +97,51 @@ struct ActiveOrderView: View {
             }
             .padding()
             // Buttons
-            VStack(spacing: 10) {
-                Button(action: {
-                    showOrderDetails.toggle() // Open sheet on button tap
-                }) {
-                    Text("Order Details")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(.black)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.gray.opacity(0.2))
-                        .cornerRadius(8)
-                }
-                .sheet(isPresented: $showOrderDetails) {
-                    OrderDetailpageView(order:order) // Pass orderId to sheet
-                }
+              // Buttons
+              VStack(spacing: 10) {
+                  Button(action: {
+                      showOrderDetails.toggle()
+                  }) {
+                      Text("Order Details")
+                          .font(.system(size: 12, weight: .bold))
+                          .foregroundColor(.black)
+                          .frame(maxWidth: .infinity)
+                          .padding()
+                          .background(Color.gray.opacity(0.2))
+                          .cornerRadius(8)
+                  }
+                  .sheet(isPresented: $showOrderDetails) {
+                      OrderDetailpageView(order: order)
+                  }
 
-                Button(action: {
-                    trackOrderDetails.toggle() // Open sheet on button tap
+                  // ✅ Show "Track Order" button only if status is HANDOVER_TO_DELIVERY
+                  if order.orderStatus == "HANDOVER_TO_DELIVERY" {
+                      Button(action: {
+                          trackOrderDetails.toggle()
+                          if let deliveryId = order.delivery?.deliveryPartner?.deliveryPartnerId {
+                                     UserDefaults.standard.set(deliveryId, forKey: "deliveryid")
+                                     print("✅ Saved deliveryId: \(deliveryId)")
+                                 } else {
+                                     print("⚠️ No delivery info available to save.")
+                                 }
+                                 
+                      }) {
+                          Text("Track Order")
+                              .font(.system(size: 12, weight: .bold))
+                              .foregroundColor(.white)
+                              .frame(maxWidth: .infinity)
+                              .padding()
+                              .background(Color("colorPrimary"))
+                              .cornerRadius(8)
+                      }
+                      .sheet(isPresented: $trackOrderDetails) {
+                          TrackOrderView()
+                      }
+                  }
+              }
+              .padding(.horizontal)
+              .padding(.bottom, 10)
 
-                }) {
-                    Text("Track Order")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color("colorPrimary"))
-                        .cornerRadius(8)
-                }
-            }
-            .padding(.horizontal)
-            .padding(.bottom, 10)
             .sheet(isPresented: $trackOrderDetails) {
                 TrackOrderView() // Pass orderId to sheet
             }        }

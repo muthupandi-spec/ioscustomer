@@ -1,15 +1,15 @@
 import Foundation
 import MapKit
-import CoreLocation
 import Combine
 import SwiftUI
 
 class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var annotations: [MapAnnotationItem] = []
     @Published var currentRoute: MKRoute? = nil
+    @Published var userCoordinate: CLLocationCoordinate2D? = nil // ✅ Store current location
 
     private let locationManager = CLLocationManager()
-    private var userLocation: CLLocationCoordinate2D?
+    private var cancellables = Set<AnyCancellable>()
     private var directionsRequestInProgress = false
 
     override init() {
@@ -38,10 +38,43 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        userLocation = location.coordinate
+        userCoordinate = location.coordinate // ✅ Keep current location
     }
 
-    // MARK: - 🚍 Draw Actual Route (Bus/Driving Path)
+    // MARK: - 🚀 API CALL: Fetch delivery partner location
+    func fetchTrackOrder(deliveryboyid: Int) {
+        APIService().fetchTrackOrder(deliveryboyid: deliveryboyid) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print("✅ Got tracking data: \(response)")
+                    self?.updateMap(with: response)
+                case .failure(let error):
+                    print("❌ Failed to fetch tracking: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+
+
+    // MARK: - 🗺️ Update map and draw route
+    private func updateMap(with response: TrackOrderResponseModel) {
+        guard let currentLoc = userCoordinate else {
+            print("⚠️ Current location not available yet.")
+            return
+        }
+
+        let deliveryCoord = CLLocationCoordinate2D(
+            latitude: response.deliveryPartnerLat ?? 0.0,
+            longitude: response.deliveryPartnerLng ?? 0.0
+        )
+
+        // ✅ Use current location (restaurant device) instead of restaurantLat/Lng from API
+        drawBusRoute(from: currentLoc, to: deliveryCoord)
+    }
+
+    // MARK: - 🧭 Draw polyline
     func drawBusRoute(from origin: CLLocationCoordinate2D, to destination: CLLocationCoordinate2D) {
         guard !directionsRequestInProgress else {
             print("⚠️ Too many route requests, skipping new one...")
@@ -50,14 +83,13 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
 
         directionsRequestInProgress = true
 
-        // Setup placemarks
         let sourcePlacemark = MKPlacemark(coordinate: origin)
         let destinationPlacemark = MKPlacemark(coordinate: destination)
 
         let request = MKDirections.Request()
         request.source = MKMapItem(placemark: sourcePlacemark)
         request.destination = MKMapItem(placemark: destinationPlacemark)
-        request.transportType = .automobile // can change to .transit for bus routes
+        request.transportType = .automobile
 
         let directions = MKDirections(request: request)
         directions.calculate { [weak self] response, error in
@@ -75,10 +107,10 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
                 return
             }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            DispatchQueue.main.async {
                 self?.annotations = [
-                    MapAnnotationItem(coordinate: origin, title: "Origin", color: .blue),
-                    MapAnnotationItem(coordinate: destination, title: "Destination", color: .red)
+                    MapAnnotationItem(coordinate: origin, title: "You ", color: .blue),
+                    MapAnnotationItem(coordinate: destination, title: "Delivery Boy", color: .red)
                 ]
                 self?.currentRoute = route
             }

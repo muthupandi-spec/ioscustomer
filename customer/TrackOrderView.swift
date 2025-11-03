@@ -66,6 +66,7 @@ struct TrackOrderView: View {
         }
         .onAppear {
             viewModel.setupLocationManager()
+            viewModel.fetchTrackOrder(deliveryboyid: UserDefaults.standard.integer(forKey: "deliveryid"))
         }
     }
 }

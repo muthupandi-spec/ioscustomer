@@ -418,6 +418,46 @@ class APIService {
 
         task.resume()
     }
+    // MARK: - 🚀 API CALL: Fetch delivery partner location
+    func fetchTrackOrder(deliveryboyid: Int, completion: @escaping (Result<TrackOrderResponseModel, Error>) -> Void) {
+        let urlString = baseurl + "restaurant/api/location/track/\(deliveryboyid)"
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+
+        print("🔗 Request URL: \(url.absoluteString)")
+
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print("❌ Error: \(error.localizedDescription)")
+                completion(.failure(error))
+                return
+            }
+
+            if let httpResponse = response as? HTTPURLResponse {
+                print("📡 Response Status Code: \(httpResponse.statusCode)")
+            }
+
+            guard let data = data else {
+                print("⚠️ No data received")
+                completion(.failure(NSError(domain: "No Data", code: 0, userInfo: nil)))
+                return
+            }
+
+            print("📩 Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid UTF-8 Data")")
+
+            do {
+                let decodedResponse = try JSONDecoder().decode(TrackOrderResponseModel.self, from: data)
+                completion(.success(decodedResponse))
+            } catch {
+                print("💥 JSON Decoding Error: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+
+        task.resume()
+    }
 
     func getcart(customerId: Int,completion: @escaping (Result<[CartResponseModel], Error>) -> Void) {
         let urlString = baseurl+"restaurant/api/cart/viewcart/\(customerId)" // Replace with your actual API URL
