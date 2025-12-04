@@ -9,7 +9,7 @@ struct ActiveOrderView: View {
           let firstOrderItem = order.orderItems.first
           let product = firstOrderItem?.product
           let base64Image = product?.image
-          let uiImage = base64Image.flatMap { imageFromBase64($0) }
+          let uiImage = base64Image.flatMap { decodeBas64ToUIImage($0) }
 
           VStack(alignment: .leading) {
               HStack(alignment: .top, spacing: 12) {
@@ -174,13 +174,15 @@ struct ActiveOrder_View: View {
     }
 }
 
-func imageFromBase64(_ base64String: String) -> UIImage? {
-    guard let data = Data(base64Encoded: base64String),
-          let image = UIImage(data: data) else {
-        return nil
+
+func decodeBas64ToUIImage(_ base64String: String) -> UIImage? {
+    if let imageData = Data(base64Encoded: base64String) {
+        return UIImage(data: imageData)
     }
-    return image
+    return nil
 }
+
+
 
 struct OrderCardView_Previews: PreviewProvider {
     static var previews: some View {

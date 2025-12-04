@@ -3,83 +3,83 @@ import SwiftUI
 struct OrderDetailpageView: View {
     var order: ActiveOrderResponsemodel
 
-       var body: some View {
-           // Extract first order item
-           let firstItem = order.orderItems.first
-           let product = firstItem?.product
-           let foodName = product?.foodName ?? "Item"
-           let category = product?.catagorybo?.catagory ?? "Restaurant"
-           let quantity = firstItem?.quantity ?? 1
-           let image = product.flatMap { imageFromBase64($0.image) }
+    var body: some View {
+        // Extract item details
+        let firstItem = order.orderItems.first
+        let product = firstItem?.product
+        let foodName = product?.foodName ?? "Item"
+        let category = product?.catagorybo?.catagory ?? "Restaurant"
+        let quantity = firstItem?.quantity ?? 1
+        let image = product.flatMap { decodeBase64ToUIImage($0.image) }
 
-           NavigationStack {
-               ScrollView(.vertical, showsIndicators: false) {
-                   VStack(alignment: .leading) {
+        NavigationStack {
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading) {
 
-                       // Order ID
-                       HStack {
-                           Text("Order_ID: #\(order.orderId)")
-                               .font(.system(size: 18))
-                               .bold()
-                               .padding(.horizontal, 30)
-                               .foregroundColor(.black)
-                           Spacer()
-                       }
+                    // Order ID
+                    HStack {
+                        Text("Order_ID: #\(order.orderId)")
+                            .font(.system(size: 18))
+                            .bold()
+                            .padding(.horizontal, 30)
+                            .foregroundColor(.black)
+                        Spacer()
+                    }
 
-                       // Main Card
-                       VStack(alignment: .leading, spacing: 10) {
-                           HStack(alignment: .top, spacing: 10) {
-                               if let image = image {
-                                   Image(uiImage: image)
-                                       .resizable()
-                                       .scaledToFill()
-                                       .frame(width: 80, height: 80)
-                                       .clipShape(RoundedRectangle(cornerRadius: 10))
-                               } else {
-                                   Color.gray
-                                       .frame(width: 80, height: 80)
-                                       .clipShape(RoundedRectangle(cornerRadius: 10))
-                               }
+                    // Main Card
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack(alignment: .top, spacing: 10) {
+                            if let uiImage = image {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 80, height: 80)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            } else {
+                                Color.gray
+                                    .frame(width: 80, height: 80)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            }
 
-                               VStack(alignment: .leading, spacing: 5) {
-                                   Text(foodName)
-                                       .font(.headline)
-                                       .foregroundColor(.black)
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text(foodName)
+                                    .font(.headline)
+                                    .foregroundColor(.black)
 
-                                   Text(category)
-                                       .font(.subheadline)
-                                       .foregroundColor(.gray)
+                                Text(category)
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
 
-                                   HStack {
-                                       Text("\(quantity) Qty")
-                                           .font(.caption)
-                                           .foregroundColor(.gray)
+                                HStack {
+                                    Text("\(quantity) Qty")
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
 
-                                       Divider()
-                                           .frame(height: 12)
-                                           .background(Color.gray)
+                                    Divider()
+                                        .frame(height: 12)
+                                        .background(Color.gray)
 
-                                       Text("3 km")
-                                           .font(.caption)
-                                           .foregroundColor(.gray)
-                                   }
-                               }
-                               Spacer()
+                                    Text("3 km")
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                }
+                            }
+                            Spacer()
 
-                               VStack(alignment: .trailing) {
-                                   Text("₹\(order.totalAmount, specifier: "%.2f")")
-                                       .font(.headline)
-                                       .foregroundColor(.green)
+                            VStack(alignment: .trailing) {
+                                Text("₹\(order.totalAmount, specifier: "%.2f")")
+                                    .font(.headline)
+                                    .foregroundColor(.green)
 
-                                   Text(order.orderStatus)
-                                       .font(.caption)
-                                       .padding(.horizontal, 10)
-                                       .padding(.vertical, 3)
-                                       .background(Color("colorPrimary"))
-                                       .foregroundColor(.white)
-                                       .cornerRadius(5)
-                               }
-                           }
+                                Text(order.orderStatus)
+                                    .font(.caption)
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 3)
+                                    .background(Color("colorPrimary"))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(5)
+                            }
+                        }
 
                         Divider()
 
@@ -186,6 +186,21 @@ struct OrderDetailpageView: View {
         }
     }
 }
+
+//////////////////////////////
+//  SUPPORT FUNCTIONS
+//////////////////////////////
+
+// Convert Base64 to UIImage (correct version)
+func decodeBase64ToUIImage(_ base64String: String) -> UIImage? {
+    if let imageData = Data(base64Encoded: base64String) {
+        return UIImage(data: imageData)
+    }
+    return nil
+}
+
+
+// Call number
 func callNumber(phoneNumber: String) {
     if let phoneURL = URL(string: "tel://\(phoneNumber)"),
        UIApplication.shared.canOpenURL(phoneURL) {

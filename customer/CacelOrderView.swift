@@ -9,7 +9,7 @@ struct CacelOrderView: View {
             HStack(alignment: .top, spacing: 12) {
                 // Product Image
                 if let base64String = order.orderItems.first?.product?.image,
-                   let uiImage = imageFromBase64(base64String) {
+                   let uiImage = decodeBase64ToUImage(base64String) {
                     Image(uiImage: uiImage)
                         .resizable()
                         .frame(width: 80, height: 80)
@@ -136,6 +136,12 @@ struct Cacelorder_View: View {
     }
 }
 
+func decodeBase64ToUImage(_ base64String: String) -> UIImage? {
+    if let imageData = Data(base64Encoded: base64String) {
+        return UIImage(data: imageData)
+    }
+    return nil
+}
 
 
 // Preview
